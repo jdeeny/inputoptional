@@ -15,8 +15,11 @@ public class SeekSpot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(GameManager.Instance.spot.transform.position);
-        GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+        if (transform.position.y <= 0.5f)
+        {
+            transform.LookAt(GameManager.Instance.spot.transform.position);
+            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+        }
     }
 
     void OnCollisionEnter(Collision col)
@@ -24,6 +27,16 @@ public class SeekSpot : MonoBehaviour
         if (col.gameObject.name.StartsWith("Spot"))
         {
             Destroy(gameObject);
+            foreach (GameObject player in GameManager.Instance.players)
+            {
+                if (player != null)
+                {
+                    Rigidbody rb = player.GetComponent<Rigidbody>();
+
+                    if (rb != null)
+                        rb.AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                }
+            }
         }
     }
 }

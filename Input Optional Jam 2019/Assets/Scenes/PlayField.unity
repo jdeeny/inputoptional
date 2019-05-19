@@ -430,7 +430,7 @@ MonoBehaviour:
     type: 3}
   spot: {fileID: 0}
   players: []
-  newPlayerChance: 0.5
+  newPlayerChance: 0.05
 --- !u!4 &735530722
 Transform:
   m_ObjectHideFlags: 0
