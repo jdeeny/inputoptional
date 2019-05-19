@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
     public GameObject spotPrefab;
+    public int playersPerTeam;
 
     public GameObject spot;
-    public List<GameObject> players = new List<GameObject>();
+    public List<Team> teams = new List<Team>();
 
     public float newPlayerChance;
 
@@ -28,6 +29,10 @@ public class GameManager : MonoBehaviour
             return;
         }
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.blue));
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.red));
+
     }
 
     // Update is called once per frame
@@ -35,13 +40,8 @@ public class GameManager : MonoBehaviour
     {
         if(Random.Range(0.0f, 1.0f) < newPlayerChance)
         {
-            SpawnPlayer();
+            //SpawnPlayer();
         }
     }
 
-    void SpawnPlayer()
-    {
-        players.Add(Instantiate(playerPrefab, new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f)), Quaternion.identity));
-
-    }
 }

@@ -27,15 +27,19 @@ public class SeekSpot : MonoBehaviour
         if (col.gameObject.name.StartsWith("Spot"))
         {
             Destroy(gameObject);
-            foreach (GameObject player in GameManager.Instance.players)
+            foreach (Team t in GameManager.Instance.teams)
             {
-                if (player != null)
+                foreach (GameObject player in t.players)
                 {
-                    Rigidbody rb = player.GetComponent<Rigidbody>();
+                    if (player != null)
+                    {
+                        Rigidbody rb = player.GetComponent<Rigidbody>();
 
-                    if (rb != null)
-                        rb.AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                        if (rb != null)
+                            rb.AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                    }
                 }
+
             }
         }
     }
