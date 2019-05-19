@@ -18,4 +18,12 @@ public class SeekSpot : MonoBehaviour
         transform.LookAt(GameManager.Instance.spot.transform.position);
         GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
     }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name.StartsWith("Spot"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
