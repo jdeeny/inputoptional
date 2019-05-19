@@ -42,4 +42,13 @@ public class GameManager : MonoBehaviour
         players.Add(Instantiate(playerPrefab, new Vector3(Random.Range(-10.0f, 10.0f), 0.5f, Random.Range(-10.0f, 10.0f)), Quaternion.identity));
 
     }
+
+    void OnCollisionEnter(Collision col)
+    {
+        print(col.gameObject.name);
+        if (col.gameObject.name.StartsWith("Spot"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
