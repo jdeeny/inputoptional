@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public GameObject spot;
     public List<GameObject> players = new List<GameObject>();
 
+    public float newPlayerChance;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,13 +25,16 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        spot = Instantiate(spotPrefab, Vector3.zero, Quaternion.identity);
-        players.Add(Instantiate(playerPrefab, new Vector3(5f, 5f, 0f), Quaternion.identity));
+        spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+        players.Add(Instantiate(playerPrefab, new Vector3(5f, 0.5f, 5f), Quaternion.identity));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Random.Range(0.0f, 1.0f) < newPlayerChance)
+        {
+            players.Add(Instantiate(playerPrefab, new Vector3(5f, 0.5f, 5f), Quaternion.identity));
+        }
     }
 }
