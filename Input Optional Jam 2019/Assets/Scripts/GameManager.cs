@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
-        players.Add(Instantiate(playerPrefab, new Vector3(5f, 0.5f, 5f), Quaternion.identity));
     }
 
     // Update is called once per frame
@@ -34,7 +33,13 @@ public class GameManager : MonoBehaviour
     {
         if(Random.Range(0.0f, 1.0f) < newPlayerChance)
         {
-            players.Add(Instantiate(playerPrefab, new Vector3(5f, 0.5f, 5f), Quaternion.identity));
+            SpawnPlayer();
         }
+    }
+
+    void SpawnPlayer()
+    {
+        players.Add(Instantiate(playerPrefab, new Vector3(Random.Range(-10.0f, 10.0f), 0.5f, Random.Range(-10.0f, 10.0f)), Quaternion.identity));
+
     }
 }
