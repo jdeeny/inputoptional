@@ -14,5 +14,6 @@ public class SeekSpot : MonoBehaviour
     void Update()
     {
 
+        transform.LookAt(GameManager.Instance.spot.transform);
     }
 }
