@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour
             Instance = this;
         } else
         {
+            Debug.Log("Only one of this object is permitted");
             Destroy(gameObject);
+            return;
         }
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
     }
