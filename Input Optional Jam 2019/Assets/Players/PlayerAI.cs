@@ -16,15 +16,22 @@ public class PlayerAI : MonoBehaviour
 {
 
     public float thrust;
-    public float reaction;
+    public float reaction_base;
+    public float reaction_random;
+
+    float reaction_remaining = 0;
 
     PlayerCommand current_command = PlayerCommand.Idle;
     int team = 0;
 
     int n = 0;
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        reaction_remaining -= Time.deltaTime;
+        if(reaction_remaining > 0f)
+            return;
+
         switch (current_command)
         {
             default:
@@ -92,6 +99,7 @@ public class PlayerAI : MonoBehaviour
     public void SetCommand(PlayerCommand command)
     {
         current_command = command;
+        reaction_remaining = reaction_base + Random.Range(0f, 1f) * reaction_random;
     }
 
     public void SetTeam(int team_num)
