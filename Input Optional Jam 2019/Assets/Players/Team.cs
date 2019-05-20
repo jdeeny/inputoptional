@@ -103,6 +103,23 @@ public class Team : ScriptableObject
 
     void commandScoreGoal()
     {
+        GameObject ball_holder = GameManager.Instance.GetBallPlayer();
+
+        if(ball_holder == null)
+        {
+            return;
+        }
+        foreach (GameObject p in players)
+        {
+            if (p.name == ball_holder.name)
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.RunToGoal);
+            }
+            else
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.Protect);
+            }
+        }
 
     }
 

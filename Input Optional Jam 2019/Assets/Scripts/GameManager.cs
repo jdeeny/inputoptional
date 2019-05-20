@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     public int playersPerTeam;
 
-    public GameObject ball;
+    public GameObject ball = null;
     public GameObject spot;
     public List<Team> teams = new List<Team>();
 
@@ -60,5 +60,10 @@ public class GameManager : MonoBehaviour
     public int GetBallOwner()
     {
         return ball.GetComponent<BallBehavior>().GetOwnerTeam();
+    }
+
+    public GameObject GetBallPlayer()
+    {
+        return ball.GetComponent<BallBehavior>().GetOwnerPlayer();
     }
 }

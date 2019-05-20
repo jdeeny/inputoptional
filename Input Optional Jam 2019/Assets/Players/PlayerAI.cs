@@ -6,6 +6,7 @@ public enum PlayerCommand
 {
     Idle,
     GetBall,
+    RunToGoal,
     Protect,
     Hit,
     Intercept,

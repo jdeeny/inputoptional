@@ -35,4 +35,9 @@ public class BallBehavior : MonoBehaviour
     {
         return ownerTeam;
     }
+
+    public ref GameObject GetOwnerPlayer()
+    {
+        return ref ownerPlayer;
+    }
 }
