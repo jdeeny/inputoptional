@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
     public GameObject spotPrefab;
+    public GameObject ballPrefab;
+
     public int playersPerTeam;
 
+    public GameObject ball;
     public GameObject spot;
     public List<Team> teams = new List<Team>();
 
@@ -32,16 +35,30 @@ public class GameManager : MonoBehaviour
 
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.red));
+        Kickoff();
+    }
 
+    void Kickoff()
+    {
+        ball = Instantiate(ballPrefab, new Vector3(1f, 5f, -5f), Quaternion.identity);
+        ball.GetComponent<BallBehavior>().SetOwner(0, null);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Random.Range(0.0f, 1.0f) < newPlayerChance)
-        {
-            //SpawnPlayer();
+        foreach (Team t in teams) {
+            t.processAI();
         }
+
+        /*if(Random.Range(0.0f, 1.0f) < newItemChance)
+        {
+            SpawnItem();
+        }*/
     }
 
+    public int GetBallOwner()
+    {
+        return ball.GetComponent<BallBehavior>().GetOwnerTeam();
+    }
 }

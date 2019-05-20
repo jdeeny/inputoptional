@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SeekSpot : MonoBehaviour
+public class PlayerAI : MonoBehaviour
 {
 
     public float thrust;
+    int team = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,5 +44,15 @@ public class SeekSpot : MonoBehaviour
 
             }
         }
+    }
+
+    public void SetTeam(int team_num)
+    {
+        team = team_num;
+    }
+
+    public int GetTeam()
+    {
+        return team;
     }
 }

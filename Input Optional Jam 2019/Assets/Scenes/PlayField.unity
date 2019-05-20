@@ -428,7 +428,10 @@ MonoBehaviour:
     type: 3}
   spotPrefab: {fileID: 55847794993600075, guid: ee2a94603c3a1d24eb23081428d8806e,
     type: 3}
+  ballPrefab: {fileID: 9093659497785907766, guid: bcf0ebccdde15b94ca1dcbbe31e4f202,
+    type: 3}
   playersPerTeam: 11
+  ball: {fileID: 0}
   spot: {fileID: 0}
   teams: []
   newPlayerChance: 0.05
