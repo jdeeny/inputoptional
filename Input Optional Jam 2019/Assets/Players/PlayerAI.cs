@@ -2,26 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerCommand
+{
+    Idle,
+    GetBall,
+    Protect,
+    Hit,
+    Intercept,
+}
+
 public class PlayerAI : MonoBehaviour
 {
 
     public float thrust;
+    public float reaction;
+
+    PlayerCommand current_command = PlayerCommand.Idle;
     int team = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
+    int n = 0;
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (transform.position.y <= 0.5f)
+        switch (current_command)
         {
-            transform.LookAt(GameManager.Instance.spot.transform.position);
-            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+            default:
+                StopMoving();
+                break;
+            case PlayerCommand.GetBall:
+                RunToBall();
+                break;
         }
+
     }
 
     void OnCollisionEnter(Collision col)
@@ -44,6 +56,41 @@ public class PlayerAI : MonoBehaviour
 
             }
         }
+    }
+
+    void StopMoving()
+    {
+        Rigidbody body = GetComponent<Rigidbody>();
+        if (IsOnGround())
+        {
+            if (body.velocity.magnitude >= 0.001f)
+            {
+                Debug.Log("Trying To Stop" + n++);
+                //body.velocity = Vector3.zero;
+                body.AddForce(body.velocity.normalized * -0.1f * thrust, ForceMode.Impulse);
+            }
+        }
+    }
+
+    void RunToBall()
+    {
+        if (IsOnGround())
+        {
+            Debug.Log("Trying To Get Ball");
+            transform.LookAt(GameManager.Instance.spot.transform.position);
+            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+        }
+
+    }
+
+    public bool IsOnGround()
+    {
+        return transform.position.y <= 0.5f;
+    }
+
+    public void SetCommand(PlayerCommand command)
+    {
+        current_command = command;
     }
 
     public void SetTeam(int team_num)

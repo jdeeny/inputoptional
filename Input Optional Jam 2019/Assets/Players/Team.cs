@@ -36,14 +36,31 @@ public class Team : ScriptableObject
 
     void addPlayer(GameObject playerPrefab)
     {
-        GameObject new_player = Instantiate(playerPrefab, new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f)), Quaternion.identity);
+        GameObject new_player = Instantiate(playerPrefab, new Vector3(Random.Range(-50.0f, 50.0f), 4f, Random.Range(-50.0f, 50.0f)), Quaternion.identity);
         new_player.GetComponent<PlayerAI>().SetTeam(teamNumber);
         players.Add(new_player);
     }
 
     public void processAI()
     {
-        decideTeamGoal();
+        if (decideTeamGoal())
+        {
+            switch(teamGoal)
+            {
+                case TeamGoal.PickupBall:
+                    commandPickupBall();
+                    break;
+                case TeamGoal.ScoreGoal:
+                    commandScoreGoal();
+                    break;
+                case TeamGoal.ForceFumble:
+                    commandForceFumble();
+                    break;
+                default:
+                    commandNothing();
+                    break;
+            }
+        }
     }
 
     bool decideTeamGoal()
@@ -67,6 +84,34 @@ public class Team : ScriptableObject
         }
         return false;
     }
+
+    void commandNothing()
+    {
+        foreach (GameObject p in players)
+        {
+            p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.Idle);
+        }
+    }
+
+    void commandPickupBall()
+    {
+        foreach (GameObject p in players)
+        {
+            p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.GetBall);
+        }
+    }
+
+    void commandScoreGoal()
+    {
+
+    }
+
+    void commandForceFumble()
+    {
+
+    }
+
+
 
     bool ballLoose()
     {
