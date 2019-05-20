@@ -16,6 +16,7 @@ public class PlayerAI : MonoBehaviour
 {
 
     public float thrust;
+    public float turn_speed;
     public float reaction_base;
     public float reaction_random;
 
@@ -40,6 +41,9 @@ public class PlayerAI : MonoBehaviour
             case PlayerCommand.GetBall:
                 RunToBall();
                 break;
+            case PlayerCommand.RunToGoal:
+                RunToGoal();
+                break;
         }
 
     }
@@ -48,20 +52,32 @@ public class PlayerAI : MonoBehaviour
     {
         if (col.gameObject.name.StartsWith("Spot"))
         {
-            Destroy(gameObject);
-            foreach (Team t in GameManager.Instance.teams)
-            {
-                foreach (GameObject player in t.players)
+            Debug.Log("Hit Spot");
+            Debug.Log("Player: " + GameManager.Instance.GetBallPlayer());
+            Debug.Log("this obj: " + gameObject);
+
+            if(GameManager.Instance.GetBallPlayer() == gameObject) {
+                Debug.Log("Hit Spot and have ball");
+
+                GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
+                Destroy(gameObject);
+            
+
+                GameManager.Instance.ball.GetComponent<Rigidbody>().AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                foreach (Team t in GameManager.Instance.teams)
                 {
-                    if (player != null)
+                    foreach (GameObject player in t.players)
                     {
-                        Rigidbody rb = player.GetComponent<Rigidbody>();
+                        if (player != null)
+                        {
+                            Rigidbody rb = player.GetComponent<Rigidbody>();
 
-                        if (rb != null)
-                            rb.AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                            if (rb != null)
+                                rb.AddExplosionForce(500f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                        }
                     }
-                }
 
+                }
             }
         }
     }
@@ -73,7 +89,6 @@ public class PlayerAI : MonoBehaviour
         {
             if (body.velocity.magnitude >= 0.001f)
             {
-                Debug.Log("Trying To Stop" + n++);
                 //body.velocity = Vector3.zero;
                 body.AddForce(body.velocity.normalized * -0.1f * thrust, ForceMode.Impulse);
             }
@@ -84,12 +99,22 @@ public class PlayerAI : MonoBehaviour
     {
         if (IsOnGround())
         {
-            Debug.Log("Trying To Get Ball");
+            transform.LookAt(GameManager.Instance.ball.transform.position);
+            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+        }
+
+    }
+
+    void RunToGoal()
+    {
+        if (IsOnGround())
+        {
             transform.LookAt(GameManager.Instance.spot.transform.position);
             GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
         }
 
     }
+
 
     public bool IsOnGround()
     {

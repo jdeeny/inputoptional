@@ -18,11 +18,25 @@ public class BallBehavior : MonoBehaviour
 
     void AttemptPickup(GameObject player)
     {
-        if(Random.Range(0f, 1f) < pickupChance)
+        //if(Random.Range(0f, 1f) < pickupChance)
         {
-            ownerTeam = player.GetComponent<PlayerAI>().GetTeam();
-            ownerPlayer = player;
+            SetOwner(player.GetComponent<PlayerAI>().GetTeam(), player);
+            Debug.Log("Picked up" + ownerTeam);
+            AttachToPlayer(player);
         }
+    }
+
+    void AttachToPlayer(GameObject player) {
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        transform.parent = ownerPlayer.transform;
+    }
+
+    public void Detach() {
+        SetOwner(0, null);
+        GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.parent = null;
     }
 
     public void SetOwner(int team, GameObject player)

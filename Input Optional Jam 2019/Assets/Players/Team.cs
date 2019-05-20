@@ -111,8 +111,9 @@ public class Team : ScriptableObject
         }
         foreach (GameObject p in players)
         {
-            if (p.name == ball_holder.name)
+            if (p == ball_holder)
             {
+                Debug.Log("Told player to go to goal");
                 p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.RunToGoal);
             }
             else

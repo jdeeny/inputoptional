@@ -69,8 +69,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrust: 0.5
-  reaction_base: 1
-  reaction_random: 5
+  turn_speed: 0
+  reaction_base: 0.5
+  reaction_random: 0.5
 --- !u!54 &5594299297562946557
 Rigidbody:
   m_ObjectHideFlags: 0
