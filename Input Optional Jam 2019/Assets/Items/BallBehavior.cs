@@ -1,12 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BallBehavior : MonoBehaviour
 {
     public float pickupChance;
     public int ownerTeam = 0;
     public GameObject ownerPlayer = null;
+
+    Rigidbody rb;
+    Collider col;
+
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+    }
+
+    void Update() {
+        Debug.Log(GetFinalPosition());
+    }
 
     void OnCollisionEnter(Collision col)
     {
@@ -27,15 +40,15 @@ public class BallBehavior : MonoBehaviour
     }
 
     void AttachToPlayer(GameObject player) {
-        GetComponent<Collider>().enabled = false;
-        GetComponent<Rigidbody>().isKinematic = true;
+        col.enabled = false;
+        rb.isKinematic = true;
         transform.parent = ownerPlayer.transform;
     }
 
     public void Detach() {
         SetOwner(0, null);
-        GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().isKinematic = false;
+        col.enabled = true;
+        rb.isKinematic = false;
         transform.parent = null;
     }
 
@@ -53,5 +66,27 @@ public class BallBehavior : MonoBehaviour
     public ref GameObject GetOwnerPlayer()
     {
         return ref ownerPlayer;
+    }
+
+    public float GetHeight() { 
+        return transform.position.y - 0.5f;
+        // FIXME: Should account for ball's size
+    }
+    public Vector3 GetVelocity() {
+        return rb.velocity;
+    }
+    public float GetTimeToLand() {
+        if(GetHeight() > 0f) {
+            return (float)Math.Sqrt(2f * GetHeight() / 9.81f);
+        }
+        return 0f;
+    }
+    public Vector3 GetFinalPosition() {
+        Vector3 velocity = GetVelocity();
+        velocity.y = 0f;
+        Vector3 distance = velocity * GetTimeToLand();
+        Vector3 pos = transform.position;
+        pos.y = 0f;
+        return distance + pos;   
     }
 }

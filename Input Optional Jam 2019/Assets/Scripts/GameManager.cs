@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum GameState {
+    Setup,
+    Playing,
+    GameOver,
+}
+
 public class GameManager : MonoBehaviour
 {
 
@@ -17,6 +24,9 @@ public class GameManager : MonoBehaviour
     public GameObject spot;
     public List<Team> teams = new List<Team>();
 
+
+    GameState state;
+
     public float newPlayerChance;
 
     // Start is called before the first frame update
@@ -31,17 +41,27 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        ResetGame();
+        Kickoff();
+
+    }
+
+
+    public void ResetGame() {
+        state = GameState.Setup;
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
 
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.red));
-        Kickoff();
+
     }
 
-    void Kickoff()
+    public void Kickoff()
     {
-        ball = Instantiate(ballPrefab, new Vector3(1f, 5f, -5f), Quaternion.identity);
+        ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 25f, Random.Range(-10f, 10f)), Quaternion.identity);
         ball.GetComponent<BallBehavior>().SetOwner(0, null);
+        state = GameState.Playing;
     }
 
     // Update is called once per frame

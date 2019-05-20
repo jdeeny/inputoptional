@@ -60,10 +60,8 @@ public class PlayerAI : MonoBehaviour
                 Debug.Log("Hit Spot and have ball");
 
                 GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
-                Destroy(gameObject);
             
-
-                GameManager.Instance.ball.GetComponent<Rigidbody>().AddExplosionForce(1700f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                GameManager.Instance.ball.GetComponent<Rigidbody>().AddExplosionForce(10f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
                 foreach (Team t in GameManager.Instance.teams)
                 {
                     foreach (GameObject player in t.players)
@@ -73,11 +71,12 @@ public class PlayerAI : MonoBehaviour
                             Rigidbody rb = player.GetComponent<Rigidbody>();
 
                             if (rb != null)
-                                rb.AddExplosionForce(500f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                                rb.AddExplosionForce(1000f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
                         }
                     }
 
                 }
+                Destroy(gameObject);
             }
         }
     }
