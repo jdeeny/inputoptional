@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BallBehavior : MonoBehaviour
 {
-    public float pickupChance;
+    public float pickupChance = 1f;
     public int ownerTeam = 0;
     public GameObject ownerPlayer = null;
 
@@ -30,7 +30,15 @@ public class BallBehavior : MonoBehaviour
 
     void AttemptPickup(GameObject player)
     {
-        //if(Random.Range(0f, 1f) < pickupChance)
+        Vector3 ball_vel = rb.velocity;
+        Vector3 player_vel = player.GetComponent<Rigidbody>().velocity;
+        Vector3 vel_diff = ball_vel - player_vel;
+        float diff = (float) vel_diff.magnitude + 0.0001f;
+        float adj_diff = (float) System.Math.Sqrt(diff / 2f);
+        float chance = pickupChance * (1f / adj_diff);
+        Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
+
+        if (Random.Range(0f, 1f) < chance)
         {
             SetOwner(player.GetComponent<PlayerAI>().GetTeam(), player);
             Debug.Log("Picked up" + ownerTeam);
@@ -106,4 +114,11 @@ public class BallBehavior : MonoBehaviour
         transform.position = new Vector3(0f, 5f, 0f);
         rb.isKinematic = true;
     }
+
+    public void ThrowTo(Vector3 location)
+    {
+        Detach();
+        rb.AddForce(new Vector3(Random.Range(-20f, 20f), Random.Range(2f, 10f), Random.Range(-20f, 20f)));
+    }
+
 }

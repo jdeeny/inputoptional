@@ -9,6 +9,7 @@ public enum TeamGoal
     PickupBall,
     ScoreGoal,
     ForceFumble,
+    Pass,
     Intercept,
 }
 
@@ -17,6 +18,10 @@ public class Team : ScriptableObject
     public List<GameObject> players = new List<GameObject>();
 
     public int teamNumber = 1;
+
+    public float passChance = 0.1f;
+
+    float redoAiTime = 0f;
 
     public TeamGoal teamGoal = TeamGoal.Nothing;
 
@@ -46,7 +51,7 @@ public class Team : ScriptableObject
 
     public void processAI()
     {
-        if (decideTeamGoal() || Random.Range(0f,1f) < 0.05)
+        if (decideTeamGoal())
         {
             switch(teamGoal)
             {
@@ -61,6 +66,9 @@ public class Team : ScriptableObject
                     break;
                 case TeamGoal.PreKickoff:
                     commandPreKickoff();
+                    break;
+                case TeamGoal.Pass:
+                    commandPass();
                     break;
                 default:
                     commandNothing();
@@ -80,7 +88,13 @@ public class Team : ScriptableObject
             teamGoal = TeamGoal.PickupBall;
         } else if(hasBall())
         {
-            teamGoal = TeamGoal.ScoreGoal;
+            if(Random.Range(0f,1f) < passChance)
+            {
+                teamGoal = TeamGoal.Pass;
+            } else
+            {
+                teamGoal = TeamGoal.ScoreGoal;
+            }
         } else
         {
             teamGoal = TeamGoal.ForceFumble;
@@ -162,6 +176,28 @@ public class Team : ScriptableObject
 
     public void RemovePlayer(GameObject p) {
         players.Remove(p);
+    }
+
+    void commandPass()
+    {
+        GameObject ball_holder = GameManager.Instance.GetBallPlayer();
+
+        if (ball_holder == null)
+        {
+            return;
+        }
+        foreach (GameObject p in players)
+        {
+            if (p == ball_holder)
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.Pass);
+            }
+            else
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.GetOpen);
+            }
+        }
+
     }
 
 }

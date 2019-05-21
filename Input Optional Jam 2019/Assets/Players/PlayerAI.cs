@@ -10,6 +10,7 @@ public enum PlayerCommand
     GetBall,
     RunToGoal,
     Protect,
+    Pass,
     Hit,
     Intercept,
 }
@@ -51,7 +52,10 @@ public class PlayerAI : MonoBehaviour
                 break;
             case PlayerCommand.Protect:
                 RunTo(GetBallCarrierLocation());
-                break; 
+                break;
+            case PlayerCommand.Pass:
+                PassTo(new Vector3(0f, 0f, 0f));
+                break;
         }
 
     }
@@ -202,6 +206,12 @@ public class PlayerAI : MonoBehaviour
     Vector3 GetBallCarrierLocation()
     {
         return GameManager.Instance.GetBallPlayer().transform.position;
+    }
+
+
+    void PassTo(Vector3 location)
+    {
+        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(location);
     }
 
 }
