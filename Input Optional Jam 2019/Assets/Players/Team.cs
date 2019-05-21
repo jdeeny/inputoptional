@@ -45,7 +45,7 @@ public class Team : ScriptableObject
 
     public void processAI()
     {
-        if (decideTeamGoal())
+        if (decideTeamGoal() || Random.Range(0f,1f) < 0.05)
         {
             switch(teamGoal)
             {
@@ -158,5 +158,9 @@ public class Team : ScriptableObject
         return GameManager.Instance.GetBallOwner() == teamNumber;
     }
 
+
+    public void RemovePlayer(GameObject p) {
+        players.Remove(p);
+    }
 
 }
