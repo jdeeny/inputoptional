@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum GameState {
     Setup,
+    PreKickoff,
     Playing,
     GameOver,
 }
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject spot;
     public List<Team> teams = new List<Team>();
 
+    float delay = 0f;
 
     GameState state;
 
@@ -43,38 +45,56 @@ public class GameManager : MonoBehaviour
         }
 
         ResetGame();
-        Kickoff();
-
     }
 
 
     public void ResetGame() {
         state = GameState.Setup;
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+        ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);
 
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.red));
-
+        ReadyKickoff();
     }
 
-    public void Kickoff()
+    public void DoKickoff()
     {
-        ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 25f, Random.Range(-10f, 10f)), Quaternion.identity);
         ball.GetComponent<BallBehavior>().SetOwner(0, null);
+        ball.GetComponent<BallBehavior>().DoKickoff();
         state = GameState.Playing;
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (Team t in teams) {
-            t.processAI();
+
+        switch(state) {
+            case GameState.Setup:
+                break;
+            case GameState.PreKickoff:
+                delay -= Time.deltaTime;
+                ProcessTeamAI();
+                if(delay <= 0) {
+                    DoKickoff();
+                }
+                break;
+            case GameState.Playing:
+                ProcessTeamAI();
+                break;
         }
 
         /*if(Random.Range(0.0f, 1.0f) < newItemChance)
         {
             SpawnItem();
         }*/
+    }
+
+    void ProcessTeamAI() {
+        foreach (Team t in teams) {
+            t.processAI();
+        }
+
     }
 
     public int GetBallOwner()
@@ -85,5 +105,15 @@ public class GameManager : MonoBehaviour
     public GameObject GetBallPlayer()
     {
         return ball.GetComponent<BallBehavior>().GetOwnerPlayer();
+    }
+
+    public void ReadyKickoff() {
+        ball.GetComponent<BallBehavior>().Reset();
+        state = GameState.PreKickoff;
+        delay = 3f;
+    }
+
+    public void Score(int team) {
+        ReadyKickoff();
     }
 }

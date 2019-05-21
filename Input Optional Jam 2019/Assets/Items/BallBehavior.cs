@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+//using System;
 
 public class BallBehavior : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class BallBehavior : MonoBehaviour
     Rigidbody rb;
     Collider col;
 
-    void Start() {
+    void Awake() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
     }
@@ -77,16 +77,34 @@ public class BallBehavior : MonoBehaviour
     }
     public float GetTimeToLand() {
         if(GetHeight() > 0f) {
-            return (float)Math.Sqrt(2f * GetHeight() / 9.81f);
+            return (float)System.Math.Sqrt(2f * GetHeight() / 9.81f);
         }
         return 0f;
     }
     public Vector3 GetFinalPosition() {
+        //FIXME: what about when it's going up? It needs to account for y velocity
         Vector3 velocity = GetVelocity();
         velocity.y = 0f;
         Vector3 distance = velocity * GetTimeToLand();
         Vector3 pos = transform.position;
         pos.y = 0f;
         return distance + pos;   
+    }
+
+    public void DoKickoff() {
+        if(rb == null) {
+            rb = GetComponent<Rigidbody>();
+        }
+        transform.position = new Vector3(0f, 5f, 0f);
+
+        rb.isKinematic = false;
+
+        rb.AddForce(new Vector3(Random.Range(-100f, 100f), Random.Range(10f, 100f), Random.Range(-100f, 100f)));
+    }
+
+    public void Reset() {
+        Detach();
+        transform.position = new Vector3(0f, 5f, 0f);
+        rb.isKinematic = true;
     }
 }

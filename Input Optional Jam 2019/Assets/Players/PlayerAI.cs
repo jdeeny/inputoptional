@@ -52,16 +52,12 @@ public class PlayerAI : MonoBehaviour
     {
         if (col.gameObject.name.StartsWith("Spot"))
         {
-            Debug.Log("Hit Spot");
-            Debug.Log("Player: " + GameManager.Instance.GetBallPlayer());
-            Debug.Log("this obj: " + gameObject);
-
             if(GameManager.Instance.GetBallPlayer() == gameObject) {
                 Debug.Log("Hit Spot and have ball");
 
                 GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
-            
-                GameManager.Instance.ball.GetComponent<Rigidbody>().AddExplosionForce(10f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                GameManager.Instance.Score(GameManager.Instance.GetBallOwner());
+
                 foreach (Team t in GameManager.Instance.teams)
                 {
                     foreach (GameObject player in t.players)
