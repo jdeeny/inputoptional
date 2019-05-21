@@ -100,16 +100,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RUNNIJNG_MAN
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 46cb20f039161384fa8567dfffc328fc,
-        type: 3}
-      propertyPath: m_UpdateMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 46cb20f039161384fa8567dfffc328fc,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: f0aaa15414a67a047ba387b4440eefd3, type: 2}
     - target: {fileID: -4216859302048453862, guid: 46cb20f039161384fa8567dfffc328fc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -165,6 +155,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 46cb20f039161384fa8567dfffc328fc,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 46cb20f039161384fa8567dfffc328fc,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f0aaa15414a67a047ba387b4440eefd3, type: 2}
     - target: {fileID: 1912126175820078846, guid: 46cb20f039161384fa8567dfffc328fc,
         type: 3}
       propertyPath: m_LocalRotation.x

@@ -78,7 +78,7 @@ public class PlayerAI : MonoBehaviour
 
                 }
                 GameManager.Instance.teams[team - 1].RemovePlayer(gameObject);
-                //Destroy(gameObject);
+                Destroy(gameObject,0.1f);
             }
         }
     }
