@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefab;
 
     public int playersPerTeam;
+    public int maxTeams;
 
     public GameObject ball = null;
     public GameObject spot;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
 
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
         ReadyKickoff();
     }
 
