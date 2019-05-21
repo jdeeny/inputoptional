@@ -101,7 +101,9 @@ public class PlayerAI : MonoBehaviour
         if (IsOnGround())
         {
             transform.LookAt(GameManager.Instance.ball.transform.position);
-            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+            Vector3 dir = transform.forward.normalized;
+            dir.y = 0;
+            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
         }
 
     }
@@ -111,7 +113,9 @@ public class PlayerAI : MonoBehaviour
         if (IsOnGround())
         {
             transform.LookAt(GameManager.Instance.spot.transform.position);
-            GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+            Vector3 dir = transform.forward.normalized;
+            dir.y = 0;
+            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
         }
 
     }
@@ -122,7 +126,9 @@ public class PlayerAI : MonoBehaviour
         // TODO: This is probably a real bad way to do this
         GameObject p = FindNearestPlayer();
         transform.LookAt(2*transform.position - p.transform.position);
-        GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+        Vector3 dir = transform.forward.normalized;
+        dir.y = 0;
+        GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
     }
 
     public bool IsOnGround()
