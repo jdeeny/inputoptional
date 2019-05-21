@@ -49,8 +49,22 @@ public class PlayerAI : MonoBehaviour
             case PlayerCommand.GetOpen:
                 RunToOpenArea();
                 break;
+            case PlayerCommand.Protect:
+                RunTo(GetBallCarrierLocation());
+                break; 
         }
 
+    }
+
+    void RunTo(Vector3 location)
+    {
+        if (IsOnGround())
+        {
+            transform.LookAt(location);
+            Vector3 dir = transform.forward.normalized;
+            dir.y = 0;
+            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
+        }
     }
 
     void OnCollisionEnter(Collision col)
@@ -98,26 +112,12 @@ public class PlayerAI : MonoBehaviour
 
     void RunToBall()
     {
-        if (IsOnGround())
-        {
-            transform.LookAt(GameManager.Instance.ball.transform.position);
-            Vector3 dir = transform.forward.normalized;
-            dir.y = 0;
-            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
-        }
-
+        RunTo(GameManager.Instance.ball.transform.position);
     }
 
     void RunToGoal()
     {
-        if (IsOnGround())
-        {
-            transform.LookAt(GameManager.Instance.spot.transform.position);
-            Vector3 dir = transform.forward.normalized;
-            dir.y = 0;
-            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
-        }
-
+        RunTo(GameManager.Instance.spot.transform.position);
     }
 
 
@@ -125,10 +125,7 @@ public class PlayerAI : MonoBehaviour
     {
         // TODO: This is probably a real bad way to do this
         GameObject p = FindNearestPlayer();
-        transform.LookAt(2*transform.position - p.transform.position);
-        Vector3 dir = transform.forward.normalized;
-        dir.y = 0;
-        GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
+        RunTo(p.transform.position);
     }
 
     public bool IsOnGround()
@@ -200,4 +197,11 @@ public class PlayerAI : MonoBehaviour
     {
         gameObject.GetComponentInChildren<TextMesh>().text = t;
     }
+
+
+    Vector3 GetBallCarrierLocation()
+    {
+        return GameManager.Instance.GetBallPlayer().transform.position;
+    }
+
 }
