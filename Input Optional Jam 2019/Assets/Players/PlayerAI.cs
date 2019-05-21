@@ -120,7 +120,7 @@ public class PlayerAI : MonoBehaviour
     void RunToOpenArea()
     {
         // TODO: This is probably a real bad way to do this
-        GameObject p = FindNearestEnemy();
+        GameObject p = FindNearestPlayer();
         transform.LookAt(2*transform.position - p.transform.position);
         GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
     }
@@ -154,7 +154,7 @@ public class PlayerAI : MonoBehaviour
             if(t.teamNumber != team) {
                 foreach(GameObject player in t.players) {
                     float d = Vector3.Distance(player.transform.position, transform.position);
-                    if(d < distance) {
+                    if(d >= 1 && d < distance) {
                         distance = d;
                         closest = player;
                     }
@@ -164,6 +164,31 @@ public class PlayerAI : MonoBehaviour
         Debug.Log("dist: " + distance);
         return closest;
     }
+
+    public GameObject FindNearestPlayer()
+    {
+        GameObject closest = null;
+        float distance = 10000000f;
+        foreach (Team t in GameManager.Instance.teams)
+        {
+            foreach (GameObject player in t.players)
+            {
+                if (player != this)
+                {
+                    float d = Vector3.Distance(player.transform.position, transform.position);
+                    if (d >= 1 && d < distance)
+                    {
+                        distance = d;
+                        closest = player;
+                    }
+                }
+            }
+            
+        }
+        Debug.Log("dist: " + distance);
+        return closest;
+    }
+
 
     public void SetDebugText(string t)
     {
