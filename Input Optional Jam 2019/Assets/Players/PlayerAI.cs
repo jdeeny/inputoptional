@@ -133,6 +133,7 @@ public class PlayerAI : MonoBehaviour
     public void SetCommand(PlayerCommand command)
     {
         current_command = command;
+        SetDebugText(command.ToString());
         reaction_remaining = reaction_base + Random.Range(0f, 1f) * reaction_random;
     }
 
@@ -162,5 +163,10 @@ public class PlayerAI : MonoBehaviour
         }
         Debug.Log("dist: " + distance);
         return closest;
+    }
+
+    public void SetDebugText(string t)
+    {
+        gameObject.GetComponentInChildren<TextMesh>().text = t;
     }
 }
