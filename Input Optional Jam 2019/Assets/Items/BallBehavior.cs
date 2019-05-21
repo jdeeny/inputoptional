@@ -9,6 +9,8 @@ public class BallBehavior : MonoBehaviour
     public int ownerTeam = 0;
     public GameObject ownerPlayer = null;
 
+    float throwDisableTimeout = 0f;
+
     Rigidbody rb;
     Collider col;
 
@@ -18,6 +20,7 @@ public class BallBehavior : MonoBehaviour
     }
 
     void Update() {
+        throwDisableTimeout -= Time.deltaTime;
     }
 
     void OnCollisionEnter(Collision col)
@@ -36,9 +39,9 @@ public class BallBehavior : MonoBehaviour
         float diff = (float) vel_diff.magnitude + 0.0001f;
         float adj_diff = (float) System.Math.Sqrt(diff / 2f);
         float chance = pickupChance * (1f / adj_diff);
-        Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
+        //Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
 
-        if (Random.Range(0f, 1f) < chance)
+        if (throwDisableTimeout <= 0f && Random.Range(0f, 1f) < chance)
         {
             SetOwner(player.GetComponent<PlayerAI>().GetTeam(), player);
             Debug.Log("Picked up" + ownerTeam);
@@ -117,8 +120,10 @@ public class BallBehavior : MonoBehaviour
 
     public void ThrowTo(Vector3 location)
     {
+        Debug.Log("Throwing Ball");
+        throwDisableTimeout = 0.1f;
         Detach();
-        rb.AddForce(new Vector3(Random.Range(-20f, 20f), Random.Range(2f, 10f), Random.Range(-20f, 20f)));
+        rb.AddForce(new Vector3(Random.Range(-200f, 200f), Random.Range(2f, 20f), Random.Range(-200f, 200f)));
     }
 
 }

@@ -19,9 +19,11 @@ public class Team : ScriptableObject
 
     public int teamNumber = 1;
 
-    public float passChance = 0.1f;
+    float passChance = 0.1f;
 
     float redoAiTime = 0f;
+
+    float decisionTimeout = 0f;
 
     public TeamGoal teamGoal = TeamGoal.Nothing;
 
@@ -51,8 +53,11 @@ public class Team : ScriptableObject
 
     public void processAI()
     {
-        if (decideTeamGoal())
+        decisionTimeout -= Time.deltaTime;
+
+        if (decisionTimeout <= 0f && decideTeamGoal())
         {
+            decisionTimeout = 0.2f;
             switch(teamGoal)
             {
                 case TeamGoal.PickupBall:

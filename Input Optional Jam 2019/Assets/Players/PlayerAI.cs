@@ -70,6 +70,18 @@ public class PlayerAI : MonoBehaviour
             GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
         }
     }
+    void RunAwayFrom(Vector3 location)
+    {
+        if (IsOnGround())
+        {
+            transform.LookAt(location);
+            transform.Rotate(new Vector3(0f, 180f, 0f));
+            Vector3 dir = transform.forward.normalized;
+            dir.y = 0;
+            GetComponent<Rigidbody>().AddForce(dir * thrust, ForceMode.Impulse);
+        }
+    }
+
 
     void OnCollisionEnter(Collision col)
     {
@@ -129,7 +141,7 @@ public class PlayerAI : MonoBehaviour
     {
         // TODO: This is probably a real bad way to do this
         GameObject p = FindNearestPlayer();
-        RunTo(p.transform.position);
+        RunAwayFrom(transform.position - p.transform.position);
     }
 
     public bool IsOnGround()
@@ -168,7 +180,6 @@ public class PlayerAI : MonoBehaviour
                 }
             }
         }
-        Debug.Log("dist: " + distance);
         return closest;
     }
 
@@ -192,7 +203,6 @@ public class PlayerAI : MonoBehaviour
             }
             
         }
-        Debug.Log("dist: " + distance);
         return closest;
     }
 
