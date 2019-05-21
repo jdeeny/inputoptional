@@ -5,6 +5,8 @@ using UnityEngine;
 public enum PlayerCommand
 {
     Idle,
+    GetOpen,
+    CoverReceiver,
     GetBall,
     RunToGoal,
     Protect,
@@ -43,6 +45,9 @@ public class PlayerAI : MonoBehaviour
                 break;
             case PlayerCommand.RunToGoal:
                 RunToGoal();
+                break;
+            case PlayerCommand.GetOpen:
+                RunToOpenArea();
                 break;
         }
 
@@ -111,6 +116,14 @@ public class PlayerAI : MonoBehaviour
     }
 
 
+    void RunToOpenArea()
+    {
+        // TODO: This is probably a real bad way to do this
+        GameObject p = FindNearestEnemy();
+        transform.LookAt(2*transform.position - p.transform.position);
+        GetComponent<Rigidbody>().AddForce(transform.forward * thrust, ForceMode.Impulse);
+    }
+
     public bool IsOnGround()
     {
         return transform.position.y <= 0.5f;
@@ -130,5 +143,23 @@ public class PlayerAI : MonoBehaviour
     public int GetTeam()
     {
         return team;
+    }
+
+    public GameObject FindNearestEnemy() {
+        GameObject closest = null;
+        float distance = 10000000f;
+        foreach(Team t in GameManager.Instance.teams) {
+            if(t.teamNumber != team) {
+                foreach(GameObject player in t.players) {
+                    float d = Vector3.Distance(player.transform.position, transform.position);
+                    if(d < distance) {
+                        distance = d;
+                        closest = player;
+                    }
+                }
+            }
+        }
+        Debug.Log("dist: " + distance);
+        return closest;
     }
 }

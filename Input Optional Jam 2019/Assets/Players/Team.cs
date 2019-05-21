@@ -5,6 +5,7 @@ using UnityEngine;
 public enum TeamGoal
 {
     Nothing,
+    PreKickoff,
     PickupBall,
     ScoreGoal,
     ForceFumble,
@@ -27,9 +28,10 @@ public class Team : ScriptableObject
         }
     }
 
-    public static Team CreateInstance(GameObject prefab, int players, Color color)
+    public static Team CreateInstance(GameObject prefab, int players, int number, Color color)
     {
         var team = ScriptableObject.CreateInstance<Team>();
+        team.teamNumber = number;
         team.Init(prefab, players, color);
         return team;
     }
@@ -56,6 +58,9 @@ public class Team : ScriptableObject
                 case TeamGoal.ForceFumble:
                     commandForceFumble();
                     break;
+                case TeamGoal.PreKickoff:
+                    commandPreKickoff();
+                    break;
                 default:
                     commandNothing();
                     break;
@@ -67,7 +72,9 @@ public class Team : ScriptableObject
     {
         TeamGoal oldGoal = teamGoal;
 
-        if(ballLoose())
+        if(GameManager.Instance.IsPreKickoff()) {
+            teamGoal = TeamGoal.PreKickoff;
+        } else if(ballLoose())
         {
             teamGoal = TeamGoal.PickupBall;
         } else if(hasBall())
@@ -127,6 +134,16 @@ public class Team : ScriptableObject
     void commandForceFumble()
     {
 
+    }
+
+    void commandPreKickoff()
+    {
+        Debug.Log("Told players to get open");
+
+        foreach (GameObject p in players)
+        {
+            p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.GetOpen);
+        }
     }
 
 

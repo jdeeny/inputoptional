@@ -18,7 +18,6 @@ public class BallBehavior : MonoBehaviour
     }
 
     void Update() {
-        Debug.Log(GetFinalPosition());
     }
 
     void OnCollisionEnter(Collision col)

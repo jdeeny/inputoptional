@@ -53,8 +53,8 @@ public class GameManager : MonoBehaviour
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
         ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);
 
-        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.blue));
-        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, Color.red));
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1, Color.blue));
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
         ReadyKickoff();
     }
 
@@ -115,5 +115,9 @@ public class GameManager : MonoBehaviour
 
     public void Score(int team) {
         ReadyKickoff();
+    }
+
+    public bool IsPreKickoff() {
+        return state == GameState.PreKickoff;
     }
 }
