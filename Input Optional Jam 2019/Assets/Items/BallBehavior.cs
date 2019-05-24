@@ -37,7 +37,7 @@ public class BallBehavior : MonoBehaviour
         Vector3 player_vel = player.GetComponent<Rigidbody>().velocity;
         Vector3 vel_diff = ball_vel - player_vel;
         float diff = (float) vel_diff.magnitude + 0.0001f;
-        float adj_diff = (float) System.Math.Sqrt(diff / 2f);
+        float adj_diff = (float) System.Math.Sqrt(diff / 4f);
         float chance = pickupChance * (1f / adj_diff);
         //Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
 

@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
         Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
+        Destroy(hiddenBall.GetComponentInChildren<Light>());
         SceneManager.SetActiveScene(mainScene);
     }
 

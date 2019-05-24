@@ -19,7 +19,7 @@ public class Team : ScriptableObject
 
     public int teamNumber = 1;
 
-    float passChance = 0.1f;
+    float passChance = 0.01f;
 
     float redoAiTime = 0f;
 
