@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: -1617365279978105996}
   - component: {fileID: 8321614793386494778}
   - component: {fileID: -113181020801827196}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530910175000609338}
   - component: {fileID: 3568283291218923003}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 6713832803181649807}
   - component: {fileID: -6359880115222810266}
   - component: {fileID: -4576867193111205403}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,6 +219,8 @@ MonoBehaviour:
   pickupChance: 0.5
   ownerTeam: 0
   ownerPlayer: {fileID: 0}
+  boundaryHit: {fileID: 3813197230431477357, guid: b3d3c51ce234fb64b9eeaf1b69ed8d29,
+    type: 3}
 --- !u!135 &-6359880115222810266
 SphereCollider:
   m_ObjectHideFlags: 0

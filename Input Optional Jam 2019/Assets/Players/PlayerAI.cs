@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Physics = RotaryHeart.Lib.PhysicsExtension.Physics;
 
 public enum PlayerCommand
 {
@@ -22,16 +23,32 @@ public class PlayerAI : MonoBehaviour
     public float turn_speed;
     public float reaction_base;
     public float reaction_random;
+    float nearRadius = 5f;
+    float visionRadius = 50f;
 
     float reaction_remaining = 0;
+
+    int layer = 9;
 
     PlayerCommand current_command = PlayerCommand.Idle;
     int team = 0;
 
     int n = 0;
-    // Update is called once per frame
-    void Update()
+
+    Collider collider;
+
+    void Start()
     {
+        collider = transform.gameObject.GetComponent<Collider>();
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
+
+    void FixedUpdate()
+    {
+        UpdatePlayerVision();
+        transform.Find("Text").transform.LookAt(FindObjectOfType<Camera>().transform.position);
+        
         reaction_remaining -= Time.deltaTime;
         if(reaction_remaining > 0f)
             return;
@@ -224,4 +241,43 @@ public class PlayerAI : MonoBehaviour
         GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(location);
     }
 
+
+    public Physics.PreviewCondition preview = Physics.PreviewCondition.Editor;
+    public float drawDuration = 0;
+    public Color hitColor = Color.green;
+    public Color noHitColor = Color.red;
+
+    void UpdatePlayerVision()
+    {
+        Vector3 halfExtents = new Vector3(visionRadius, visionRadius, visionRadius);
+        Vector3 frontOffset = new Vector3(visionRadius / 2f, 0f, 0f);
+        Vector3 leftOffset = new Vector3(0f, 0f, visionRadius / 2f);
+        Quaternion orientation = Quaternion.LookRotation(transform.forward, transform.up);
+
+        LayerMask layerMask = LayerMask.GetMask("Player", "Ball");
+        Dictionary<string, HashSet<Collider>> sets = new Dictionary<string, HashSet<Collider>>();
+
+        sets["near"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["far"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, visionRadius, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["left"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["right"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["front"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["back"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
+        sets["far"].ExceptWith(sets["near"]);
+
+        foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
+        {
+            kvp.Value.Remove(collider);
+        }
+
+        foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
+        {
+            string s = " ";
+            foreach(var c in kvp.Value)
+            {
+                s += c.gameObject.name + " ";
+            }
+            Debug.Log(transform.gameObject.name + " Set " + kvp.Key + ": " + kvp.Value.Count + s);
+        }
+    }
 }

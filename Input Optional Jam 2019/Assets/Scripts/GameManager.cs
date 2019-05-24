@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     public float newPlayerChance;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         if(Instance == null)
         {
@@ -122,4 +122,6 @@ public class GameManager : MonoBehaviour
     public bool IsPreKickoff() {
         return state == GameState.PreKickoff;
     }
+
+
 }

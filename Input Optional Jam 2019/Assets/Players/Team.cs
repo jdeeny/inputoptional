@@ -31,7 +31,7 @@ public class Team : ScriptableObject
     {
         for (int i = 0; i < players; i++)
         {
-            addPlayer(playerPrefab, c);
+            addPlayer(playerPrefab, c, i);
         }
     }
 
@@ -43,11 +43,12 @@ public class Team : ScriptableObject
         return team;
     }
 
-    void addPlayer(GameObject playerPrefab, Color c)
+    void addPlayer(GameObject playerPrefab, Color c, int playerNumber)
     {
         GameObject new_player = Instantiate(playerPrefab, new Vector3(Random.Range(-50.0f, 50.0f), 4f, Random.Range(-50.0f, 50.0f)), Quaternion.identity);
         new_player.GetComponent<PlayerAI>().SetTeam(teamNumber);
         new_player.transform.GetComponentInChildren<Renderer>().material.color = c;
+        new_player.name = "Player " + teamNumber + "-" + playerNumber;
         players.Add(new_player);
     }
 
