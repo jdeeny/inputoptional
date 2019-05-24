@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     GameObject hiddenBall;
 
     float timeSinceLastHiddenSim = 0f;
-
+    float timeBetweenHiddenSim = 0.25f;
     GameState state;
 
     public float newPlayerChance;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         hiddenBounds.name = "hiddenBounds";
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
-        //Destroy(hiddenBall.GetComponent<MeshRenderer>());
+        Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
         SceneManager.SetActiveScene(mainScene);
     }
 
@@ -83,15 +83,14 @@ public class GameManager : MonoBehaviour
         hiddenBall.GetComponent<Rigidbody>().inertiaTensor = ball.GetComponent<Rigidbody>().inertiaTensor;
         hiddenBall.GetComponent<Rigidbody>().inertiaTensorRotation = ball.GetComponent<Rigidbody>().inertiaTensorRotation;
 
-        Debug.Log("ball starts: " + hiddenBall.transform.position.x + " " + hiddenBall.transform.position.y + " " + hiddenBall.transform.position.z);
+        float timeScale = 2f;
         float timeToGround = 0f;
 
         do
         {
-            hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * 4f);
-            //Debug.Log("ball at: " + hiddenBall.transform.position.x + " " + hiddenBall.transform.position.y + " " + hiddenBall.transform.position.z);
-            timeToGround += Time.fixedDeltaTime * 4f;
-        } while (hiddenBall.transform.position.y > 1f && timeToGround <= 10f);
+            hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * timeScale);
+            timeToGround += Time.fixedDeltaTime * timeScale;
+        } while (hiddenBall.transform.position.y > 0.5f && timeToGround <= 10f);
 
         Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
     }
@@ -103,7 +102,7 @@ public class GameManager : MonoBehaviour
 
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
-        //teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
+        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
         timeSinceLastHiddenSim = 0f;
         ReadyKickoff();
     }
@@ -134,7 +133,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 timeSinceLastHiddenSim += Time.fixedDeltaTime;
-                if (timeSinceLastHiddenSim > 0.1f && ball.transform.position.y > 1f)
+                if (timeSinceLastHiddenSim > timeBetweenHiddenSim && ball.transform.position.y > 0.75f)
                     SimulateHiddenScene();
 
                 ProcessTeamAI();
