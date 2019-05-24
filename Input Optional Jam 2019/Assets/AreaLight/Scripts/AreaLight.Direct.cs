@@ -106,7 +106,7 @@ public partial class AreaLight : MonoBehaviour
 		if (m_Shadows)
 			SetUpShadowmapForSampling(buf);
 
-		Matrix4x4 m = Matrix4x4.TRS(new Vector3(0, 0, 10.0f), Quaternion.identity, Vector3.one * 20);
+		Matrix4x4 m = Matrix4x4.TRS(new Vector3(0, 0, 10.0f), Quaternion.identity, Vector3.one * 80);
 		buf.DrawMesh(m_Cube, t.localToWorldMatrix * m, m_ProxyMaterial, 0, m_Shadows ? /*shadows*/ 0 : /*no shadows*/ 1);
 	}
 

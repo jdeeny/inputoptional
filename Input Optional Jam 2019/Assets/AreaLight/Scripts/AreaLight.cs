@@ -119,9 +119,9 @@ public partial class AreaLight : MonoBehaviour
 			// To prevent the source quad from getting into the shadowmap, offset it back a bit.
 			float z = -0.001f;
 			vertices[0].Set(-x,  y, z);
-			vertices[1].Set( x, -y, z);
-			vertices[2].Set( x,  y, z);
-			vertices[3].Set(-x, -y, z);
+			vertices[1].Set( x,  y, z);
+			vertices[2].Set(-x, -y, z);
+			vertices[3].Set( x, -y, z);
 
 			m_SourceMesh.vertices = vertices;
 
@@ -260,7 +260,7 @@ public partial class AreaLight : MonoBehaviour
 		return new Vector4(pos.x, pos.y, pos.z, 1);
 	}
 
-	Bounds GetFrustumBounds()
+	public Bounds GetFrustumBounds()
 	{
 		if (m_Angle == 0.0f)
 			return new Bounds(Vector3.zero, m_Size);
