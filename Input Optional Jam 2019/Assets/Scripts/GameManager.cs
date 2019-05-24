@@ -88,9 +88,9 @@ public class GameManager : MonoBehaviour
 
         do
         {
-            hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime);
+            hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * 4f);
             //Debug.Log("ball at: " + hiddenBall.transform.position.x + " " + hiddenBall.transform.position.y + " " + hiddenBall.transform.position.z);
-            timeToGround += Time.fixedDeltaTime;
+            timeToGround += Time.fixedDeltaTime * 4f;
         } while (hiddenBall.transform.position.y > 1f && timeToGround <= 10f);
 
         Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1, Color.blue));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
         //teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
+        timeSinceLastHiddenSim = 0f;
         ReadyKickoff();
     }
 
@@ -133,7 +134,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 timeSinceLastHiddenSim += Time.fixedDeltaTime;
-                if (timeSinceLastHiddenSim > 0.2f && ball.transform.position.y > 1f)
+                if (timeSinceLastHiddenSim > 0.1f && ball.transform.position.y > 1f)
                     SimulateHiddenScene();
 
                 ProcessTeamAI();

@@ -285,17 +285,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 427aecfcdb6100b4794f544820590094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1918473793837938573, guid: db5e086ceefc1e64fa96a13d7be6ebe4,
+  playerPrefab: {fileID: 1918473793837938573, guid: a64409df761af44448789707c8e1ac8e,
     type: 3}
   spotPrefab: {fileID: 55847794993600075, guid: ee2a94603c3a1d24eb23081428d8806e,
     type: 3}
   ballPrefab: {fileID: 9093659497785907766, guid: bcf0ebccdde15b94ca1dcbbe31e4f202,
     type: 3}
-  playersPerTeam: 1
+  playersPerTeam: 5
   maxTeams: 0
   ball: {fileID: 0}
   spot: {fileID: 0}
   teams: []
+  mainScene:
+    m_Handle: 0
+  hiddenScene:
+    m_Handle: 0
   newPlayerChance: 0.05
 --- !u!4 &735530722
 Transform:

@@ -109,7 +109,7 @@ public class BallBehavior : MonoBehaviour
 
         rb.isKinematic = false;
 
-        rb.AddForce(new Vector3(Random.Range(-100f, 100f), Random.Range(10f, 100f), Random.Range(-100f, 100f)));
+        rb.AddForce(new Vector3(Random.Range(-500f, 500f), Random.Range(30f, 300f), Random.Range(-500f, 500f)));
     }
 
     public void Reset() {
