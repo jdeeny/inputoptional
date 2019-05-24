@@ -35,13 +35,17 @@ public class PlayerAI : MonoBehaviour
 
     int n = 0;
 
-    Collider collider;
+    Collider col;
+    Rigidbody rb;
+    Animator animator;
 
     Dictionary<string, HashSet<Collider>> visionSets;
 
     void Start()
     {
-        collider = transform.gameObject.GetComponent<Collider>();
+        col = transform.gameObject.GetComponent<Collider>();
+        rb = transform.gameObject.GetComponent<Rigidbody>();
+        animator = transform.gameObject.GetComponent<Animator>();
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
@@ -79,6 +83,10 @@ public class PlayerAI : MonoBehaviour
                 //PassTo(new Vector3(0f, 0f, 0f));
                 break;
         }
+
+        float localVel = Vector3.Dot(transform.forward, rb.velocity);//magnitude;//rb.velocity;
+        Debug.Log(localVel);
+        animator.SetFloat("forward", localVel/ 10f);// / 20f);
 
     }
 
@@ -281,7 +289,7 @@ public class PlayerAI : MonoBehaviour
         // Remove myself
         foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
         {
-            kvp.Value.Remove(collider);
+            kvp.Value.Remove(col);
         }
 
         sets["far"] = new HashSet<Collider>(sets["vision"]);

@@ -39,7 +39,7 @@ public class BallBehavior : MonoBehaviour
         float diff = (float) vel_diff.magnitude + 0.0001f;
         float adj_diff = (float) System.Math.Sqrt(diff / 4f);
         float chance = pickupChance * (1f / adj_diff);
-        //Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
+        Debug.Log("Vel diff: " + diff + " Adj: " + adj_diff +  " chance: " + chance);
 
         if (throwDisableTimeout <= 0f && Random.Range(0f, 1f) < chance)
         {
