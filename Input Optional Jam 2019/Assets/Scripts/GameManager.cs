@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public enum GameState {
     Setup,
@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
 
     float delay = 0f;
 
+    public Scene mainScene;
+    public Scene hiddenScene;
+    GameObject hiddenBounds;
+    GameObject hiddenBall;
+
+    float timeSinceLastHiddenSim = 0f;
+
     GameState state;
 
     public float newPlayerChance;
@@ -46,8 +53,48 @@ public class GameManager : MonoBehaviour
         }
 
         ResetGame();
+        CreateHiddenScene();
     }
 
+
+    void CreateHiddenScene()
+    {
+        Physics.autoSimulation = false;
+        mainScene = SceneManager.GetActiveScene();
+        hiddenScene = SceneManager.CreateScene("Hidden Scene", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+
+        SceneManager.SetActiveScene(hiddenScene);
+
+        hiddenBounds = GameObject.Instantiate(GameObject.Find("Bounds"), Vector3.zero, Quaternion.identity);
+        hiddenBounds.name = "hiddenBounds";
+        hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
+        hiddenBall.name = "hiddenBall";
+        //Destroy(hiddenBall.GetComponent<MeshRenderer>());
+        SceneManager.SetActiveScene(mainScene);
+    }
+
+    void SimulateHiddenScene()
+    {
+        timeSinceLastHiddenSim = 0f;
+        hiddenBall.transform.position = ball.transform.position;
+        hiddenBall.transform.rotation = ball.transform.rotation;
+        hiddenBall.GetComponent<Rigidbody>().velocity = ball.GetComponent<Rigidbody>().velocity;
+        hiddenBall.GetComponent<Rigidbody>().angularVelocity = ball.GetComponent<Rigidbody>().angularVelocity;
+        hiddenBall.GetComponent<Rigidbody>().inertiaTensor = ball.GetComponent<Rigidbody>().inertiaTensor;
+        hiddenBall.GetComponent<Rigidbody>().inertiaTensorRotation = ball.GetComponent<Rigidbody>().inertiaTensorRotation;
+
+        Debug.Log("ball starts: " + hiddenBall.transform.position.x + " " + hiddenBall.transform.position.y + " " + hiddenBall.transform.position.z);
+        float timeToGround = 0f;
+
+        do
+        {
+            hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime);
+            //Debug.Log("ball at: " + hiddenBall.transform.position.x + " " + hiddenBall.transform.position.y + " " + hiddenBall.transform.position.z);
+            timeToGround += Time.fixedDeltaTime;
+        } while (hiddenBall.transform.position.y > 1f && timeToGround <= 10f);
+
+        Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
+    }
 
     public void ResetGame() {
         state = GameState.Setup;
@@ -68,8 +115,11 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+
+        // Do the normal physics update
+        mainScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime);
 
         switch(state) {
             case GameState.Setup:
@@ -82,6 +132,10 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.Playing:
+                timeSinceLastHiddenSim += Time.fixedDeltaTime;
+                if (timeSinceLastHiddenSim > 0.2f && ball.transform.position.y > 1f)
+                    SimulateHiddenScene();
+
                 ProcessTeamAI();
                 break;
         }

@@ -37,6 +37,8 @@ public class PlayerAI : MonoBehaviour
 
     Collider collider;
 
+    Dictionary<string, HashSet<Collider>> visionSets;
+
     void Start()
     {
         collider = transform.gameObject.GetComponent<Collider>();
@@ -46,9 +48,10 @@ public class PlayerAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        Dictionary<string, HashSet<Collider>> vision = UpdatePlayerVision();
+        visionSets = UpdatePlayerVision();
+
         transform.Find("Text").transform.LookAt(FindObjectOfType<Camera>().transform.position);
-        
+
         reaction_remaining -= Time.deltaTime;
         if(reaction_remaining > 0f)
             return;
@@ -68,10 +71,12 @@ public class PlayerAI : MonoBehaviour
                 RunToOpenArea();
                 break;
             case PlayerCommand.Protect:
-                RunTo(GetBallCarrierLocation());
+                StopMoving();
+                //RunTo(GetBallCarrierLocation());
                 break;
             case PlayerCommand.Pass:
-                PassTo(new Vector3(0f, 0f, 0f));
+                StopMoving();
+                //PassTo(new Vector3(0f, 0f, 0f));
                 break;
         }
 
@@ -156,9 +161,16 @@ public class PlayerAI : MonoBehaviour
 
     void RunToOpenArea()
     {
-        // TODO: This is probably a real bad way to do this
-        GameObject p = FindNearestPlayer();
-        RunAwayFrom(transform.position - p.transform.position);
+        Vector3 target = Vector3.zero;
+
+        foreach(var c in visionSets["vision"])
+        {
+            target += c.transform.position;
+        }
+        target /= visionSets["vision"].Count;
+
+        
+        RunTo(target);
     }
 
     public bool IsOnGround()
