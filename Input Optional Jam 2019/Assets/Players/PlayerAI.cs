@@ -24,7 +24,7 @@ public class PlayerAI : MonoBehaviour
     public float reaction_base;
     public float reaction_random;
     float nearRadius = 5f;
-    float visionRadius = 50f;
+    float visionRadius = 30f;
 
     float reaction_remaining = 0;
 
@@ -46,7 +46,7 @@ public class PlayerAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdatePlayerVision();
+        Dictionary<string, HashSet<Collider>> vision = UpdatePlayerVision();
         transform.Find("Text").transform.LookAt(FindObjectOfType<Camera>().transform.position);
         
         reaction_remaining -= Time.deltaTime;
@@ -247,37 +247,142 @@ public class PlayerAI : MonoBehaviour
     public Color hitColor = Color.green;
     public Color noHitColor = Color.red;
 
-    void UpdatePlayerVision()
+    Dictionary<string, HashSet<Collider>> UpdatePlayerVision()
     {
         Vector3 halfExtents = new Vector3(visionRadius, visionRadius, visionRadius);
         Vector3 frontOffset = new Vector3(visionRadius / 2f, 0f, 0f);
         Vector3 leftOffset = new Vector3(0f, 0f, visionRadius / 2f);
         Quaternion orientation = Quaternion.LookRotation(transform.forward, transform.up);
 
-        LayerMask layerMask = LayerMask.GetMask("Player", "Ball");
+        LayerMask layerMaskPlayer = LayerMask.GetMask("Player");
+        LayerMask layerMaskBall = LayerMask.GetMask("Ball");
         Dictionary<string, HashSet<Collider>> sets = new Dictionary<string, HashSet<Collider>>();
 
-        sets["near"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["far"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, visionRadius, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["left"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["right"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["front"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["back"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMask, preview, drawDuration, hitColor, noHitColor));
-        sets["far"].ExceptWith(sets["near"]);
+        sets["nearBall"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskBall));//, preview, drawDuration, hitColor, noHitColor));
+        sets["near"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
+        sets["vision"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, visionRadius, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
+        sets["leftcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
+        sets["rightcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
+        sets["frontmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
+        sets["backmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMaskPlayer));//, preview, drawDuration, hitColor, noHitColor));
 
+        // Remove myself
         foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
         {
             kvp.Value.Remove(collider);
         }
 
-        foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
+        sets["far"] = new HashSet<Collider>(sets["vision"]);
+        sets["far"].ExceptWith(sets["near"]);
+
+        sets["center"] =  new HashSet<Collider>(sets["leftcenter"]);
+        sets["center"].IntersectWith(sets["rightcenter"]);
+
+        sets["middle"] = new HashSet<Collider>(sets["frontmiddle"]);
+        sets["middle"].IntersectWith(sets["backmiddle"]);
+
+        sets["left"] = new HashSet<Collider>(sets["leftcenter"]);
+        sets["left"].ExceptWith(sets["rightcenter"]);
+
+        sets["right"] = new HashSet<Collider>(sets["rightcenter"]);
+        sets["right"].ExceptWith(sets["leftcenter"]);
+
+        sets["front"] = new HashSet<Collider>(sets["frontmiddle"]);
+        sets["front"].ExceptWith(sets["backmiddle"]);
+
+        sets["back"] = new HashSet<Collider>(sets["backmiddle"]);
+        sets["back"].ExceptWith(sets["frontmiddle"]);
+
+        sets["frontLeft"] = new HashSet<Collider>(sets["front"]);
+        sets["frontLeft"].ExceptWith(sets["left"]);
+
+        sets["frontCenter"] = new HashSet<Collider>(sets["front"]);
+        sets["frontCenter"].ExceptWith(sets["center"]);
+
+        sets["frontRight"] = new HashSet<Collider>(sets["front"]);
+        sets["frontRight"].ExceptWith(sets["right"]);
+
+        sets["middleLeft"] = new HashSet<Collider>(sets["middle"]);
+        sets["middleLeft"].ExceptWith(sets["left"]);
+
+        sets["middleCenter"] = new HashSet<Collider>(sets["middle"]);
+        sets["middleCenter"].ExceptWith(sets["center"]);
+
+        sets["middleRight"] = new HashSet<Collider>(sets["middle"]);
+        sets["middleRight"].ExceptWith(sets["right"]);
+
+        sets["backLeft"] = new HashSet<Collider>(sets["back"]);
+        sets["backLeft"].ExceptWith(sets["left"]);
+
+        sets["backCenter"] = new HashSet<Collider>(sets["back"]);
+        sets["backCenter"].ExceptWith(sets["center"]);
+
+        sets["backRight"] = new HashSet<Collider>(sets["back"]);
+        sets["backRight"].ExceptWith(sets["right"]);
+
+
+        sets["nearFrontLeft"] = new HashSet<Collider>(sets["frontLeft"]);
+        sets["nearFrontLeft"].ExceptWith(sets["near"]);
+
+        sets["nearFrontCenter"] = new HashSet<Collider>(sets["frontCenter"]);
+        sets["nearFrontCenter"].ExceptWith(sets["near"]);
+
+        sets["nearFrontRight"] = new HashSet<Collider>(sets["frontRight"]);
+        sets["nearFrontRight"].ExceptWith(sets["near"]);
+
+        sets["nearMiddleLeft"] = new HashSet<Collider>(sets["middleLeft"]);
+        sets["nearMiddleLeft"].ExceptWith(sets["near"]);
+
+        sets["nearMiddleRight"] = new HashSet<Collider>(sets["middleRight"]);
+        sets["nearMiddleRight"].ExceptWith(sets["near"]);
+
+        sets["nearbackLeft"] = new HashSet<Collider>(sets["backLeft"]);
+        sets["nearbackLeft"].ExceptWith(sets["near"]);
+
+        sets["nearbackCenter"] = new HashSet<Collider>(sets["backCenter"]);
+        sets["nearbackCenter"].ExceptWith(sets["near"]);
+
+        sets["nearbackRight"] = new HashSet<Collider>(sets["backRight"]);
+        sets["nearbackRight"].ExceptWith(sets["near"]);
+
+
+        sets["farFrontLeft"] = new HashSet<Collider>(sets["frontLeft"]);
+        sets["farFrontLeft"].ExceptWith(sets["far"]);
+
+        sets["farFrontCenter"] = new HashSet<Collider>(sets["frontCenter"]);
+        sets["farFrontCenter"].ExceptWith(sets["far"]);
+
+        sets["farFrontRight"] = new HashSet<Collider>(sets["frontRight"]);
+        sets["farFrontRight"].ExceptWith(sets["far"]);
+
+        sets["farMiddleLeft"] = new HashSet<Collider>(sets["middleLeft"]);
+        sets["farMiddleLeft"].ExceptWith(sets["far"]);
+
+        sets["farMiddleRight"] = new HashSet<Collider>(sets["middleRight"]);
+        sets["farMiddleRight"].ExceptWith(sets["far"]);
+
+        sets["farbackLeft"] = new HashSet<Collider>(sets["backLeft"]);
+        sets["farbackLeft"].ExceptWith(sets["far"]);
+
+        sets["farbackCenter"] = new HashSet<Collider>(sets["backCenter"]);
+        sets["farbackCenter"].ExceptWith(sets["far"]);
+
+        sets["farbackRight"] = new HashSet<Collider>(sets["backRight"]);
+        sets["farbackRight"].ExceptWith(sets["far"]);
+
+
+        /*if (Random.Range(0f, 1f) < (1f/1000f))
         {
-            string s = " ";
-            foreach(var c in kvp.Value)
+            foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
             {
-                s += c.gameObject.name + " ";
+                string s = " ";
+                foreach (var c in kvp.Value)
+                {
+                    s += c.gameObject.name + " ";
+                }
+                Debug.Log(transform.gameObject.name + " Set " + kvp.Key + ": " + kvp.Value.Count + s);
             }
-            Debug.Log(transform.gameObject.name + " Set " + kvp.Key + ": " + kvp.Value.Count + s);
-        }
+        }*/
+        return sets;
     }
 }
