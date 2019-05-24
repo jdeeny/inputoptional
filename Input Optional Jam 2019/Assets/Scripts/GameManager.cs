@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject spotPrefab;
     public GameObject ballPrefab;
+    public GameObject boundsPrefab;
 
     public int playersPerTeam;
     public int maxTeams;
@@ -38,6 +39,9 @@ public class GameManager : MonoBehaviour
     GameState state;
 
     public float newPlayerChance;
+
+    public float ballTimeToGround = 0f;
+    public Vector3 ballLandingPosition = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         SceneManager.SetActiveScene(hiddenScene);
 
-        hiddenBounds = GameObject.Instantiate(GameObject.Find("Bounds"), Vector3.zero, Quaternion.identity);
+        hiddenBounds = GameObject.Instantiate(boundsPrefab, Vector3.zero, Quaternion.identity);
         hiddenBounds.name = "hiddenBounds";
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
@@ -92,7 +96,9 @@ public class GameManager : MonoBehaviour
             timeToGround += Time.fixedDeltaTime * timeScale;
         } while (hiddenBall.transform.position.y > 0.5f && timeToGround <= 10f);
 
-        Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
+        ballTimeToGround = timeToGround;
+        ballLandingPosition = hiddenBall.transform.position;
+        //Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
     }
 
     public void ResetGame() {
@@ -133,7 +139,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 timeSinceLastHiddenSim += Time.fixedDeltaTime;
-                if (timeSinceLastHiddenSim > timeBetweenHiddenSim && ball.transform.position.y > 0.75f)
+                if (timeSinceLastHiddenSim > timeBetweenHiddenSim)
                     SimulateHiddenScene();
 
                 ProcessTeamAI();

@@ -150,7 +150,7 @@ public class PlayerAI : MonoBehaviour
 
     void RunToBall()
     {
-        RunTo(GameManager.Instance.ball.transform.position);
+        RunTo(GameManager.Instance.ballLandingPosition);
     }
 
     void RunToGoal()
