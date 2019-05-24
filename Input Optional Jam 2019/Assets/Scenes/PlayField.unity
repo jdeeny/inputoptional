@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 427aecfcdb6100b4794f544820590094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1918473793837938573, guid: a64409df761af44448789707c8e1ac8e,
+  playerPrefab: {fileID: 8209386659038900229, guid: ec106e36120ac759fb7eee9d5383d7d9,
     type: 3}
   spotPrefab: {fileID: 55847794993600075, guid: ee2a94603c3a1d24eb23081428d8806e,
     type: 3}
@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 1058040212}
   - component: {fileID: 1058040211}
   - component: {fileID: 1058040210}
+  - component: {fileID: 1058040209}
   m_Layer: 0
   m_Name: Field
   m_TagString: Untagged
@@ -364,6 +365,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!95 &1058040209
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058040208}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2cffd22c4a889c322b8a218a2f423b8e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!23 &1058040210
 MeshRenderer:
   m_ObjectHideFlags: 0

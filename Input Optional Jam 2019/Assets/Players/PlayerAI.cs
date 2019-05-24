@@ -54,8 +54,6 @@ public class PlayerAI : MonoBehaviour
     {
         visionSets = UpdatePlayerVision();
 
-        transform.Find("Text").transform.LookAt(FindObjectOfType<Camera>().transform.position);
-
         reaction_remaining -= Time.deltaTime;
         if(reaction_remaining > 0f)
             return;
@@ -84,9 +82,14 @@ public class PlayerAI : MonoBehaviour
                 break;
         }
 
-        float localVel = Vector3.Dot(transform.forward, rb.velocity);//magnitude;//rb.velocity;
+        // Keep upright
+        float uprightTorque = 500f;
+        var rot = Quaternion.FromToRotation(transform.up, Vector3.up);
+        rb.AddTorque(new Vector3(rot.x, rot.y, rot.z)*uprightTorque);
+
+        float localVel = Vector3.Dot(transform.forward, rb.velocity);
         Debug.Log(localVel);
-        animator.SetFloat("forward", localVel/ 10f);// / 20f);
+        animator.SetFloat("forward", localVel/ 10f);
 
     }
 
@@ -189,7 +192,6 @@ public class PlayerAI : MonoBehaviour
     public void SetCommand(PlayerCommand command)
     {
         current_command = command;
-        SetDebugText(command.ToString());
         reaction_remaining = reaction_base + Random.Range(0f, 1f) * reaction_random;
     }
 
@@ -244,10 +246,6 @@ public class PlayerAI : MonoBehaviour
     }
 
 
-    public void SetDebugText(string t)
-    {
-        gameObject.GetComponentInChildren<TextMesh>().text = t;
-    }
 
 
     Vector3 GetBallCarrierLocation()

@@ -47,7 +47,13 @@ public class Team : ScriptableObject
     {
         GameObject new_player = Instantiate(playerPrefab, new Vector3(Random.Range(-50.0f, 50.0f), 4f, Random.Range(-50.0f, 50.0f)), Quaternion.identity);
         new_player.GetComponent<PlayerAI>().SetTeam(teamNumber);
-        new_player.transform.GetComponentInChildren<Renderer>().material.color = c;
+        var renderers = new_player.transform.GetComponentsInChildren<Renderer>();
+        foreach(var r in renderers) {
+            if (r.gameObject.name == "RobbitBody") {
+               r.materials[0].color = c;
+            }
+        }
+        //new_player.transform.GetComponentInChildren<Renderer>().material.color = c;
         new_player.name = "Player " + teamNumber + "-" + playerNumber;
         players.Add(new_player);
     }
