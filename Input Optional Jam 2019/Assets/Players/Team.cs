@@ -27,6 +27,13 @@ public class Team : ScriptableObject
 
     public TeamGoal teamGoal = TeamGoal.Nothing;
 
+    //Placeholder values for UI/Score/Etc.
+    public string teamName = NameGenerator.GenerateCityName();
+
+    public Color teamColor = new Color(0, 0, 0);
+
+    public int teamScore = 0; 
+
     public void Init(GameObject playerPrefab, int players, Color c)
     {
         for (int i = 0; i < players; i++)

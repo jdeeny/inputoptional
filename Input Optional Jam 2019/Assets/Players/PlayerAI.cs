@@ -30,6 +30,9 @@ public class PlayerAI : MonoBehaviour
 
     int layer = 9;
 
+    //Placeholders
+    public string playerName = NameGenerator.GenerateRobotName(); 
+
     PlayerCommand current_command = PlayerCommand.Idle;
     int team = 0;
 
