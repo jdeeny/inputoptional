@@ -13,6 +13,10 @@ public enum GameState {
 public class GameManager : MonoBehaviour
 {
 
+    [SerializeField]
+    private AudioClip[] kickoffClips;
+    private AudioSource kickoffSource;
+
     public static GameManager Instance { get; set; }
 
     public GameObject playerPrefab;
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            kickoffSource = GetComponent<AudioSource>();
         } else
         {
             Debug.Log("Only one of this object is permitted");
@@ -117,6 +122,7 @@ public class GameManager : MonoBehaviour
     public void DoKickoff()
     {
         ball.GetComponent<BallBehavior>().SetOwner(0, null);
+        PlayKickoffHorn();
         ball.GetComponent<BallBehavior>().DoKickoff();
         state = GameState.Playing;
     }
@@ -186,5 +192,9 @@ public class GameManager : MonoBehaviour
         return state == GameState.PreKickoff;
     }
 
+    private void PlayKickoffHorn()
+    {
+        kickoffSource.PlayOneShot(kickoffClips[Random.Range(0, kickoffClips.Length)]);
+    }
 
 }
