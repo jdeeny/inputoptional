@@ -28,7 +28,7 @@ public class Team : ScriptableObject
     public TeamGoal teamGoal = TeamGoal.Nothing;
 
     //Placeholder values for UI/Score/Etc.
-    public string teamName = NameGenerator.GenerateCityName();
+    public string teamName;
 
     public Color teamColor = new Color(0, 0, 0);
 
@@ -46,6 +46,7 @@ public class Team : ScriptableObject
     {
         var team = ScriptableObject.CreateInstance<Team>();
         team.teamNumber = number;
+        team.teamName = NameGenerator.GenerateCityName();
         team.Init(prefab, players, color);
         return team;
     }

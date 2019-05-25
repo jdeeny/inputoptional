@@ -31,7 +31,7 @@ public class PlayerAI : MonoBehaviour
     int layer = 9;
 
     //Placeholders
-    public string playerName = NameGenerator.GenerateRobotName(); 
+    public string playerName;
 
     PlayerCommand current_command = PlayerCommand.Idle;
     int team = 0;
@@ -100,6 +100,7 @@ public class PlayerAI : MonoBehaviour
 
     void Start()
     {
+        playerName = NameGenerator.GenerateRobotName();
         roboSounds = GetComponent<RoboSounds>();
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
