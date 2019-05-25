@@ -27,6 +27,7 @@ public class BallBehavior : MonoBehaviour
     {
         if(col.gameObject.tag == "Player" )
         {
+            Debug.Log(" Player Ball Collision");
             AttemptPickup(col.gameObject);
         }
     }

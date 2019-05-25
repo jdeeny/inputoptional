@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b3125e9f50c9747a173feb48cd401e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupChance: 1
+  pickupChance: 2
   ownerTeam: 0
   ownerPlayer: {fileID: 0}
 --- !u!135 &-6359880115222810266

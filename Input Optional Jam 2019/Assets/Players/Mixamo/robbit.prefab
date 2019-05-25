@@ -955,6 +955,8 @@ MonoBehaviour:
   turn_speed: 0
   reaction_base: 0.1
   reaction_random: 0.2
+  animationationGetUpFromBelly: GetUp.GetUpFromBelly
+  animationationGetUpFromBack: GetUp.GetUpFromBack
   preview: 1
   drawDuration: 0
   hitColor: {r: 0, g: 1, b: 0, a: 1}

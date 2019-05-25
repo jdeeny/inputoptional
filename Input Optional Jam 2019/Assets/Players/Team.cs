@@ -160,7 +160,7 @@ public class Team : ScriptableObject
 
     void commandForceFumble()
     {
-
+        commandNothing();
     }
 
     void commandPreKickoff()
