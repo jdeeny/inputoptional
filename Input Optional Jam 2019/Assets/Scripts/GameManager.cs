@@ -172,6 +172,8 @@ public class GameManager : MonoBehaviour
 
     public void ReadyKickoff() {
         ball.GetComponent<BallBehavior>().Reset();
+        foreach(var t in teams)
+            t.ReadyKickoff();
         state = GameState.PreKickoff;
         delay = 3f;
     }

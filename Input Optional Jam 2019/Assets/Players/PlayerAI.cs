@@ -66,7 +66,7 @@ public class PlayerAI : MonoBehaviour
 	bool _groundChecker;
 	float _jumpStartedTime;
     
-    Vector3 CharacterVelocity { get; }
+    public Vector3 CharacterVelocity { get { return _onGround ? rb.velocity : _airVelocity; } }
     // Animator parameters
     readonly int animatorForward = Animator.StringToHash("Forward");
     readonly int animatorTurn = Animator.StringToHash("Turn");
@@ -91,7 +91,7 @@ public class PlayerAI : MonoBehaviour
     protected bool _jumpPressed = false;
     protected bool _firstAnimatorFrame = true;  // needed for prevent changing position in first animation frame
 
-
+    float onGroundSince = 0f;
     Dictionary<string, HashSet<Collider>> visionSets;
 
     void Start()
@@ -137,14 +137,21 @@ public class PlayerAI : MonoBehaviour
             GetUp();
         }
 
-        /*if (ragdollState == RagdollState.Animated &&
+        if (ragdollState == RagdollState.Animated &&
             CharacterVelocity.y < -10f)
         {
             // kill and resuscitate will force character to enter in Ragdoll 
             RagdollIn();
             RagdollOut();
-        }*/
+        }
 
+        if (ragdollState == RagdollState.Ragdolled) {
+            if(!PlayerTouchGound()) {
+                onGroundSince = Time.time;
+            } else if(onGroundSince + 2f < Time.time) {
+                RagdollOut();
+            }
+        }
 
         visionSets = UpdatePlayerVision();
 
@@ -175,15 +182,6 @@ public class PlayerAI : MonoBehaviour
                 //PassTo(new Vector3(0f, 0f, 0f));
                 break;
         }
-
-        // Keep upright
-        /*float uprightTorque = 500f;
-        var rot = Quaternion.FromToRotation(transform.up, Vector3.up);
-        rb.AddTorque(new Vector3(rot.x, rot.y, rot.z)*uprightTorque);*/
-
-/*        float localVel = Vector3.Dot(transform.forward, rb.velocity);
-        Debug.Log(localVel);
-        animator.SetFloat("forward", localVel/ 10f);*/
 
         if (!_enabled)
             return;
@@ -342,6 +340,23 @@ public class PlayerAI : MonoBehaviour
         }
     }
 
+
+    void HandlePlayerCollision(Collision col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
+            var velDiff = (rb.velocity - theirVel).magnitude;
+            if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
+            Debug.Log("velDiff: " + velDiff);
+            if(Random.Range(-10f, 10f) > velDiff) {
+                rb.velocity = theirVel * Random.Range(1f, 5f);
+                RagdollIn();
+            }
+        }
+    }
+
+
     void StopMoving()
     {
         if (_onGround)
@@ -364,6 +379,10 @@ public class PlayerAI : MonoBehaviour
         RunTo(GameManager.Instance.spot.transform.position);
     }
 
+
+    public void ReadyKickoff() {
+        RagdollOut();
+    }
 
     void RunToOpenArea()
     {
@@ -603,6 +622,7 @@ public class PlayerAI : MonoBehaviour
 			animator.enabled = false;      // disable animation
 			ragdollState = RagdollState.Ragdolled;
 			ApplyVelocity(CharacterVelocity);
+            GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
 		}
 
 		/// <summary>
@@ -810,7 +830,8 @@ public class PlayerAI : MonoBehaviour
         
 
         HandleSpotCollision(collision);
-        
+        HandlePlayerCollision(collision);
+
         float charBottom =
             transform.position.y +
             col.center.y - col.height / 2 +

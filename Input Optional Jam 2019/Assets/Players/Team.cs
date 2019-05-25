@@ -158,6 +158,12 @@ public class Team : ScriptableObject
 
     }
 
+    public void ReadyKickoff()
+    {
+        foreach(var p in players) {
+            p.GetComponent<PlayerAI>().ReadyKickoff();
+        }
+    }
     void commandForceFumble()
     {
         commandNothing();
