@@ -117,6 +117,9 @@ public class GameManager : MonoBehaviour
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
         teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
         timeSinceLastHiddenSim = 0f;
+
+        if (InterfaceHandler.instance != null) InterfaceHandler.instance.SetupTeams(); 
+
         ReadyKickoff();
     }
 
@@ -186,6 +189,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void Score(int team) {
+        if (InterfaceHandler.instance != null) InterfaceHandler.instance.ShowGoalBanner(); 
+
         ReadyKickoff();
     }
 

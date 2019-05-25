@@ -11,7 +11,9 @@ public class InterfaceHandler : MonoBehaviour
             return _instance; 
         }
     }
-    private static InterfaceHandler _instance; 
+    private static InterfaceHandler _instance;
+    private TeamIndicator[] teamIndicators;
+    private GoalIndicator goalIndicator; 
 
     private void Awake()
     {
@@ -22,29 +24,21 @@ public class InterfaceHandler : MonoBehaviour
         {
             _instance = this; 
         }
+
+        teamIndicators = GetComponentsInChildren<TeamIndicator>();
+        goalIndicator  = GetComponentInChildren<GoalIndicator>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            TeamIndicator[] teams = this.GetComponentsInChildren<TeamIndicator>();
-            foreach (TeamIndicator team in teams)
-            {
-                team.UpdateName(NameGenerator.GenerateCityName());
-                team.UpdateScore(Random.Range(0, 5));
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Debug.LogWarning(NameGenerator.GenerateRobotName());
-        }
-    }
-
-    private void SetupTeams()
+    public void SetupTeams()
     {
         //Set the UI elements to start off
+        Debug.Log(GameManager.Instance.teams.Count);
+        Debug.Log(teamIndicators.Length); 
+        for (int i = 0; i < GameManager.Instance.teams.Count && i < teamIndicators.Length; ++i)
+        {
+            teamIndicators[i].UpdateName(GameManager.Instance.teams[i].teamName);
+            teamIndicators[i].UpdateScore(GameManager.Instance.teams[i].teamScore);
+        }
     }
 
     public void UpdateTeamScores()
@@ -55,6 +49,8 @@ public class InterfaceHandler : MonoBehaviour
     public void ShowGoalBanner()
     {
         //Make the goal banner appear temporarily, play sounds
+        //Need to get the scoring team and player?
+        goalIndicator.ShowScore("", "", 0); 
     }
 
     public void ShowEndScreen()
