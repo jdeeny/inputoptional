@@ -148,7 +148,7 @@ public class PlayerAI : MonoBehaviour
         if (ragdollState == RagdollState.Ragdolled) {
             if(!PlayerTouchGound()) {
                 onGroundSince = Time.time;
-            } else if(onGroundSince + Random.Range(0.2f, 1f) < Time.time) {
+            } else if(onGroundSince + Random.Range(0.4f, 2f) < Time.time) {
                 RagdollOut();
             }
         }
