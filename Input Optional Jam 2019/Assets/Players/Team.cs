@@ -113,7 +113,7 @@ public class Team : ScriptableObject
         }
 
         if (teamGoal != oldGoal) {
-            Debug.Log("New Goal");
+            //Debug.Log("New Goal");
             return true;
         }
         return false;
@@ -147,7 +147,7 @@ public class Team : ScriptableObject
         {
             if (p == ball_holder)
             {
-                Debug.Log("Told player to go to goal");
+                //Debug.Log("Told player to go to goal");
                 p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.RunToGoal);
             }
             else
@@ -171,7 +171,7 @@ public class Team : ScriptableObject
 
     void commandPreKickoff()
     {
-        Debug.Log("Told players to get open");
+        //Debug.Log("Told players to get open");
 
         foreach (GameObject p in players)
         {

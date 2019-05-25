@@ -148,7 +148,7 @@ public class PlayerAI : MonoBehaviour
         if (ragdollState == RagdollState.Ragdolled) {
             if(!PlayerTouchGound()) {
                 onGroundSince = Time.time;
-            } else if(onGroundSince + 2f < Time.time) {
+            } else if(onGroundSince + Random.Range(0.2f, 1f) < Time.time) {
                 RagdollOut();
             }
         }
@@ -315,7 +315,7 @@ public class PlayerAI : MonoBehaviour
         if (col.gameObject.name.StartsWith("Spot"))
         {
             if(GameManager.Instance.GetBallPlayer() == gameObject) {
-                Debug.Log("Hit Spot and have ball");
+                //Debug.Log("Hit Spot and have ball");
 
                 GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
                 GameManager.Instance.Score(GameManager.Instance.GetBallOwner());
@@ -326,10 +326,7 @@ public class PlayerAI : MonoBehaviour
                     {
                         if (player != null)
                         {
-                            Rigidbody rb = player.GetComponent<Rigidbody>();
-
-                            if (rb != null)
-                                rb.AddExplosionForce(1000f, GameManager.Instance.spot.transform.position, 120f, 3.0F);
+                            player.GetComponent<PlayerAI>().ExplodeOnGoal();
                         }
                     }
 
@@ -348,7 +345,7 @@ public class PlayerAI : MonoBehaviour
             var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
-            Debug.Log("velDiff: " + velDiff);
+            //Debug.Log("velDiff: " + velDiff);
             if(Random.Range(-10f, 10f) > velDiff) {
                 rb.velocity = theirVel * Random.Range(1f, 5f);
                 RagdollIn();
@@ -356,6 +353,14 @@ public class PlayerAI : MonoBehaviour
         }
     }
 
+    public void ExplodeOnGoal()
+    {
+        RagdollIn();
+        var explode_dist = Mathf.Max(1f, 200f - rb.position.magnitude);
+        var explode_vel = explode_dist * Random.Range(.04f, .1f) * rb.position.normalized;
+        explode_vel.y += explode_dist * Random.Range(0.01f, .1f);
+        ApplyVelocity(explode_vel);
+    }
 
     void StopMoving()
     {
@@ -614,7 +619,7 @@ public class PlayerAI : MonoBehaviour
 		/// <summary>
 		/// Ragdoll character
 		/// </summary>
-		private void RagdollIn()
+		void RagdollIn()
 		{
 			//Transition from animated to ragdolled
 
@@ -628,7 +633,7 @@ public class PlayerAI : MonoBehaviour
 		/// <summary>
 		/// Smoothly translate to animator's bone positions when character stops falling
 		/// </summary>
-		private void RagdollOut()
+		void RagdollOut()
 		{
 			if (ragdollState == RagdollState.Ragdolled)
 				ragdollState = RagdollState.WaitStablePosition;
@@ -777,7 +782,7 @@ public class PlayerAI : MonoBehaviour
 
 
     void CharacterEnable(bool enable) {
-        Debug.Log("CharacterEnable!");
+        //Debug.Log("CharacterEnable!");
         _enabled = enable;
 
 	    col.enabled = enable;
@@ -842,7 +847,7 @@ public class PlayerAI : MonoBehaviour
             if (contact.point.y < charBottom && !contact.otherCollider.transform.IsChildOf(transform))
             {
                 _groundChecker = true;
-                Debug.DrawRay(contact.point, contact.normal, Color.blue);
+                //Debug.DrawRay(contact.point, contact.normal, Color.blue);
                 break;
             }
         }
