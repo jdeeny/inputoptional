@@ -7,37 +7,32 @@ class NameGenerator
         public string name;
         public bool usePrefix;
         public bool useTypeAffix;
-        public bool useExtraAffix;
 
-        public city (string _name, bool _extraAffix = false, bool _typeAffix = false, bool _prefix = true)
+        public city (string _name, bool _typeAffix = false, bool _prefix = true)
         {
             name          = _name;
             usePrefix     = _prefix;
             useTypeAffix  = _typeAffix;
-            useExtraAffix = _extraAffix; 
         }
     }
 
     public static readonly string[] cityPrefixes =
     {
         "Mega", "Giga", "Tera", "Neo", "Nova", "Robo", "Mars", "Moon", "Old", "New",
-        "Space", "Los", "Las", "East", "West", "North", "South"
+        "Space", "Los", "Las", "East", "West", "North", "South", "Not", "Mid", "Super",
+        "Ultra", "Mecha" 
     };
 
     //If a - is the first character append it without using spaces
     public static readonly string[] cityTypeAffixes =
     {
-        "City", "Dome", "Town", "-tropolis", "-opolis", "-otron"
-    };
-
-    public static readonly string[] cityExtraAffixes =
-    {
-        "One", "2.0", "14-B", "13-A", "64-Z", "D-45", "GT"
+        "City", "Dome", "Town", "-tropolis", "-opolis", "-otron", "-town", "-land"
     };
 
     public static readonly city[] cityNames =
     {
-        new city("Junk", true, true, false),
+        new city("Defunct", true, false),
+        new city("Junk", true, false),
         new city("York"),
         new city("Boston"),
         new city("Angeles"),
@@ -60,13 +55,16 @@ class NameGenerator
         new city("Moscow"),
         new city("Miami"),
         new city("Francisco"),
-        new city("Pacific", true, true),
-        new city("Atlantic", true, true),
-        new city("Antarctica", true, true),
+        new city("Pacific", true),
+        new city("Atlantic", true),
+        new city("Antarctica", true),
         new city("Sydney"),
         new city("Melbourne"),
-        new city("Texas", true, true),
-        new city("Florida", false, true)
+        new city("Texas", true),
+        new city("Florida", true),
+        new city("Atlanta"), 
+        new city("Kentucky", true, true),
+
     };
 
     public static readonly string[] teamNames =
@@ -76,7 +74,14 @@ class NameGenerator
         "Exceptions", "Blazers", "Zeroes", "Integers",
         "Novas", "Martians", "Quasars", "Electrons",
         "Hadrons", "Borts", "Junkheaps", "Switchers",
-        "Gigabits", "Teraflops"
+        "Gigabits", "Teraflops", "Nulls", "Wildcats",
+        "Housecats", "Roombas", "Supers", "Wizards",
+        "Warlocks", "Warlords", "Nerds", "Dorks",
+        "Geeks", "Weirdos", "Jerks", "Jerkfaces",
+        "Crapotrons", "Flying Toasters", "Donkeys", "Earthlings",
+        "Humans", "Robos", "Spotters", "Weaklings",
+        "Baddies", "Not-Zees", "Clowns", "Morons",
+        "Idiots"
     };
 
 
@@ -98,7 +103,8 @@ class NameGenerator
         "Dugnutt", "McGee", "McGill", "Blargenstein", "Dorkinson",
         "Connor", "Five", "Sixty-Nine", "Borkenson", "Jerkenorf",
         "Borkensoft", "Platinum", "Aluminum", "Jones", "Jackson",
-        "Junkenstein", "Bonzalez", "McBain", "Toyota", "Honda"
+        "Junkenstein", "Bonzalez", "McBain", "Toyota", "Honda",
+        "Dinkleburg"
     };
 
     public static string GenerateCityName()
@@ -113,10 +119,10 @@ class NameGenerator
         if (citySeed.useTypeAffix)
         {
             string affix = cityTypeAffixes[Random.Range(0, cityTypeAffixes.Length)]; 
-            result += (affix[0] == '-' ? "" : " ") + affix;
+            result += (affix[0] == '-' ? affix.Substring(1) : affix);
         }
 
-        if (citySeed.useExtraAffix) result += " " + cityExtraAffixes[Random.Range(0, cityExtraAffixes.Length)];
+        result += " " + teamNames[Random.Range(0, teamNames.Length)];
 
         return result; 
     }

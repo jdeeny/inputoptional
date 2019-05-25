@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefab;
     public GameObject boundsPrefab;
 
-    public int playersPerTeam;
+    public int playToScore; //Ideally the same as playersPerTeam 
+    public int playersPerTeam; 
     public int maxTeams;
 
     public GameObject ball = null;
