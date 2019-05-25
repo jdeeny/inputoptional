@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: 210830b028550ec4694a3777f47169b2, type: 3}
   m_Sun: {fileID: 1694119350}
-  m_IndirectSpecularColor: {r: 0.17617273, g: 0.22048518, b: 0.30281168, a: 1}
+  m_IndirectSpecularColor: {r: 0.17617275, g: 0.22048518, b: 0.30281168, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -49,14 +49,14 @@ LightmapSettings:
     serializedVersion: 2
     m_BounceScale: 1
     m_IndirectOutputScale: 1
-    m_AlbedoBoost: 1
+    m_AlbedoBoost: 2
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 1
-    m_BakeResolution: 0.2
+    m_BakeResolution: 2.5
     m_AtlasSize: 2048
     m_AO: 1
     m_AOMaxDistance: 25
@@ -76,7 +76,7 @@ LightmapSettings:
     m_BakeBackend: 1
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
-    m_PVRSampleCount: 32
+    m_PVRSampleCount: 64
     m_PVRBounces: 4
     m_PVREnvironmentSampleCount: 16
     m_PVREnvironmentReferencePointCount: 2048
@@ -324,8 +324,8 @@ Camera:
   m_GameObject: {fileID: 1338909653}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -347,7 +347,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: 3
+  m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -365,13 +365,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338909653}
-  m_LocalRotation: {x: -0, y: 0.9077115, z: -0.41959485, w: 0}
-  m_LocalPosition: {x: -1.6, y: 25.16, z: 22.6}
+  m_LocalRotation: {x: -0, y: 0.9393112, z: -0.34306648, w: 0}
+  m_LocalPosition: {x: 37.33, y: 15.25, z: 9.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 49.618004, y: 180.00002, z: 0}
+  m_LocalEulerAnglesHint: {x: 40.128002, y: 180.00002, z: 0}
 --- !u!114 &1338909657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,9 +399,9 @@ MonoBehaviour:
   m_NearClip: 0.1
   m_FarClipMax: 100
   m_GlobalDensityMult: 1
-  m_ConstantFog: 1
-  m_HeightFogAmount: 0
-  m_HeightFogExponent: 0
+  m_ConstantFog: 0
+  m_HeightFogAmount: 3
+  m_HeightFogExponent: 0.05
   m_HeightFogOffset: 0
   m_NoiseFogAmount: 0.15
   m_NoiseFogScale: 0.4
@@ -508,6 +508,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4471992356863162079, guid: 0ec92b9c9ab645d56b4ce51302502025,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618964634966369339, guid: 0ec92b9c9ab645d56b4ce51302502025,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5191919739873761286, guid: 0ec92b9c9ab645d56b4ce51302502025,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec92b9c9ab645d56b4ce51302502025, type: 3}

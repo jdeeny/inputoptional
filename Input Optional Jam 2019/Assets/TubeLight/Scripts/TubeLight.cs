@@ -18,7 +18,7 @@ public class TubeLight : MonoBehaviour
 	Material m_ProxyMaterial;
 
 	public bool m_RenderSource = false;
-	Renderer m_SourceRenderer;
+	SkinnedMeshRenderer m_SourceRenderer;
 	Transform m_SourceTransform;
 	Mesh m_SourceMesh;
 	float m_LastLength = -1;
@@ -64,15 +64,16 @@ public class TubeLight : MonoBehaviour
 		// Can't create the MeshFilter here, since for some reason the DontSave flag has
 		// no effect on it. Has to be added to the prefab instead.
 		//m_SourceMeshFilter = gameObject.AddComponent<MeshFilter>();
-		MeshFilter mfs = gameObject.GetComponent<MeshFilter>();
-		// Hmm, causes trouble
-		// mfs.hideFlags = HideFlags.HideInInspector;
-		mfs.sharedMesh = m_SourceMesh;
+		// MeshFilter mfs = gameObject.GetComponent<MeshFilter>();
+		// // Hmm, causes trouble
+		// // mfs.hideFlags = HideFlags.HideInInspector;
+		// mfs.sharedMesh = m_SourceMesh;
 
 		// A similar problem here.
 		// m_SourceRenderer = gameObject.AddComponent<MeshRenderer>();
-		m_SourceRenderer = gameObject.GetComponent<MeshRenderer>();
+		m_SourceRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
 		m_SourceRenderer.enabled = true;
+		m_SourceRenderer.sharedMesh = m_SourceMesh;
 
 		// We want it to be pickable in the scene view, so no HideAndDontSave
 		// Hmm, causes trouble
