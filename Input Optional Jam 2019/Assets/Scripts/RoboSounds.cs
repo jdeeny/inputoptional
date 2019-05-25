@@ -6,10 +6,16 @@ public class RoboSounds : MonoBehaviour
 {
     [SerializeField]
     private AudioClip[] footstepClips;
+    [SerializeField]
+    private AudioClip[] crashClips;
+
     private AudioSource audioSource;
+    private AudioSource crashSource;
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        var sources = GetComponents<AudioSource>();
+        audioSource = sources[0];
+        crashSource = sources[1];
     }
 
     private void LeftFootstep()
@@ -26,5 +32,15 @@ public class RoboSounds : MonoBehaviour
     private AudioClip GetRandomFootstepClip()
     {
         return footstepClips[Random.Range(0, footstepClips.Length)];
+    }
+
+    private AudioClip GetRandomCrashClip()
+    {
+        return crashClips[Random.Range(0, crashClips.Length)];
+    }
+
+    public void PlayCrash()
+    {
+        crashSource.PlayOneShot(GetRandomCrashClip());
     }
 }

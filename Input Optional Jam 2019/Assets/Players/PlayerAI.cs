@@ -78,6 +78,7 @@ public class PlayerAI : MonoBehaviour
     // Animator Animations
 	readonly int animatorGrounded = Animator.StringToHash("Base Layer.Grounded.Grounded");
 
+    RoboSounds roboSounds;
 
     // parameters needed to control character
     bool _onGround; // Is the character on the ground
@@ -96,6 +97,7 @@ public class PlayerAI : MonoBehaviour
 
     void Start()
     {
+        roboSounds = GetComponent<RoboSounds>();
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -347,6 +349,7 @@ public class PlayerAI : MonoBehaviour
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
             //Debug.Log("velDiff: " + velDiff);
             if(Random.Range(-10f, 10f) > velDiff) {
+                roboSounds.PlayCrash();
                 rb.velocity = theirVel * Random.Range(1f, 5f);
                 RagdollIn();
             }
@@ -848,6 +851,7 @@ public class PlayerAI : MonoBehaviour
             {
                 _groundChecker = true;
                 //Debug.DrawRay(contact.point, contact.normal, Color.blue);
+                roboSounds.PlayCrash();
                 break;
             }
         }
