@@ -41,7 +41,8 @@ public class PlayerAI : MonoBehaviour
     CapsuleCollider col;
     Rigidbody rb;
     Animator animator;
-
+    
+    public Transform hand;
 
     // constants:
     const float JumpPower = 5f;		// determines the jump force applied when jumping (and therefore the jump height)
@@ -68,6 +69,8 @@ public class PlayerAI : MonoBehaviour
     Vector3 _storedHipsPositionPrivBlend;
 	bool _groundChecker;
 	float _jumpStartedTime;
+    bool _throwing = false;
+    Vector3 _throwLocation;
     
     public Vector3 CharacterVelocity { get { return _onGround ? rb.velocity : _airVelocity; } }
     // Animator parameters
@@ -75,6 +78,7 @@ public class PlayerAI : MonoBehaviour
     readonly int animatorTurn = Animator.StringToHash("Turn");
     readonly int animatorCrouch = Animator.StringToHash("Crouch");
     readonly int animatorOnGround = Animator.StringToHash("OnGround");
+    readonly int animatorThrowing = Animator.StringToHash("Throwing");
     readonly int animatorJump = Animator.StringToHash("Jump");
     readonly int animatorJumpLeg = Animator.StringToHash("JumpLeg");
     readonly int animatorCapsuleY = Animator.StringToHash("CapsuleY");
@@ -105,6 +109,13 @@ public class PlayerAI : MonoBehaviour
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        hand = gameObject.transform; //default incase we can't find the hand
+        var limbs = gameObject.GetComponentsInChildren<Transform>();
+        foreach(var l in limbs) {
+            if (l.name == "mixamorig:Spine1") {
+                hand = l;
+            }
+        }
         gameObject.layer = LayerMask.NameToLayer("Player");
 
 
@@ -136,7 +147,8 @@ public class PlayerAI : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        _moveInput = Vector3.zero;
+        if(_hipsTransformRigid == null) return;
         if (ragdollState == RagdollState.WaitStablePosition &&
             _hipsTransformRigid.velocity.magnitude < 0.1f)
         {
@@ -151,19 +163,21 @@ public class PlayerAI : MonoBehaviour
             RagdollOut();
         }
 
-        if (ragdollState == RagdollState.Ragdolled) {
+        if (IsRagdolled) {
             if(!PlayerTouchGound()) {
                 onGroundSince = Time.time;
-            } else if(onGroundSince + Random.Range(0.4f, 2f) < Time.time) {
+            } else if(Random.Range(0f, 1f) < 0.1) {
                 RagdollOut();
             }
         }
 
         visionSets = UpdatePlayerVision();
 
-        reaction_remaining -= Time.deltaTime;
+/*         reaction_remaining -= Time.deltaTime;
         if(reaction_remaining > 0f)
-            return;
+            return;*/
+
+        //_moveInput = Vector3.zero;
 
         switch (current_command)
         {
@@ -184,8 +198,8 @@ public class PlayerAI : MonoBehaviour
                 //RunTo(GetBallCarrierLocation());
                 break;
             case PlayerCommand.Pass:
-                StopMoving();
-                //PassTo(new Vector3(0f, 0f, 0f));
+                //StopMoving();
+                PassTo(new Vector3(0f, 0f, 0f));
                 break;
         }
 
@@ -263,6 +277,7 @@ public class PlayerAI : MonoBehaviour
         animator.SetFloat(animatorForward, _forwardAmount, 0.1f, Time.deltaTime);
         animator.SetFloat(animatorTurn, _turnAmount, 0.1f, Time.deltaTime);
         animator.SetBool(animatorOnGround, _onGround);
+        animator.SetBool(animatorThrowing, _throwing);
         if (!_onGround)	// if flying
         {
             animator.SetFloat(animatorJump, CharacterVelocity.y);
@@ -289,6 +304,7 @@ public class PlayerAI : MonoBehaviour
             //dir.y = 0;
 
         _moveInput = location - transform.position; //transform.TransformDirection(transform.position - location).normalized;
+        //Debug.Log("loc: " + location + " pos: " + transform.position);
         _moveInput.y = 0f;
 //        Debug.Log("Move input: " + _moveInput);
 
@@ -300,7 +316,7 @@ public class PlayerAI : MonoBehaviour
     {
         _moveInput = location - transform.position;
         _moveInput.y = 0f;
-        _moveInput = Quaternion.Euler(0, 180, 0) * _moveInput;
+        //_moveInput = Quaternion.Euler(0, 180, 0) * _moveInput;
         //_moveInput = new Vector3(1f,0f,1f);//transform.TransformVector(transform.position - location);
 
 /*        if (_onGround)
@@ -348,6 +364,7 @@ public class PlayerAI : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
+            Debug.Log("Collide: " + col.gameObject.name);
             var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
@@ -400,14 +417,20 @@ public class PlayerAI : MonoBehaviour
     {
         Vector3 target = Vector3.zero;
 
+        int n = 0;
         foreach(var c in visionSets["vision"])
         {
             target += c.transform.position;
+            n++;
         }
-        target /= visionSets["vision"].Count;
+        if(n > 0) {
+            target /= n;
+        } else {
+            target = transform.position;
+        }
 
         
-        RunAwayFrom(target);
+        RunTo(target);
     }
 
     public void SetCommand(PlayerCommand command)
@@ -477,10 +500,17 @@ public class PlayerAI : MonoBehaviour
 
     void PassTo(Vector3 location)
     {
-        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(location);
+        _throwing = true;
+        _throwLocation = location;
     }
 
-
+    // Animation event so throw is timed with arm
+    void DoThrow()
+    {
+        Debug.Log("Throw callback");
+        _throwing = false;
+        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(_throwLocation);
+    }
 
 
     private void ActivateRagdollParts(bool activate)
@@ -800,8 +830,8 @@ public class PlayerAI : MonoBehaviour
     }
     void OnAnimatorMove()
     {
-        if (Time.deltaTime < Mathf.Epsilon)
-            return;
+        //if (Time.deltaTime < Mathf.Epsilon)
+            //return;
 
         Vector3 deltaPos;
         Vector3 deltaGravity = Physics.gravity * Time.deltaTime;
@@ -837,12 +867,9 @@ public class PlayerAI : MonoBehaviour
     {
         // if collision comes from botton, that means
         // that character on the ground
-        if(col == null) 
-            return;
-        
-
-        HandleSpotCollision(collision);
-        HandlePlayerCollision(collision);
+        if(col == null) {
+            col = gameObject.GetComponent<CapsuleCollider>();
+        }
 
         float charBottom =
             transform.position.y +
@@ -859,6 +886,22 @@ public class PlayerAI : MonoBehaviour
                 break;
             }
         }
+
+        /*if(!_groundChecker) {
+            Debug.Log("Not on ground: " + charBottom);
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                Debug.Log("contact: " + contact.point.y + " " + collision.gameObject.name);
+                if (contact.point.y < charBottom && !contact.otherCollider.transform.IsChildOf(transform))
+                {
+                    Debug.Log("contact ok: " + contact.point.y);
+                    break;
+                }
+            }
+        }*/
+
+        HandleSpotCollision(collision);
+        HandlePlayerCollision(collision);
     }
 
     void OnCollisionStay(Collision collision)
@@ -882,6 +925,8 @@ public class PlayerAI : MonoBehaviour
     }
     void UpdatePlayerPosition(Vector3 deltaPos)
     {
+        if(Time.deltaTime <= Mathf.Epsilon) return;
+        
         Vector3 finalVelocity = deltaPos / Time.deltaTime;
         if (!_jumpPressed)
         {
@@ -891,18 +936,24 @@ public class PlayerAI : MonoBehaviour
         {
             _jumpStartedTime = Time.time;
         }
+        if (System.Single.IsNaN(finalVelocity.x)) finalVelocity.x = 0f;
+        if (System.Single.IsNaN(finalVelocity.y)) finalVelocity.y = 0f;
+        if (System.Single.IsNaN(finalVelocity.z)) finalVelocity.z = 0f;
+
         _airVelocity = finalVelocity;		// i need this to correctly detect player velocity in air mode
         rb.velocity = finalVelocity;
+        //Debug.Log("vel: " + rb.velocity);
     }
     
     void ApplyExtraTurnRotation(int currentAnimation)
     {
-        if (currentAnimation != animatorGrounded)
+        if (currentAnimation != animatorGrounded || Time.deltaTime > Mathf.Epsilon)
             return;
 
         // help the character turn faster (this is in addition to root rotation in the animation)
         float turnSpeed = Mathf.Lerp(StationaryTurnSpeed, MovingTurnSpeed,
                                         _forwardAmount);
+
         transform.Rotate(0, _turnAmount * turnSpeed * Time.deltaTime, 0);
     }
     
@@ -914,9 +965,7 @@ public class PlayerAI : MonoBehaviour
 
         //_moveInput = new Vector3(1f, 0, 1f);
 
-        Vector3 localMove = transform.InverseTransformDirection(_moveInput);
-
-        //Vector3 localMove = rb.velocity;
+        Vector3 localMove = transform.InverseTransformDirection(_moveInput * 100);
 
         if ((Mathf.Abs(localMove.x) > float.Epsilon) &
             (Mathf.Abs(localMove.z) > float.Epsilon))
@@ -925,6 +974,7 @@ public class PlayerAI : MonoBehaviour
             _turnAmount = 0f;
 
         _forwardAmount = localMove.z;
+        //Debug.Log(gameObject.name + " fwd: " + _forwardAmount + " turn: " + _turnAmount + " move: " + _moveInput + " local: " + localMove);
     }
 
     void HandleGroundedVelocities(int currentAnimation)

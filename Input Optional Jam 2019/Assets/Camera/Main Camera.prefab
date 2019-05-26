@@ -97,8 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d8d0e4a92bff2468bd171504ba280b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHeight: 30
   followDistance: 3.5
-  followOffset: {x: 0, y: 25, z: -2}
+  followOffset: {x: 0, y: 18, z: 5}
 --- !u!114 &1736674366
 MonoBehaviour:
   m_ObjectHideFlags: 0

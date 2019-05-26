@@ -20,7 +20,15 @@ public class BallBehavior : MonoBehaviour
     }
 
     void Update() {
+        if(transform.parent == null && transform.position.y <= -1f) {
+            Debug.Log("Reset Ball Position " + transform.position);
+            var newPos = transform.position;
+            newPos.y = 0.5f;
+            transform.position = newPos;
+        }
         throwDisableTimeout -= Time.deltaTime;
+    }
+    void FixedUpdate() {
     }
 
     void OnCollisionEnter(Collision col)
@@ -53,7 +61,8 @@ public class BallBehavior : MonoBehaviour
     void AttachToPlayer(GameObject player) {
         col.enabled = false;
         rb.isKinematic = true;
-        transform.parent = ownerPlayer.transform;
+        transform.parent = ownerPlayer.GetComponent<PlayerAI>().hand;
+        transform.position = new Vector3(0f, 1f, 0f);
     }
 
     public void Detach() {
@@ -111,6 +120,7 @@ public class BallBehavior : MonoBehaviour
         rb.isKinematic = false;
 
         rb.AddForce(new Vector3(Random.Range(-500f, 500f), Random.Range(30f, 300f), Random.Range(-500f, 500f)));
+        rb.AddTorque(new Vector3(Random.Range(-500f, 500f), Random.Range(30f, 300f), Random.Range(-500f, 500f)));
     }
 
     public void Reset() {
