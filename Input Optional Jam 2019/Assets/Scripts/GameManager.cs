@@ -79,8 +79,9 @@ public class GameManager : MonoBehaviour
         hiddenBounds.name = "hiddenBounds";
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
-        Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
+        //Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
         Destroy(hiddenBall.GetComponentInChildren<Light>());
+        Destroy(hiddenBall.GetComponentInChildren<BallBehavior>());
         SceneManager.SetActiveScene(mainScene);
     }
 
@@ -184,8 +185,8 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<BallBehavior>().Reset();
         foreach(var t in teams)
             t.ReadyKickoff();
-        state = GameState.PreKickoff;
         delay = 3f;
+        state = GameState.PreKickoff;
     }
 
     public void Score(int team) {
