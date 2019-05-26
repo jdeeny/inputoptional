@@ -20,7 +20,7 @@ public class BallBehavior : MonoBehaviour
     }
 
     void Update() {
-        if(transform.parent == null && transform.position.y <= -1f) {
+        if(transform.parent != GameManager.Instance.gameObject.transform.parent && transform.position.y <= -1f) {
             Debug.Log("Reset Ball Position " + transform.position);
             var newPos = transform.position;
             newPos.y = 0.5f;
@@ -62,14 +62,14 @@ public class BallBehavior : MonoBehaviour
         col.enabled = false;
         rb.isKinematic = true;
         transform.parent = ownerPlayer.GetComponent<PlayerAI>().hand;
-        transform.position = new Vector3(0f, 1f, 0f);
+        transform.localPosition = new Vector3(.2f, .1f, .5f);
     }
 
     public void Detach() {
         SetOwner(0, null);
         col.enabled = true;
         rb.isKinematic = false;
-        transform.parent = null;
+        transform.parent = GameManager.Instance.gameObject.transform.parent;
     }
 
     public void SetOwner(int team, GameObject player)

@@ -165,11 +165,12 @@ public class PlayerAI : MonoBehaviour
         }
 
         if (IsRagdolled) {
-            if(!PlayerTouchGound()) {
-                onGroundSince = Time.time;
-            } else if(Random.Range(0f, 1f) < 0.1) {
+            onGroundSince += Time.fixedDeltaTime;
+            if(Random.Range(-2f, onGroundSince) >= transform.position.y) {
                 RagdollOut();
             }
+        } else {
+            onGroundSince = 0f;
         }
 
         visionSets = UpdatePlayerVision();
@@ -400,14 +401,28 @@ public class PlayerAI : MonoBehaviour
     }
 
 
-    float TimeToPosition(Vector3 loc) {
-     //   maxVeloci
-        return 1f;
+    float TimeToPosition(Vector3 loc)
+    {
+        return (transform.position - loc).magnitude / GroundSpeed;
     }
+
+    Vector3 FindBallIntercept() {
+        foreach(var kv in GameManager.Instance.ballPositions) {
+            if(TimeToPosition(kv.Value) <= kv.Key) {
+                if (kv.Value.y <= 1.5f) {
+                    //Debug.Log(gameObject.name + " found intercept: " + kv.Value + " " + kv.Key);
+                    return kv.Value;
+                } else {
+                    //Debug.Log(gameObject.name + " REJECT intercept: " + kv.Value + " " + kv.Key);
+                }
+            }
+        }
+        return transform.position;
+    }    
 
     void RunToBall()
     {
-        RunTo(Vector3.zero);//GameManager.Instance.ballLandingPosition);
+        RunTo(FindBallIntercept());//Vector3.zero);//GameManager.Instance.ballLandingPosition);
     }
 
     void RunToGoal()

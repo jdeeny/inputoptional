@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         hiddenBounds.name = "hiddenBounds";
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
-        //Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
+        Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
         Destroy(hiddenBall.GetComponentInChildren<Light>());
         Destroy(hiddenBall.GetComponentInChildren<BallBehavior>());
         SceneManager.SetActiveScene(mainScene);
@@ -107,15 +107,7 @@ public class GameManager : MonoBehaviour
             timeToGround += Time.fixedDeltaTime * timeScale;
             posns[timeToGround] = hiddenBall.transform.position;
         } while (timeToGround < 10f);
-        //(hiddenBall.transform.position.y > 0.5f && timeToGround <= 5f);
-
-        //ballTimeToGround = timeToGround;
-        //ballLandingPosition = hiddenBall.transform.position;
-        //Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
         ballPositions = posns;
-        foreach(var kv in ballPositions) {
-            Debug.Log("time: " + kv.Key + " @ " + kv.Value);
-        }
     }
 
     public void ResetGame() {
