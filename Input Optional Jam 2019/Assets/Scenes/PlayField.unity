@@ -386,6 +386,7 @@ MonoBehaviour:
     type: 3}
   boundsPrefab: {fileID: 683104673942109274, guid: c8c25416a565f8147b0621e9027c8dc4,
     type: 3}
+  playToScore: 0
   playersPerTeam: 7
   maxTeams: 0
   ball: {fileID: 0}
@@ -748,13 +749,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338909653}
-  m_LocalRotation: {x: 0.4603847, y: 0.47008458, z: -0.53527546, w: 0.52966654}
-  m_LocalPosition: {x: -6, y: 146, z: -25}
+  m_LocalRotation: {x: 0.2875543, y: 0.60944366, z: -0.29669544, w: 0.6766556}
+  m_LocalPosition: {x: -117.5, y: 112.3, z: -18.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 82.286, y: 362.182, z: 271.30298}
+  m_LocalEulerAnglesHint: {x: 48.659004, y: 442.013, z: 355.57}
 --- !u!1 &1351138523
 GameObject:
   m_ObjectHideFlags: 0
