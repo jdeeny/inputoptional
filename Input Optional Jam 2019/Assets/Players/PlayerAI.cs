@@ -1246,7 +1246,10 @@ public class PlayerAI : MonoBehaviour
         return sets;
     }
 
-
+    public void Explode()
+    {
+        GameObject.Destroy(gameObject); 
+    }
 
 
 }

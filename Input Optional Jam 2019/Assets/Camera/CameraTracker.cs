@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CameraTracker : MonoBehaviour
 {
-    public float maxHeight      = 30f; 
+    public float maxHeight      = 30f;
+    public float maxX     = 50f;
+    public float maxZ     = 50f;
     public float followDistance = 3.5f;
     public Vector3 followOffset = new Vector3(0f,25f,-2f);
 
@@ -50,6 +52,22 @@ public class CameraTracker : MonoBehaviour
 
         if (transform.localPosition.y > maxHeight) transform.localPosition = new Vector3(
             transform.localPosition.x, maxHeight, transform.localPosition.z
+        );
+        
+        if (transform.localPosition.x > maxX) transform.localPosition = new Vector3(
+            maxX, transform.localPosition.y, transform.localPosition.z
+        );
+
+        if (transform.localPosition.x < (maxX * -1)) transform.localPosition = new Vector3(
+            maxX * -1, transform.localPosition.y, transform.localPosition.z
+        );
+
+        if (transform.localPosition.z > maxZ) transform.localPosition = new Vector3(
+            transform.localPosition.x, transform.localPosition.y, maxZ
+        );
+
+        if (transform.localPosition.z < (maxZ * -1)) transform.localPosition = new Vector3(
+            transform.localPosition.x, transform.localPosition.y, (maxZ * -1)
         );
     }
 }
