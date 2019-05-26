@@ -114,7 +114,7 @@ public class Team : ScriptableObject
         do {
             circ = Random.insideUnitCircle * 30f;
         } while(Mathf.Abs(circ.x) > 5f && Mathf.Abs(circ.y) > 5f);
-        Vector3 loc = new Vector3(circ.x, 1.5f, circ.y);
+        Vector3 loc = new Vector3(circ.x, 30f, circ.y);
         GameObject new_player = Instantiate(playerPrefab, loc, Quaternion.identity);
         new_player.GetComponent<PlayerAI>().SetTeam(teamNumber);
         var renderers = new_player.transform.GetComponentsInChildren<Renderer>();

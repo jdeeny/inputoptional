@@ -155,7 +155,27 @@ public class GameManager : MonoBehaviour
             case GameState.Setup:
                 break;
             case GameState.PreKickoff:
-                delay -= Time.deltaTime;
+                int ready = 0;
+                int remain = 0;
+                foreach(var t in GameManager.Instance.teams)
+                {
+                    foreach(var p in t.players)
+                    {
+                        remain++;
+                        if(!p.GetComponent<PlayerAI>().IsRagdolled)
+                        {
+                            ready++;
+                        }
+                    }
+                }
+                if (Random.Range(0f, 1f) < (float) ready / (float) remain )
+                {
+                    delay -= Time.fixedDeltaTime;
+                } else
+                {
+                    delay += Time.fixedDeltaTime;
+                    delay = Mathf.Min(delay, 2f);
+                }
                 ProcessTeamAI();
                 if(delay <= 0) {
                     DoKickoff();
