@@ -120,7 +120,11 @@ public class Team : ScriptableObject
         var renderers = new_player.transform.GetComponentsInChildren<Renderer>();
         foreach(var r in renderers) {
             if (r.gameObject.name == "RobbitBody") {
-               r.materials[0].color = c;
+                r.materials[0].color = c;
+                r.materials[0].EnableKeyword("_Metallic");
+                r.materials[0].SetFloat("_Metallic", 0.9f);
+                r.materials[1].EnableKeyword("_Metallic");
+                r.materials[1].SetFloat("_Metallic", 0.9f);
             }
         }
         //new_player.transform.GetComponentInChildren<Renderer>().material.color = c;
