@@ -62,7 +62,7 @@ public class BallBehavior : MonoBehaviour
         col.enabled = false;
         rb.isKinematic = true;
         transform.parent = ownerPlayer.GetComponent<PlayerAI>().hand;
-        transform.localPosition = new Vector3(.2f, .1f, .5f);
+        transform.localPosition = new Vector3(.4f, .1f, .2f);
     }
 
     public void Detach() {
