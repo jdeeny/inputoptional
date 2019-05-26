@@ -47,7 +47,7 @@ AnimatorController:
     m_Controller: {fileID: 0}
   - m_Name: CapsuleY
     m_Type: 1
-    m_DefaultFloat: 1.6
+    m_DefaultFloat: 4
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
@@ -952,9 +952,6 @@ AnimatorStateMachine:
   m_StateMachineTransitions:
   - first: {fileID: 0}
     second: []
-  - first: {fileID: 110705439}
-    second:
-    - {fileID: 110934624}
   - first: {fileID: 110781930}
     second:
     - {fileID: 110969146}
@@ -967,6 +964,9 @@ AnimatorStateMachine:
     second:
     - {fileID: 110939348}
     - {fileID: 110995194}
+  - first: {fileID: 110705439}
+    second:
+    - {fileID: 110934624}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -60, y: -60, z: 0}
   m_EntryPosition: {x: 60, y: 36, z: 0}

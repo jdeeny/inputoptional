@@ -45,10 +45,10 @@ public class PlayerAI : MonoBehaviour
     public Transform hand;
 
     // constants:
-    const float JumpPower = 5f;		// determines the jump force applied when jumping (and therefore the jump height)
-    const float GroundSpeed = 15f;
-    const float AirSpeed = 5f;		// determines the max speed of the character while airborne
-    const float AirControl = 2f;	// determines the response speed of controlling the character while airborne
+    const float JumpPower = 8f;		// determines the jump force applied when jumping (and therefore the jump height)
+    const float GroundSpeed = 12f;
+    const float AirSpeed = 1f;		// determines the max speed of the character while airborne
+    const float AirControl = 0.1f;	// determines the response speed of controlling the character while airborne
     const float StationaryTurnSpeed = 180f;	// additional turn speed added when the player is stationary (added to animation root rotation)
     const float MovingTurnSpeed = 360f;		// additional turn speed added when the player is moving (added to animation root rotation)
     const float RunCycleLegOffset = 0.2f;	// animation cycle offset (0-1) used for determining correct leg to jump off
@@ -366,7 +366,7 @@ public class PlayerAI : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            Debug.Log("Collide: " + col.gameObject.name);
+            //Debug.Log("Collide: " + col.gameObject.name);
             var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
@@ -407,22 +407,33 @@ public class PlayerAI : MonoBehaviour
     }
 
     Vector3 FindBallIntercept() {
-        foreach(var kv in GameManager.Instance.ballPositions) {
-            if(TimeToPosition(kv.Value) <= kv.Key) {
-                if (kv.Value.y <= 1.5f) {
+        float t = 0f;
+        Vector3 p = transform.position;
+        foreach(var loc in GameManager.Instance.ballPositions) {
+            p = loc;
+            if(TimeToPosition(loc) <= t) {
+                if (loc.y <= 9f) {
                     //Debug.Log(gameObject.name + " found intercept: " + kv.Value + " " + kv.Key);
-                    return kv.Value;
+                    return loc;
                 } else {
                     //Debug.Log(gameObject.name + " REJECT intercept: " + kv.Value + " " + kv.Key);
                 }
             }
+            t += Time.fixedDeltaTime * 2;
         }
-        return transform.position;
+        return p;
     }    
 
     void RunToBall()
     {
-        RunTo(FindBallIntercept());//Vector3.zero);//GameManager.Instance.ballLandingPosition);
+        var intercept = FindBallIntercept();
+        
+        var diff = transform.position - intercept;
+        diff.y = 0f;
+        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 8f) {
+            _jump = true;
+        }
+        RunTo(intercept);//Vector3.zero);//GameManager.Instance.ballLandingPosition);
     }
 
     void RunToGoal()
@@ -904,23 +915,10 @@ public class PlayerAI : MonoBehaviour
             {
                 _groundChecker = true;
                 //Debug.DrawRay(contact.point, contact.normal, Color.blue);
-                roboSounds.PlayCrash();
+//                roboSounds.PlayCrash();
                 break;
             }
         }
-
-        /*if(!_groundChecker) {
-            Debug.Log("Not on ground: " + charBottom);
-            foreach (ContactPoint contact in collision.contacts)
-            {
-                Debug.Log("contact: " + contact.point.y + " " + collision.gameObject.name);
-                if (contact.point.y < charBottom && !contact.otherCollider.transform.IsChildOf(transform))
-                {
-                    Debug.Log("contact ok: " + contact.point.y);
-                    break;
-                }
-            }
-        }*/
 
         HandleSpotCollision(collision);
         HandlePlayerCollision(collision);
@@ -1011,7 +1009,8 @@ public class PlayerAI : MonoBehaviour
             return;
 
         // jump!
-        Vector3 newVelocity = CharacterVelocity;
+        Debug.Log("JUMP!");
+        Vector3 newVelocity = Vector3.zero;//CharacterVelocity / 10f;
         newVelocity.y += JumpPower;
         _airVelocity = newVelocity;
 

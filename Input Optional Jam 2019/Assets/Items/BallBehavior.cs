@@ -62,7 +62,7 @@ public class BallBehavior : MonoBehaviour
         col.enabled = false;
         rb.isKinematic = true;
         transform.parent = ownerPlayer.GetComponent<PlayerAI>().hand;
-        transform.localPosition = new Vector3(.4f, .1f, .2f);
+        transform.localPosition = new Vector3(.6f, 0f, .2f);
     }
 
     public void Detach() {
@@ -119,8 +119,8 @@ public class BallBehavior : MonoBehaviour
 
         rb.isKinematic = false;
 
-        rb.AddForce(new Vector3(Random.Range(-500f, 500f), Random.Range(30f, 300f), Random.Range(-500f, 500f)));
-        rb.AddTorque(new Vector3(Random.Range(-500f, 500f), Random.Range(30f, 300f), Random.Range(-500f, 500f)));
+        rb.AddForce(new Vector3(Random.Range(-200f, 200f), Random.Range(50f, 200f), Random.Range(-200f, 200f)));
+        rb.AddTorque(new Vector3(Random.Range(-200f, 200f), Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
     }
 
     public void Reset() {

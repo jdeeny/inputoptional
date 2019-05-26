@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     GameObject hiddenBall;
 
     float timeSinceLastHiddenSim = 0f;
-    float timeBetweenHiddenSim = 0.25f;
+    float timeBetweenHiddenSim = 0.5f;
     GameState state;
 
     public float newPlayerChance;
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     //public float ballTimeToGround = 0f;
     //public Vector3 ballLandingPosition = Vector3.zero;
 
-    public Dictionary<float, Vector3> ballPositions = new Dictionary<float, Vector3>();
+    public List<Vector3> ballPositions = new List<Vector3>();
 
     // Start is called before the first frame update
     void Start()
@@ -100,13 +100,13 @@ public class GameManager : MonoBehaviour
         float timeScale = 2f;
         float timeToGround = 0f;
 
-        Dictionary<float, Vector3> posns = new Dictionary<float, Vector3>();
+        List<Vector3> posns = new List<Vector3>();
         do
         {
             hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * timeScale);
             timeToGround += Time.fixedDeltaTime * timeScale;
-            posns[timeToGround] = hiddenBall.transform.position;
-        } while (timeToGround < 10f);
+            posns.Add(hiddenBall.transform.position);
+        } while (timeToGround < 6f);
         ballPositions = posns;
     }
 
