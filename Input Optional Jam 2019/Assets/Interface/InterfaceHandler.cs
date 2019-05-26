@@ -56,7 +56,7 @@ public class InterfaceHandler : MonoBehaviour
     {
         //Make the goal banner appear temporarily, play sounds
         //Need to get the scoring team and player?
-        goalIndicator.ShowScore(playerName, GameManager.Instance.teams[team].teamName, 0); 
+        goalIndicator.ShowScore(playerName, GameManager.Instance.teams[team-1].teamName, 0); 
     }
 
     public void ShowEndScreen()

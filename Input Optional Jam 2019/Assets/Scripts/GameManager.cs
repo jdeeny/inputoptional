@@ -222,12 +222,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void Score(int team, string playerName) {
-        teams[team].teamScore++; 
+        teams[team-1].teamScore++; 
 
-        InterfaceHandler.instance.ShowGoalBanner(team, playerName, teams[team].teamScore);
+        InterfaceHandler.instance.ShowGoalBanner(team, playerName, teams[team-1].teamScore);
         InterfaceHandler.instance.UpdateTeamScores(); 
 
-        if (teams[team].teamScore >= playToScore)
+        if (teams[team-1].teamScore >= playToScore)
         {
             Debug.Log("ShowEndScreen");
             InterfaceHandler.instance.ShowEndScreen(); 

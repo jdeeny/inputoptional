@@ -405,7 +405,7 @@ public class PlayerAI : MonoBehaviour
                 //Debug.Log("Hit Spot and have ball");
 
                 GameManager.Instance.ball.GetComponent<BallBehavior>().Detach();
-                GameManager.Instance.Score(GameManager.Instance.GetBallOwner(), playerName);
+                GameManager.Instance.Score(team, playerName);
 
                 foreach (Team t in GameManager.Instance.teams)
                 {
