@@ -164,12 +164,16 @@ public class PlayerAI : MonoBehaviour
         }
 
         if (IsRagdolled) {
-            if(!PlayerTouchGound()) {
-                onGroundSince = Time.time;
-            } else if(Random.Range(0f, 1f) < 0.1) {
+            onGroundSince += Time.fixedDeltaTime;
+            if(Random.Range(-2f, onGroundSince) > transform.position.y) {
                 RagdollOut();
             }
+        } else {
+            onGroundSince = 0f;
         }
+
+        if (!_enabled)
+            return;
 
         visionSets = UpdatePlayerVision();
 
@@ -203,8 +207,6 @@ public class PlayerAI : MonoBehaviour
                 break;
         }
 
-        if (!_enabled)
-            return;
 
         _onGround = !_jumpPressed && PlayerTouchGound();
         int currentAnimation = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
