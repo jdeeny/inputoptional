@@ -23,8 +23,7 @@ public class PlayerAI : MonoBehaviour
     public float turn_speed;
     public float reaction_base;
     public float reaction_random;
-    float nearRadius = 5f;
-    float visionRadius = 30f;
+    float visionRadius = 5f;
 
     float reaction_remaining = 0;
 
@@ -99,6 +98,10 @@ public class PlayerAI : MonoBehaviour
     protected Vector3 _airVelocity;
     protected bool _jumpPressed = false;
     protected bool _firstAnimatorFrame = true;  // needed for prevent changing position in first animation frame
+
+    bool _juke = false;
+    Vector3 _jukeLocation;
+    float _jukeTime;
 
     float onGroundSince = 0f;
     Dictionary<string, HashSet<Collider>> visionSets;
@@ -194,6 +197,13 @@ public class PlayerAI : MonoBehaviour
                 break;
             case PlayerCommand.GetOpen:
                 RunToOpenArea();
+                break;
+            case PlayerCommand.Hit:
+                var player = GameManager.Instance.GetBallPlayer();
+                if(player != null)
+                {
+                    RunTo(player.transform.position);
+                }
                 break;
             case PlayerCommand.Protect:
                 StopMoving();
@@ -299,20 +309,62 @@ public class PlayerAI : MonoBehaviour
 
     void RunTo(Vector3 location)
     {
+        if(_juke)
+        {
+            _jukeTime -= Time.fixedDeltaTime;
+            if (_jukeTime <= 0)
+            {
+                _juke = false;
+            }
+            else
+            {
+                _moveInput = (_jukeLocation - transform.position) * 5f; //transform.TransformDirection(transform.position - location).normalized;
+                _moveInput.y = 0f;
+                return;
+            }
+        }
+
+        var loc = location;
+        if (visionSets["front"].Count > 0)
+        {
+            var center = visionSets["frontCenter"].Count;
+            var left = visionSets["frontLeft"].Count;// + visionSets["nearLeft"].Count;
+            var right = visionSets["frontRight"].Count;// + visionSets["nearRight"].Count;
+            if (center < left && center < right)
+            {
+                //Debug.Log("Opponent in center but going forwards");
+            }
+            else if (left < right)
+            {
+                //Debug.Log("Juke Left");
+                loc = Quaternion.Euler(0, -90, 0) * loc;
+                _juke = true;
+                _jukeTime = 0.15f;
+                _jukeLocation = loc;
+            }
+            else
+            {
+                //Debug.Log("Juke Right");
+                loc = Quaternion.Euler(0, 90, 0) * loc;
+                _juke = true;
+                _jukeTime = 0.15f;
+                _jukeLocation = loc;
+            }
+        }
+        else
+        {
+            //Debug.Log("nearFront empty");
+        }
+
+
         //if (_onGround)
         //{
-            //transform.LookAt(location);
-            //Vector3 dir = transform.forward.normalized;
-            //dir.y = 0;
+        //transform.LookAt(location);
+        //Vector3 dir = transform.forward.normalized;
+        //dir.y = 0;
 
-        _moveInput = (location - transform.position) * 5f; //transform.TransformDirection(transform.position - location).normalized;
-        //Debug.Log("loc: " + location + " pos: " + transform.position);
+        _moveInput = (loc - transform.position) * 5f; //transform.TransformDirection(transform.position - location).normalized;
         _moveInput.y = 0f;
-//        Debug.Log("Move input: " + _moveInput);
-
-//            _moveInput = transform.TransformDirection(location - transform.position);
-            //rb.AddForce(dir * thrust, ForceMode.Impulse);
-        //}
     }
     void RunAwayFrom(Vector3 location)
     {
@@ -364,10 +416,19 @@ public class PlayerAI : MonoBehaviour
 
     void HandlePlayerCollision(Collision col)
     {
+        if (rb == null) return;
         if (col.gameObject.tag == "Player")
         {
-            //Debug.Log("Collide: " + col.gameObject.name);
-            var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
+            var theirRb = col.gameObject.GetComponent<Rigidbody>();
+            Vector3 theirVel;
+            if (theirRb == null)
+            {
+                theirVel = Vector3.zero;
+            } else
+            {
+                theirVel = theirRb.velocity;
+            }
+
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
             //Debug.Log("velDiff: " + velDiff);
@@ -438,7 +499,8 @@ public class PlayerAI : MonoBehaviour
 
     void RunToGoal()
     {
-        RunTo(GameManager.Instance.spot.transform.position);
+        var loc = GameManager.Instance.spot.transform.position;
+        RunTo(loc);
     }
 
 
@@ -1081,8 +1143,7 @@ public class PlayerAI : MonoBehaviour
         LayerMask layerMaskBall = LayerMask.GetMask("Ball");
         Dictionary<string, HashSet<Collider>> sets = new Dictionary<string, HashSet<Collider>>();
 
-        sets["nearBall"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskBall));
-        sets["near"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskPlayer));
+        //sets["nearBall"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskBall));
         sets["vision"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, visionRadius, layerMaskPlayer));
         sets["leftcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMaskPlayer));
         sets["rightcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMaskPlayer));
@@ -1094,9 +1155,6 @@ public class PlayerAI : MonoBehaviour
         {
             kvp.Value.Remove(col);
         }
-
-        sets["far"] = new HashSet<Collider>(sets["vision"]);
-        sets["far"].ExceptWith(sets["near"]);
 
         sets["center"] =  new HashSet<Collider>(sets["leftcenter"]);
         sets["center"].IntersectWith(sets["rightcenter"]);
@@ -1117,81 +1175,31 @@ public class PlayerAI : MonoBehaviour
         sets["back"].ExceptWith(sets["frontmiddle"]);
 
         sets["frontLeft"] = new HashSet<Collider>(sets["front"]);
-        sets["frontLeft"].ExceptWith(sets["left"]);
+        sets["frontLeft"].IntersectWith(sets["left"]);
 
         sets["frontCenter"] = new HashSet<Collider>(sets["front"]);
-        sets["frontCenter"].ExceptWith(sets["center"]);
+        sets["frontCenter"].IntersectWith(sets["center"]);
 
         sets["frontRight"] = new HashSet<Collider>(sets["front"]);
-        sets["frontRight"].ExceptWith(sets["right"]);
+        sets["frontRight"].IntersectWith(sets["right"]);
 
         sets["middleLeft"] = new HashSet<Collider>(sets["middle"]);
-        sets["middleLeft"].ExceptWith(sets["left"]);
+        sets["middleLeft"].IntersectWith(sets["left"]);
 
         sets["middleCenter"] = new HashSet<Collider>(sets["middle"]);
-        sets["middleCenter"].ExceptWith(sets["center"]);
+        sets["middleCenter"].IntersectWith(sets["center"]);
 
         sets["middleRight"] = new HashSet<Collider>(sets["middle"]);
-        sets["middleRight"].ExceptWith(sets["right"]);
+        sets["middleRight"].IntersectWith(sets["right"]);
 
         sets["backLeft"] = new HashSet<Collider>(sets["back"]);
-        sets["backLeft"].ExceptWith(sets["left"]);
+        sets["backLeft"].IntersectWith(sets["left"]);
 
         sets["backCenter"] = new HashSet<Collider>(sets["back"]);
-        sets["backCenter"].ExceptWith(sets["center"]);
+        sets["backCenter"].IntersectWith(sets["center"]);
 
         sets["backRight"] = new HashSet<Collider>(sets["back"]);
-        sets["backRight"].ExceptWith(sets["right"]);
-
-
-        sets["nearFrontLeft"] = new HashSet<Collider>(sets["frontLeft"]);
-        sets["nearFrontLeft"].ExceptWith(sets["near"]);
-
-        sets["nearFrontCenter"] = new HashSet<Collider>(sets["frontCenter"]);
-        sets["nearFrontCenter"].ExceptWith(sets["near"]);
-
-        sets["nearFrontRight"] = new HashSet<Collider>(sets["frontRight"]);
-        sets["nearFrontRight"].ExceptWith(sets["near"]);
-
-        sets["nearMiddleLeft"] = new HashSet<Collider>(sets["middleLeft"]);
-        sets["nearMiddleLeft"].ExceptWith(sets["near"]);
-
-        sets["nearMiddleRight"] = new HashSet<Collider>(sets["middleRight"]);
-        sets["nearMiddleRight"].ExceptWith(sets["near"]);
-
-        sets["nearbackLeft"] = new HashSet<Collider>(sets["backLeft"]);
-        sets["nearbackLeft"].ExceptWith(sets["near"]);
-
-        sets["nearbackCenter"] = new HashSet<Collider>(sets["backCenter"]);
-        sets["nearbackCenter"].ExceptWith(sets["near"]);
-
-        sets["nearbackRight"] = new HashSet<Collider>(sets["backRight"]);
-        sets["nearbackRight"].ExceptWith(sets["near"]);
-
-
-        sets["farFrontLeft"] = new HashSet<Collider>(sets["frontLeft"]);
-        sets["farFrontLeft"].ExceptWith(sets["far"]);
-
-        sets["farFrontCenter"] = new HashSet<Collider>(sets["frontCenter"]);
-        sets["farFrontCenter"].ExceptWith(sets["far"]);
-
-        sets["farFrontRight"] = new HashSet<Collider>(sets["frontRight"]);
-        sets["farFrontRight"].ExceptWith(sets["far"]);
-
-        sets["farMiddleLeft"] = new HashSet<Collider>(sets["middleLeft"]);
-        sets["farMiddleLeft"].ExceptWith(sets["far"]);
-
-        sets["farMiddleRight"] = new HashSet<Collider>(sets["middleRight"]);
-        sets["farMiddleRight"].ExceptWith(sets["far"]);
-
-        sets["farbackLeft"] = new HashSet<Collider>(sets["backLeft"]);
-        sets["farbackLeft"].ExceptWith(sets["far"]);
-
-        sets["farbackCenter"] = new HashSet<Collider>(sets["backCenter"]);
-        sets["farbackCenter"].ExceptWith(sets["far"]);
-
-        sets["farbackRight"] = new HashSet<Collider>(sets["backRight"]);
-        sets["farbackRight"].ExceptWith(sets["far"]);
+        sets["backRight"].IntersectWith(sets["right"]);
 
 
         /*if (Random.Range(0f, 1f) < (1f/1000f))

@@ -174,7 +174,16 @@ public class Team : ScriptableObject
     }
     void commandForceFumble()
     {
-        commandNothing();
+        foreach (GameObject p in players)
+        {
+            if (Random.Range(0, 1) < 0.5)
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.Hit);
+            } else
+            {
+                p.GetComponent<PlayerAI>().SetCommand(PlayerCommand.RunToGoal);
+            }
+        }
     }
 
     void commandPreKickoff()
