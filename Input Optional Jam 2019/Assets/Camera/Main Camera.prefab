@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5851514915715675428}
   - component: {fileID: 5851514915715675429}
   - component: {fileID: 5851514915715675434}
+  - component: {fileID: 1736674366}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -98,3 +99,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followDistance: 3.5
   followOffset: {x: 0, y: 25, z: -2}
+--- !u!114 &1736674366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5851514915715675430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f35c02a2c6230584391703bf32006791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DebugShader: {fileID: 4800000, guid: 91e29ad407521e447a7254f5c1ea9b54, type: 3}
+  m_ShadowmapShader: {fileID: 4800000, guid: 2c4cd42b134f7864fa579350e9cf6896, type: 3}
+  m_InjectLightingAndDensity: {fileID: 7200000, guid: 55812fd61bd54104aa23612fc28bfeb8,
+    type: 3}
+  m_Scatter: {fileID: 7200000, guid: 2a7c01c2354d03a4e9c31096bf130b6a, type: 3}
+  m_ApplyToOpaqueShader: {fileID: 4800000, guid: 6f73df8e11615074dbf62a3a384af521,
+    type: 3}
+  m_BlurShadowmapShader: {fileID: 4800000, guid: 701192b62a7678549918bc87434699fe,
+    type: 3}
+  m_Noise: {fileID: 2800000, guid: 35eb47181d630134c97488476efbda59, type: 3}
+  m_Debug: 0
+  m_Z: 1
+  m_NearClip: 0.1
+  m_FarClipMax: 100
+  m_GlobalDensityMult: 1
+  m_ConstantFog: 0
+  m_HeightFogAmount: 2
+  m_HeightFogExponent: 0.1
+  m_HeightFogOffset: 5
+  m_NoiseFogAmount: 0.537
+  m_NoiseFogScale: 0.1
+  m_Wind: {fileID: 0}
+  m_Anisotropy: 0.5
+  m_GlobalIntensityMult: 1
+  m_AmbientLightIntensity: 1
+  m_AmbientLightColor: {r: 1, g: 1, b: 1, a: 1}
