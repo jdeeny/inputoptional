@@ -305,7 +305,7 @@ public class PlayerAI : MonoBehaviour
             //Vector3 dir = transform.forward.normalized;
             //dir.y = 0;
 
-        _moveInput = location - transform.position; //transform.TransformDirection(transform.position - location).normalized;
+        _moveInput = (location - transform.position) * 5f; //transform.TransformDirection(transform.position - location).normalized;
         //Debug.Log("loc: " + location + " pos: " + transform.position);
         _moveInput.y = 0f;
 //        Debug.Log("Move input: " + _moveInput);
