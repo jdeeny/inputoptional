@@ -100,6 +100,7 @@ MonoBehaviour:
   maxHeight: 30
   followDistance: 3.5
   followOffset: {x: 0, y: 18, z: 5}
+  cameraFollowSpeed: 1.25
 --- !u!114 &1736674366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,10 +126,10 @@ MonoBehaviour:
   m_Debug: 0
   m_Z: 1
   m_NearClip: 0.1
-  m_FarClipMax: 100
+  m_FarClipMax: 50
   m_GlobalDensityMult: 1
-  m_ConstantFog: 0
-  m_HeightFogAmount: 2
+  m_ConstantFog: 1
+  m_HeightFogAmount: 3
   m_HeightFogExponent: 0.1
   m_HeightFogOffset: 5
   m_NoiseFogAmount: 0.537
