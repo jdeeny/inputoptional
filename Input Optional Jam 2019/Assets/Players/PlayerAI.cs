@@ -882,6 +882,8 @@ public class PlayerAI : MonoBehaviour
     }
     void UpdatePlayerPosition(Vector3 deltaPos)
     {
+        if(Time.deltaTime <= Mathf.Epsilon) return;
+        
         Vector3 finalVelocity = deltaPos / Time.deltaTime;
         if (!_jumpPressed)
         {
@@ -897,12 +899,13 @@ public class PlayerAI : MonoBehaviour
     
     void ApplyExtraTurnRotation(int currentAnimation)
     {
-        if (currentAnimation != animatorGrounded)
+        if (currentAnimation != animatorGrounded || Time.deltaTime > Mathf.Epsilon)
             return;
 
         // help the character turn faster (this is in addition to root rotation in the animation)
         float turnSpeed = Mathf.Lerp(StationaryTurnSpeed, MovingTurnSpeed,
                                         _forwardAmount);
+
         transform.Rotate(0, _turnAmount * turnSpeed * Time.deltaTime, 0);
     }
     
