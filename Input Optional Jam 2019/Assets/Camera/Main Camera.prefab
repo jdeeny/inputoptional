@@ -100,6 +100,7 @@ MonoBehaviour:
   maxHeight: 30
   followDistance: 3.5
   followOffset: {x: 0, y: 18, z: 5}
+  cameraFollowSpeed: 1.25
 --- !u!114 &1736674366
 MonoBehaviour:
   m_ObjectHideFlags: 0
