@@ -372,7 +372,7 @@ MonoBehaviour:
     type: 3}
   boundsPrefab: {fileID: 683104673942109274, guid: c8c25416a565f8147b0621e9027c8dc4,
     type: 3}
-  playToScore: 0
+  playToScore: 7
   playersPerTeam: 7
   maxTeams: 0
   ball: {fileID: 0}

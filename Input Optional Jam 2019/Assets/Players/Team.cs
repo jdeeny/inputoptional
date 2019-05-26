@@ -34,21 +34,34 @@ public class Team : ScriptableObject
 
     public int teamScore = 0; 
 
-    public void Init(GameObject playerPrefab, int players, Color c)
+    public void Init(GameObject playerPrefab, int players)
     {
         for (int i = 0; i < players; i++)
         {
-            addPlayer(playerPrefab, c, i);
+            addPlayer(playerPrefab, teamColor, i);
         }
     }
 
-    public static Team CreateInstance(GameObject prefab, int players, int number, Color color)
+    public static Team CreateInstance(GameObject prefab, int players, int number)
     {
         var team = ScriptableObject.CreateInstance<Team>();
         team.teamNumber = number;
         team.teamName = NameGenerator.GenerateCityName();
-        team.Init(prefab, players, color);
+        team.teamColor = new Color(Random.Range(0f,1f),Random.Range(0f,1f),Random.Range(0f,1f));
+        team.Init(prefab, players);
         return team;
+    }
+
+    public void resetSelf(GameObject playerPrefab, int players)
+    {
+        teamScore = 0;
+        teamName = NameGenerator.GenerateCityName();
+        teamColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+
+        for (int i = 0; i < players; i++)
+        {
+            addPlayer(playerPrefab, teamColor, i);
+        }
     }
 
     void addPlayer(GameObject playerPrefab, Color c, int playerNumber)

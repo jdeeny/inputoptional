@@ -113,9 +113,20 @@ public class GameManager : MonoBehaviour
         spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
         ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);
 
-        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1, Color.blue));
-        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2, Color.red));
-        teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3, Color.green));
+        if (teams.Count == 0)
+        {
+            Debug.Log("StartTeam");
+            teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 1));
+            teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 2));
+            teams.Add(Team.CreateInstance(playerPrefab, playersPerTeam, 3));
+        } else
+        {
+            Debug.Log("RefreshTeam");
+            foreach (Team team in teams)
+            {
+                team.resetSelf(playerPrefab, playersPerTeam); 
+            }
+        }
         timeSinceLastHiddenSim = 0f;
 
         if (InterfaceHandler.instance != null) InterfaceHandler.instance.SetupTeams(); 
@@ -188,10 +199,22 @@ public class GameManager : MonoBehaviour
         delay = 3f;
     }
 
-    public void Score(int team) {
-        if (InterfaceHandler.instance != null) InterfaceHandler.instance.ShowGoalBanner(); 
+    public void Score(int team, string playerName) {
+        teams[team].teamScore++; 
 
-        ReadyKickoff();
+        InterfaceHandler.instance.ShowGoalBanner(team, playerName, teams[team].teamScore);
+        InterfaceHandler.instance.UpdateTeamScores(); 
+
+        if (teams[team].teamScore >= playToScore)
+        {
+            Debug.Log("ShowEndScreen");
+            InterfaceHandler.instance.ShowEndScreen(); 
+        }
+        else
+        {
+            Debug.Log("Kickoff");
+            ReadyKickoff();
+        }
     }
 
     public bool IsPreKickoff() {
