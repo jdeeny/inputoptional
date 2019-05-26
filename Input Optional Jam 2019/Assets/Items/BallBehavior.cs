@@ -131,10 +131,29 @@ public class BallBehavior : MonoBehaviour
 
     public void ThrowTo(Vector3 location)
     {
-        //Debug.Log("Throwing Ball");
+        if(throwDisableTimeout > 0f)
+        {
+            return;
+        }
+        Debug.Log("Throwing Ball to: " + location);
+
+        Vector3 dist = location - transform.position;
+        dist.y = 0f;
+        float distx = dist.magnitude;
+
+        float airTime = Random.Range(0.4f, 2f);
+        float vx = distx / airTime;
+        float vy = airTime * 9.81f * 0.5f;
+
+        Vector3 result = dist.normalized * vx;
+        result.y = vy;
+
+        Debug.Log("dist: " + dist + " dx: " + distx + " time: " + airTime + " " + result);
+
         throwDisableTimeout = 0.1f;
         Detach();
-        rb.AddForce(new Vector3(Random.Range(-200f, 200f), Random.Range(2f, 20f), Random.Range(-200f, 200f)));
+        rb.velocity = Vector3.zero;
+        rb.AddForce(result, ForceMode.VelocityChange);
     }
 
 }

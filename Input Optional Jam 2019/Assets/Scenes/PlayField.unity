@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &269813526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1157700443232558933, guid: 8f468c3aecd572dbab2dcc17994e915e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1157700443146290325}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &591598092
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,10 +294,9 @@ MonoBehaviour:
     type: 3}
   ballPrefab: {fileID: 9093659497785907766, guid: bcf0ebccdde15b94ca1dcbbe31e4f202,
     type: 3}
-  boundsPrefab: {fileID: 1157700441812023374, guid: 8f468c3aecd572dbab2dcc17994e915e,
-    type: 3}
-  playToScore: 0
-  playersPerTeam: 2
+  boundsPrefab: {fileID: 269813526}
+  playToScore: 5
+  playersPerTeam: 6
   maxTeams: 0
   ball: {fileID: 0}
   spot: {fileID: 0}
@@ -301,6 +306,7 @@ MonoBehaviour:
   hiddenScene:
     m_Handle: 0
   newPlayerChance: 0.05
+  ballPositions: []
 --- !u!4 &735530722
 Transform:
   m_ObjectHideFlags: 0

@@ -102,7 +102,9 @@ public class PlayerAI : MonoBehaviour
     float _jukeTime;
 
     float onGroundSince = 0f;
-    Dictionary<string, HashSet<Collider>> visionSets;
+    public Dictionary<string, HashSet<Collider>> visionSets;
+
+    float _jumpDisableTime = 0f;
 
     void Start()
     {
@@ -149,6 +151,7 @@ public class PlayerAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        _jumpDisableTime -= Time.fixedDeltaTime;
         _moveInput = Vector3.zero;
         if(_hipsTransformRigid == null) return;
         if (ragdollState == RagdollState.WaitStablePosition &&
@@ -209,7 +212,7 @@ public class PlayerAI : MonoBehaviour
                 break;
             case PlayerCommand.Pass:
                 //StopMoving();
-                PassTo(new Vector3(0f, 0f, 0f));
+                PassTo();
                 break;
         }
 
@@ -488,7 +491,8 @@ public class PlayerAI : MonoBehaviour
         
         var diff = transform.position - intercept;
         diff.y = 0f;
-        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 8f) {
+        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 8f && _jumpDisableTime <= 0f) {
+
             _jump = true;
         }
         RunTo(intercept);//Vector3.zero);//GameManager.Instance.ballLandingPosition);
@@ -497,9 +501,9 @@ public class PlayerAI : MonoBehaviour
     void RunToGoal()
     {
 
-        if(visionSets["vision"].Count > 2 && Random.Range(0, 10) < visionSets["vision"].Count)
+        if(visionSets["vision"].Count > 2 && Random.Range(0, 25) < visionSets["vision"].Count)
         {
-            PassTo(Vector3.zero);
+            PassTo();
             return;
         }
 
@@ -597,10 +601,27 @@ public class PlayerAI : MonoBehaviour
     }
 
 
-    void PassTo(Vector3 location)
+    void PassTo()
     {
-        Debug.Log("Pass: " + location);
-        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(location);
+        var players = GameManager.Instance.teams[team - 1].players;
+        int nearbyMin = 10000;
+        Vector3 targetLoc = transform.position;
+        foreach (var p in players)
+        {
+            var c = p.GetComponent<PlayerAI>().visionSets["vision"].Count;
+            Debug.Log("Pass option: " + p.name + c);
+            if (c < nearbyMin && !p.GetComponent<PlayerAI>().IsRagdolled && p != this)
+            {
+                nearbyMin = c;
+                targetLoc = p.GetComponent<PlayerAI>().transform.position;
+            }
+        }
+        if (targetLoc == transform.position) return;
+        //        Vector3 targetLoc = players[Random.Range(0, players.Count)].transform.position;
+
+        _jumpDisableTime = 0.2f;
+
+        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(targetLoc);
     }
 
 
@@ -1009,6 +1030,7 @@ public class PlayerAI : MonoBehaviour
         if (!_jumpPressed)
         {
             finalVelocity.y = rb.velocity.y;
+            _jumpDisableTime = 0.2f;
         }
         else
         {
