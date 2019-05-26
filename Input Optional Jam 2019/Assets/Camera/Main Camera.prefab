@@ -124,10 +124,10 @@ MonoBehaviour:
   m_Debug: 0
   m_Z: 1
   m_NearClip: 0.1
-  m_FarClipMax: 100
+  m_FarClipMax: 50
   m_GlobalDensityMult: 1
-  m_ConstantFog: 0
-  m_HeightFogAmount: 2
+  m_ConstantFog: 1
+  m_HeightFogAmount: 3
   m_HeightFogExponent: 0.1
   m_HeightFogOffset: 5
   m_NoiseFogAmount: 0.537
