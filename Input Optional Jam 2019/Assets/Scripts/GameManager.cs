@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
             hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * timeScale);
             timeToGround += Time.fixedDeltaTime * timeScale;
             posns.Add(hiddenBall.transform.position);
-        } while (timeToGround < 6f);
+        } while (timeToGround < 5f);
         ballPositions = posns;
     }
 
