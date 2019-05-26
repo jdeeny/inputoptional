@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame() {
         state = GameState.Setup;
-        spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
-        ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);
+        if (spot == null) spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
+        if (ball == null) ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);
 
         if (teams.Count == 0)
         {
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
         }
         timeSinceLastHiddenSim = 0f;
 
-        if (InterfaceHandler.instance != null) InterfaceHandler.instance.SetupTeams(); 
+        InterfaceHandler.instance.SetupTeams(); 
 
         ReadyKickoff();
     }
@@ -229,12 +229,19 @@ public class GameManager : MonoBehaviour
 
         if (teams[team-1].teamScore >= playToScore)
         {
-            Debug.Log("ShowEndScreen");
-            InterfaceHandler.instance.ShowEndScreen(); 
+            InterfaceHandler.instance.ShowEndScreen();
+
+            //Destroy existing players
+            foreach (Team t in teams)
+            {
+                foreach (GameObject p in t.players)
+                {
+                    if (p.GetComponent<PlayerAI>()) p.GetComponent<PlayerAI>().Explode();
+                }
+            }
         }
         else
         {
-            Debug.Log("Kickoff");
             ReadyKickoff();
         }
     }
