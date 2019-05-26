@@ -168,6 +168,16 @@ public class PlayerAI : MonoBehaviour
             RagdollOut();
         }
 
+        if(transform.position.y < -10f)
+        {
+            Vector2 circ;
+            do
+            {
+                circ = Random.insideUnitCircle * 45f;
+            } while (Mathf.Abs(circ.x) > 18f && Mathf.Abs(circ.y) > 18f);
+            transform.position = new Vector3(circ.x, 30f, circ.y);
+        }
+
         if (IsRagdolled) {
             onGroundSince += Time.fixedDeltaTime;
             if(Random.Range(-2f, onGroundSince) >= transform.position.y) {
