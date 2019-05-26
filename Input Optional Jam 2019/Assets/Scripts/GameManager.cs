@@ -230,6 +230,7 @@ public class GameManager : MonoBehaviour
         if (teams[team-1].teamScore >= playToScore)
         {
             InterfaceHandler.instance.ShowEndScreen();
+            Camera.main.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.Pan); 
 
             //Destroy existing players
             foreach (Team t in teams)

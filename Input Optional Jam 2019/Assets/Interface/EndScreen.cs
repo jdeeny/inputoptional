@@ -67,7 +67,7 @@ public class EndScreen : MonoBehaviour
             //Update the reset text
             rebootText.text = "REBOOTING\n" + (endScreenLength - endScreenTime).ToString("0.0");
 
-            if (endScreenTime > endScreenLength || Input.anyKey)
+            if (endScreenTime > endScreenLength || Input.anyKeyDown)
             {
                 onEndScreen = false;
                 InterfaceHandler.instance.EndScreenOver();

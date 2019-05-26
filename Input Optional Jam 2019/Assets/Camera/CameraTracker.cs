@@ -10,17 +10,28 @@ public class CameraTracker : MonoBehaviour
     public float followDistance = 3.5f;
     public Vector3 followOffset = new Vector3(0f,25f,-2f);
 
-    public float cameraFollowSpeed = 2.5f; 
+    public float cameraFollowSpeed = 2.5f;
+    public float cameraLookSpeed = 3f;
 
-    private enum CameraMode
+    public Transform panPoint; 
+    
+    private Quaternion baseRotation; 
+
+    public enum CameraMode
     {
         FollowBall,
         Pan
     };
     private CameraMode mode; 
 
+    public void SetMode(CameraMode _mode)
+    {
+        mode = _mode; 
+    }
+
     private void Awake()
     {
+        baseRotation = transform.localRotation;  
         mode = CameraMode.FollowBall; 
     }
 
@@ -30,15 +41,47 @@ public class CameraTracker : MonoBehaviour
         {
             case CameraMode.FollowBall:
                 {
+                    transform.localRotation = baseRotation; 
                     PanToPoint(GameManager.Instance.ball); 
                     break; 
                 }
 
             case CameraMode.Pan:
                 {
+                    transform.position = panPoint.position;
+                    LookAtPoint(GameManager.Instance.ball); 
                     break;
                 }
         }
+
+        if (Input.anyKeyDown)
+        {
+            switch (mode)
+            {
+                case CameraMode.FollowBall:
+                    {
+                        mode = CameraMode.Pan;
+                        break; 
+                    }
+
+                case CameraMode.Pan:
+                    {
+                        mode = CameraMode.FollowBall;
+                        break; 
+                    }
+
+                default:
+                    {
+                        mode = CameraMode.FollowBall;
+                        break; 
+                    }
+            }
+        }
+    }
+
+    private void LookAtPoint(GameObject subject)
+    {
+        transform.LookAt(subject.transform); 
     }
 
     private void PanToPoint(GameObject subject)
