@@ -23,7 +23,7 @@ public class PlayerAI : MonoBehaviour
     public float turn_speed;
     public float reaction_base;
     public float reaction_random;
-    float visionRadius = 5f;
+    float visionRadius = 7f;
 
     float reaction_remaining = 0;
 
@@ -69,8 +69,6 @@ public class PlayerAI : MonoBehaviour
     Vector3 _storedHipsPositionPrivBlend;
 	bool _groundChecker;
 	float _jumpStartedTime;
-    bool _throwing = false;
-    Vector3 _throwLocation;
     
     public Vector3 CharacterVelocity { get { return _onGround ? rb.velocity : _airVelocity; } }
     // Animator parameters
@@ -289,7 +287,6 @@ public class PlayerAI : MonoBehaviour
         animator.SetFloat(animatorForward, _forwardAmount, 0.1f, Time.deltaTime);
         animator.SetFloat(animatorTurn, _turnAmount, 0.1f, Time.deltaTime);
         animator.SetBool(animatorOnGround, _onGround);
-        animator.SetBool(animatorThrowing, _throwing);
         if (!_onGround)	// if flying
         {
             animator.SetFloat(animatorJump, CharacterVelocity.y);
@@ -325,7 +322,7 @@ public class PlayerAI : MonoBehaviour
         }
 
         var loc = location;
-        if (visionSets["front"].Count > 0)
+        if (visionSets["front"].Count > 1 && Random.Range(0f, 1f) < 0.1f)
         {
             var center = visionSets["frontCenter"].Count;
             var left = visionSets["frontLeft"].Count;// + visionSets["nearLeft"].Count;
@@ -499,6 +496,13 @@ public class PlayerAI : MonoBehaviour
 
     void RunToGoal()
     {
+
+        if(visionSets["vision"].Count > 5)
+        {
+            PassTo(Vector3.zero);
+            return;
+        }
+
         var loc = GameManager.Instance.spot.transform.position;
         RunTo(loc);
     }
@@ -595,16 +599,8 @@ public class PlayerAI : MonoBehaviour
 
     void PassTo(Vector3 location)
     {
-        _throwing = true;
-        _throwLocation = location;
-    }
-
-    // Animation event so throw is timed with arm
-    void DoThrow()
-    {
-        Debug.Log("Throw callback");
-        _throwing = false;
-        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(_throwLocation);
+        Debug.Log("Pass: " + location);
+        GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(location);
     }
 
 

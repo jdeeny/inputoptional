@@ -108,10 +108,10 @@ public class Team : ScriptableObject
             teamGoal = TeamGoal.PickupBall;
         } else if(hasBall())
         {
-            if(Random.Range(0f,1f) < passChance)
-            {
-                teamGoal = TeamGoal.Pass;
-            } else
+            //if(Random.Range(0f,1f) < passChance)
+            //{
+                //teamGoal = TeamGoal.Pass;
+            //} else
             {
                 teamGoal = TeamGoal.ScoreGoal;
             }
