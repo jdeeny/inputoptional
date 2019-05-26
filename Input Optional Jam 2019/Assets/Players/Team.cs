@@ -42,12 +42,56 @@ public class Team : ScriptableObject
         }
     }
 
+    float colorDistance(Color a, Color b)
+    {
+        float h1 = 0f;
+        float s1 = 0f;
+        float v1 = 0f;
+        Color.RGBToHSV(a, out h1, out s1, out v1);
+
+        float h2 = 0f;
+        float s2 = 0f;
+        float v2 = 0f;
+        Color.RGBToHSV(b, out h2, out s2, out v2);
+
+        var diff = (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1));
+
+        Debug.Log(diff);
+        return diff;
+    }
+
+
+    float colorDiffAllowed = 0.2f;
+    bool colorOk(Color c, int tnum)
+    {
+        foreach(var t in GameManager.Instance.teams)
+        {
+            if (t.teamNumber == tnum) continue;
+            if (colorDistance(c, t.teamColor) < colorDiffAllowed)
+            {
+                return false;
+            }
+
+            if (colorDistance(c, new Color((float)0xF3 / (float)0xFF, 1f, 0f)) < colorDiffAllowed) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static Team CreateInstance(GameObject prefab, int players, int number)
     {
         var team = ScriptableObject.CreateInstance<Team>();
         team.teamNumber = number;
         team.teamName = NameGenerator.GenerateCityName();
-        team.teamColor = new Color(Random.Range(0f,1f),Random.Range(0f,1f),Random.Range(0f,1f));
+        Color c = new Color();
+        int i = 0;
+        do
+        {
+            i++;
+            c = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        } while (!team.colorOk(c, team.teamNumber) && i < 1000);
+        team.teamColor = c;
         team.Init(prefab, players);
         return team;
     }
