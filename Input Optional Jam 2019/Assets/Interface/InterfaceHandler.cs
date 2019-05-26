@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class InterfaceHandler : MonoBehaviour
 {
-    public float endScreenLength = 60f;
-    private float endScreenTime  = 0f;
-    private bool onEndScreen     = false; 
-
     public static InterfaceHandler instance
     {
         get
@@ -17,7 +13,10 @@ public class InterfaceHandler : MonoBehaviour
     }
     private static InterfaceHandler _instance;
     private TeamIndicator[] teamIndicators;
-    private GoalIndicator goalIndicator; 
+    private GoalIndicator goalIndicator;
+
+    public GameObject ingameUI;
+    public GameObject endscreenUI; 
 
     private void Awake()
     {
@@ -62,25 +61,15 @@ public class InterfaceHandler : MonoBehaviour
 
     public void ShowEndScreen()
     {
-        //Show the screen at the end of the game
-
-        //Wait however long then reset the game
-        onEndScreen   = true;
-        endScreenTime = 0f;
+        ingameUI.SetActive(false); 
+        endscreenUI.SetActive(true);
+        endscreenUI.GetComponent<EndScreen>().ShowEndScreen();
     }
 
-    //Use for any timers like the end screen
-    private void Update()
+    public void EndScreenOver()
     {
-        if (onEndScreen)
-        {
-            endScreenTime += Time.deltaTime; 
-
-            if (endScreenTime > endScreenLength)
-            {
-                onEndScreen = false;
-                GameManager.Instance.ResetGame(); 
-            }
-        }
+        ingameUI.SetActive(true); 
+        endscreenUI.SetActive(false);
+        GameManager.Instance.ResetGame(); 
     }
 }
