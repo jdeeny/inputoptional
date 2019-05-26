@@ -45,8 +45,10 @@ public class GameManager : MonoBehaviour
 
     public float newPlayerChance;
 
-    public float ballTimeToGround = 0f;
-    public Vector3 ballLandingPosition = Vector3.zero;
+    //public float ballTimeToGround = 0f;
+    //public Vector3 ballLandingPosition = Vector3.zero;
+
+    public Dictionary<float, Vector3> ballPositions = new Dictionary<float, Vector3>();
 
     // Start is called before the first frame update
     void Start()
@@ -98,15 +100,22 @@ public class GameManager : MonoBehaviour
         float timeScale = 2f;
         float timeToGround = 0f;
 
+        Dictionary<float, Vector3> posns = new Dictionary<float, Vector3>();
         do
         {
             hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * timeScale);
             timeToGround += Time.fixedDeltaTime * timeScale;
-        } while (hiddenBall.transform.position.y > 0.5f && timeToGround <= 10f);
+            posns[timeToGround] = hiddenBall.transform.position;
+        } while (timeToGround < 10f);
+        //(hiddenBall.transform.position.y > 0.5f && timeToGround <= 5f);
 
-        ballTimeToGround = timeToGround;
-        ballLandingPosition = hiddenBall.transform.position;
+        //ballTimeToGround = timeToGround;
+        //ballLandingPosition = hiddenBall.transform.position;
         //Debug.Log("Ball hits ground " + timeToGround + " seconds at " + hiddenBall.transform.position.x + ", " + hiddenBall.transform.position.z);
+        ballPositions = posns;
+        foreach(var kv in ballPositions) {
+            Debug.Log("time: " + kv.Key + " @ " + kv.Value);
+        }
     }
 
     public void ResetGame() {

@@ -46,6 +46,7 @@ public class PlayerAI : MonoBehaviour
 
     // constants:
     const float JumpPower = 5f;		// determines the jump force applied when jumping (and therefore the jump height)
+    const float GroundSpeed = 15f;
     const float AirSpeed = 5f;		// determines the max speed of the character while airborne
     const float AirControl = 2f;	// determines the response speed of controlling the character while airborne
     const float StationaryTurnSpeed = 180f;	// additional turn speed added when the player is stationary (added to animation root rotation)
@@ -398,9 +399,15 @@ public class PlayerAI : MonoBehaviour
         }
     }
 
+
+    float TimeToPosition(Vector3 loc) {
+     //   maxVeloci
+        return 1f;
+    }
+
     void RunToBall()
     {
-        RunTo(GameManager.Instance.ballLandingPosition);
+        RunTo(Vector3.zero);//GameManager.Instance.ballLandingPosition);
     }
 
     void RunToGoal()
@@ -965,7 +972,10 @@ public class PlayerAI : MonoBehaviour
 
         //_moveInput = new Vector3(1f, 0, 1f);
 
-        Vector3 localMove = transform.InverseTransformDirection(_moveInput * 100);
+        Vector3 localMoveInput = _moveInput * 10f;
+        localMoveInput = localMoveInput.magnitude > GroundSpeed ? localMoveInput.normalized * GroundSpeed : localMoveInput;
+
+        Vector3 localMove = transform.InverseTransformDirection(localMoveInput);
 
         if ((Mathf.Abs(localMove.x) > float.Epsilon) &
             (Mathf.Abs(localMove.z) > float.Epsilon))
