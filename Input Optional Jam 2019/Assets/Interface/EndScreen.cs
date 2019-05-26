@@ -20,6 +20,9 @@ public class EndScreen : MonoBehaviour
 
     public void ShowEndScreen()
     {
+        //If we're already here don't show it again.
+        if (onEndScreen) return; 
+
         onEndScreen = true;
         endScreenTime = 0f;
 
