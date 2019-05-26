@@ -26,6 +26,8 @@ public class BallBehavior : MonoBehaviour
             newPos.y = 0.5f;
             transform.position = newPos;
         }
+
+        if (transform.position.y < -10f) Reset();
         throwDisableTimeout -= Time.deltaTime;
     }
     void FixedUpdate() {
