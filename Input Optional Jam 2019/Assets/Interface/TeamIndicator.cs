@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI; 
 using TMPro; 
 
 public class TeamIndicator : MonoBehaviour
@@ -21,5 +22,12 @@ public class TeamIndicator : MonoBehaviour
             TextMeshProUGUI text = score.GetComponent<TextMeshProUGUI>();
             if (text != null) text.text = _score.ToString();
         }
+    }
+
+    public void SetColor(Color c)
+    {
+        Transform colorInner = transform.Find("ColorInner");
+        Image image          = colorInner.GetComponent<Image>();
+        image.color          = c; 
     }
 }
