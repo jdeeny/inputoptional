@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraTracker : MonoBehaviour
 {
+    public float maxHeight      = 30f; 
     public float followDistance = 3.5f;
     public Vector3 followOffset = new Vector3(0f,25f,-2f); 
 
@@ -41,6 +42,10 @@ public class CameraTracker : MonoBehaviour
         //Ball might not exist
         if (subject == null) return;
 
-        this.transform.localPosition = subject.transform.position + followOffset;
+        transform.localPosition = subject.transform.position + followOffset;
+
+        if (transform.localPosition.y > maxHeight) transform.localPosition = new Vector3(
+            transform.localPosition.x, maxHeight, transform.localPosition.z
+        );
     }
 }
