@@ -286,8 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kickoffClips:
-  - {fileID: 8300000, guid: 0e88f968f275d354993237aab0d4fd6e, type: 3}
-  - {fileID: 8300000, guid: 351400157c486e340bfcb3cb586fa259, type: 3}
+  - {fileID: 8300000, guid: 4af2bef4e5e2f914c98eaca6393452be, type: 3}
   playerPrefab: {fileID: 7054895616259288993, guid: 6c260764a66a6c6dbb7c2511ad4df053,
     type: 3}
   spotPrefab: {fileID: 55847794993600075, guid: ee2a94603c3a1d24eb23081428d8806e,
