@@ -504,14 +504,8 @@ public class PlayerAI : MonoBehaviour
     {
         _throwing = true;
         _throwLocation = location;
-    }
-
-    // Animation event so throw is timed with arm
-    void DoThrow()
-    {
-        Debug.Log("Throw callback");
-        _throwing = false;
         GameManager.Instance.ball.GetComponent<BallBehavior>().ThrowTo(_throwLocation);
+        _throwing = false;
     }
 
 
