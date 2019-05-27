@@ -427,7 +427,7 @@ public class PlayerAI : MonoBehaviour
 
     void HandlePlayerCollision(Collision col)
     {
-        if (rb == null) return;
+        if (rb == null || ragdollState != RagdollState.Animated) return;
         if (col.gameObject.tag == "Player")
         {
             var theirRb = col.gameObject.GetComponent<Rigidbody>();
@@ -445,7 +445,7 @@ public class PlayerAI : MonoBehaviour
             //Debug.Log("velDiff: " + velDiff);
             if(Random.Range(-10f, 10f) > velDiff) {
                 roboSounds.PlayCrash();
-                rb.velocity = theirVel * Random.Range(1f, 5f);
+                rb.velocity = theirVel * Random.Range(1f, 5f) + new Vector3(Random.Range(2f, 10f),Random.Range(2f, 10f),Random.Range(2f, 10f));
                 RagdollIn();
             }
         }

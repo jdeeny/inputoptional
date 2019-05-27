@@ -146,7 +146,7 @@ public class BallBehavior : MonoBehaviour
         dist.y = 0f;
         float distx = dist.magnitude;
 
-        float airTime = Random.Range(0.4f, 2f);
+        float airTime = Random.Range(2f, 4f);
         float vx = distx / airTime;
         float vy = airTime * 9.81f * 0.5f;
 
