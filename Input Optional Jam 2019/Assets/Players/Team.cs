@@ -98,6 +98,7 @@ public class Team : ScriptableObject
 
     public void resetSelf(GameObject playerPrefab, int players)
     {
+        this.players.Clear();
         teamScore = 0;
         teamName = NameGenerator.GenerateCityName();
         teamColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
