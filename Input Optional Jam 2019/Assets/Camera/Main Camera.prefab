@@ -133,7 +133,7 @@ MonoBehaviour:
   m_FarClipMax: 50
   m_GlobalDensityMult: 1
   m_ConstantFog: 1
-  m_HeightFogAmount: 3
+  m_HeightFogAmount: 1
   m_HeightFogExponent: 0.1
   m_HeightFogOffset: 5
   m_NoiseFogAmount: 0.537
