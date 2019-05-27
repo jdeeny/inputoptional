@@ -1259,10 +1259,15 @@ public class PlayerAI : MonoBehaviour
     private GameObject[] headparts;
 
     void ApplyHeadPiece() {
-        var headbit = Instantiate(headparts[Random.Range(0, headparts.Length)]);
-        foreach(var comp in gameObject.GetComponentsInChildren<GameObject>()) {
-            if(comp.name == "mixamorig:Head") {
-                headbit.transform.parent = comp.transform;
+        if(Random.Range(0f, 1f) < 0.3) return;
+        var headbit = Instantiate(headparts[Random.Range(0, headparts.Length)], Vector3.zero, Quaternion.identity);
+        foreach(var comp in gameObject.GetComponentsInChildren<Transform>()) {
+            Debug.Log(comp.gameObject.name);
+            if(comp.gameObject.name == "mixamorig:Head") {
+                Debug.Log(comp.gameObject.name);
+                headbit.transform.parent = comp;
+                headbit.transform.localRotation = Quaternion.identity;
+                headbit.transform.localPosition = new Vector3(.05f, -3.35f, 0f);
                 break;
             }
         }
