@@ -61,7 +61,7 @@ public class Team : ScriptableObject
     }
 
 
-    float colorDiffAllowed = 0.2f;
+    float colorDiffAllowed = 0.3f;
     bool colorOk(Color c, int tnum)
     {
         foreach(var t in GameManager.Instance.teams)
@@ -90,7 +90,7 @@ public class Team : ScriptableObject
         {
             i++;
             c = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        } while (!team.colorOk(c, team.teamNumber) && i < 1000);
+        } while (!team.colorOk(c, team.teamNumber) && i < 5000);
         team.teamColor = c;
         team.Init(prefab, players);
         return team;
@@ -113,8 +113,8 @@ public class Team : ScriptableObject
     {
         Vector2 circ;
         do {
-            circ = Random.insideUnitCircle * 45f;
-        } while(Mathf.Abs(circ.x) > 18f && Mathf.Abs(circ.y) > 18f);
+            circ = Random.insideUnitCircle * 28f;
+        } while(circ.magnitude < 8f);
         Vector3 loc = new Vector3(circ.x, 30f + Random.Range(0f, 5f), circ.y);
         GameObject new_player = Instantiate(playerPrefab, loc, Quaternion.identity);
         new_player.GetComponent<PlayerAI>().SetTeam(teamNumber);

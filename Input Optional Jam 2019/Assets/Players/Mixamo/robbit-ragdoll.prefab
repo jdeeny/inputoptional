@@ -1516,8 +1516,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrust: 10
   turn_speed: 0
-  reaction_base: 0.1
-  reaction_random: 0.2
+  reaction_base: 0.02
+  reaction_random: 0.1
   playerName: 
   hand: {fileID: 0}
   animationationGetUpFromBelly: GetUp.GetUpFromBelly

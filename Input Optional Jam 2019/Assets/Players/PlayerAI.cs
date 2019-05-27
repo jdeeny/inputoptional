@@ -512,7 +512,7 @@ public class PlayerAI : MonoBehaviour
         var diff = transform.position - intercept;
         diff.y = 0f;
 
-        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 4f && _jumpDisableTime <= 0f) {
+        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 2f && _jumpDisableTime <= 0f) {
 
             _jump = true;
         }
