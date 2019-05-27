@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private AudioSource kickoffSource;
 
     public AudioClip[] goalClips;
+    public AudioClip[] explosionNoises;
   
     public static GameManager Instance { get; set; }
 
@@ -58,6 +59,14 @@ public class GameManager : MonoBehaviour
     {
         if (explosionPrefabs.Length > 0)
             return explosionPrefabs[Random.Range(0, explosionPrefabs.Length - 1)];
+        else
+            return null; 
+    }
+
+    public AudioClip getRandomExplosionNoise()
+    {
+        if (explosionNoises.Length > 0)
+            return explosionNoises[Random.Range(0, explosionNoises.Length - 1)];
         else
             return null; 
     }
