@@ -13,19 +13,19 @@ public class CameraTracker : MonoBehaviour
     public Vector3 closeRotation = new Vector3(30f, 0f, 0f); 
 
     public float cameraFollowSpeed = 2.5f;
-    public float cameraLookSpeed = 3f;
 
     public Transform panPoint; 
     
     private Vector3 baseRotation;
     private float timeSinceModeSwitch;
-    public float modeSwitchLength = 2f; 
+    public float modeSwitchLength = 5f; 
 
     public enum CameraMode
     {
         FollowBall,
         CloseUp,
-        Pan
+        Pan,
+        LookAt
     };
     private CameraMode mode; 
 
@@ -33,6 +33,15 @@ public class CameraTracker : MonoBehaviour
     {
         mode = _mode;
         timeSinceModeSwitch = 0f; 
+
+        switch (mode)
+        {
+            case CameraMode.Pan:
+            {
+                transform.localEulerAngles = baseRotation;
+                break;
+            }
+        }
     }
 
     private void Awake()
@@ -63,6 +72,13 @@ public class CameraTracker : MonoBehaviour
                 }
 
             case CameraMode.Pan:
+                {
+                    PanToPoint(panPoint.gameObject, new Vector3());
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + 0.5f, transform.localEulerAngles.z); 
+                    break; 
+                }
+
+            case CameraMode.LookAt:
                 {
                     transform.position = panPoint.position;
                     LookAtPoint(GameManager.Instance.ball); 
