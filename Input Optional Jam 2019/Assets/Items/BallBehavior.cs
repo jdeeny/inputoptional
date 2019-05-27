@@ -128,8 +128,8 @@ public class BallBehavior : MonoBehaviour
 
         rb.isKinematic = false;
 
-        rb.AddForce(new Vector3(Random.Range(-200f, 200f), Random.Range(50f, 200f), Random.Range(-200f, 200f)));
-        rb.AddTorque(new Vector3(Random.Range(-200f, 200f), Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
+        rb.AddForce(new Vector3(Random.Range(-100f, 100f), Random.Range(70f, 150f), Random.Range(-100f, 100f)), ForceMode.VelocityChange);
+        rb.AddTorque(new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), Random.Range(-20f, 20f)));
     }
 
     public void Reset() {
@@ -150,7 +150,9 @@ public class BallBehavior : MonoBehaviour
         dist.y = 0f;
         float distx = dist.magnitude;
 
-        float airTime = Random.Range(2f, 4f);
+        float airTime = Random.Range(.3f, 2f);
+        distx += airTime / 3f; //add a bit of lead
+
         float vx = distx / airTime;
         float vy = airTime * 9.81f * 0.5f;
 
@@ -160,6 +162,9 @@ public class BallBehavior : MonoBehaviour
         Debug.Log("dist: " + dist + " dx: " + distx + " time: " + airTime + " " + result);
 
         throwDisableTimeout = 0.1f;
+        var p = transform.position;
+        p.y += 2.5f;
+        transform.position = p;
         Detach();
         rb.velocity = Vector3.zero;
         rb.AddForce(result, ForceMode.VelocityChange);

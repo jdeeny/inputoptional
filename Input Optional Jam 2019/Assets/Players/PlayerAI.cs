@@ -23,7 +23,7 @@ public class PlayerAI : MonoBehaviour
     public float turn_speed;
     public float reaction_base;
     public float reaction_random;
-    float visionRadius = 7f;
+    float visionRadius = 4f;
 
     float reaction_remaining = 0;
 
@@ -360,13 +360,19 @@ public class PlayerAI : MonoBehaviour
                 Debug.Log("Juke Right");
                 loc = Quaternion.Euler(0, 90, 0) * loc;
                 _juke = true;
-                _jukeTime = 0.15f;
+                _jukeTime = 0.25f;
                 _jukeLocation = loc;
             }
         }
         else
         {
             //Debug.Log("nearFront empty");
+        }
+
+        if (visionSets["frontRagdoll"].Count >= 1 && Random.Range(0f, 1f) < 0.05 && Random.Range(0, 50) < visionSets["frontRagdoll"].Count)
+        {
+            Debug.Log("Do jump");
+            _jump = true;
         }
 
 
@@ -446,9 +452,13 @@ public class PlayerAI : MonoBehaviour
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
             //Debug.Log("velDiff: " + velDiff);
-            if(Random.Range(-10f, 10f) > velDiff) {
+            if(Random.Range(-20f, 10f) > velDiff) {
                 roboSounds.PlayCrash();
-                rb.velocity = theirVel * Random.Range(1f, 5f) + new Vector3(Random.Range(2f, 10f),Random.Range(2f, 10f),Random.Range(2f, 10f));
+                if(theirVel.magnitude < 0.1)
+                {
+                    theirVel = new Vector3(Random.Range(2f, 10f), Random.Range(2f, 10f), Random.Range(2f, 10f));
+                }
+                rb.velocity = theirVel * Random.Range(2f, 10f);
                 RagdollIn();
             }
         }
@@ -505,6 +515,7 @@ public class PlayerAI : MonoBehaviour
         
         var diff = transform.position - intercept;
         diff.y = 0f;
+
         if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 8f && _jumpDisableTime <= 0f) {
 
             _jump = true;
@@ -514,11 +525,18 @@ public class PlayerAI : MonoBehaviour
 
     void RunToGoal()
     {
-
-        if(GameManager.Instance.GetBallPlayer() == this && visionSets["front"].Count >= 1  && Random.Range(0f, 1f) < 0.1 && Random.Range(0, 25) < visionSets["front"].Count)
+        //Debug.Log("!");
+        //if(GameManager.Instance.GetBallPlayer() == this)
         {
-            PassTo();
-            return;
+//            Debug.Log("Have Ball=");
+
+            if (visionSets["vision"].Count >= 1  && Random.Range(0f, 1f) < 0.2 && Random.Range(0, 5) < visionSets["vision"].Count)
+            {
+                Debug.Log("Do pass");
+                PassTo();
+                return;
+            }
+
         }
 
         var loc = GameManager.Instance.spot.transform.position;
@@ -1167,11 +1185,13 @@ public class PlayerAI : MonoBehaviour
     Dictionary<string, HashSet<Collider>> UpdatePlayerVision()
     {
         Vector3 halfExtents = new Vector3(visionRadius, visionRadius, visionRadius);
+        Vector3 ragdollExtents = new Vector3(visionRadius / 2, visionRadius / 2, visionRadius / 2);
         Vector3 frontOffset = new Vector3(visionRadius / 1.9f, 0f, 0f);
         Vector3 leftOffset = new Vector3(0f, 0f, visionRadius / 1.9f);
         Quaternion orientation = Quaternion.LookRotation(transform.forward, transform.up);
 
         LayerMask layerMaskPlayer = LayerMask.GetMask("Player");
+        LayerMask layerMaskRagdoll = LayerMask.GetMask("Ragdoll");
         LayerMask layerMaskBall = LayerMask.GetMask("Ball");
         Dictionary<string, HashSet<Collider>> sets = new Dictionary<string, HashSet<Collider>>();
 
@@ -1181,6 +1201,10 @@ public class PlayerAI : MonoBehaviour
         sets["rightcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMaskPlayer));
         sets["frontmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMaskPlayer));
         sets["backmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMaskPlayer));
+
+        sets["frontRagdoll"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskRagdoll));
+        sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskPlayer));
+
 
         // Remove myself
         foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
