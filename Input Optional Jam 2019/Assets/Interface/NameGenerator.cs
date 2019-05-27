@@ -64,7 +64,13 @@ class NameGenerator
         new city("Florida", true),
         new city("Atlanta"), 
         new city("Kentucky", true, true),
-
+        new city("China", true, true),
+        new city("Australia", true, true),
+        new city("Atlantis", true, true),
+        new city("Dirt", true, false),
+        new city("Crap", true, false),
+        new city("Fart", true, false),
+        new city("Moon", true, true)
     };
 
     public static readonly string[] teamNames =
@@ -81,7 +87,9 @@ class NameGenerator
         "Crapotrons", "Flying Toasters", "Donkeys", "Earthlings",
         "Humans", "Robos", "Spotters", "Weaklings",
         "Baddies", "Not-Zees", "Clowns", "Morons",
-        "Idiots"
+        "Idiots", "Sexbots", "Dongs", "Dongles",
+        "Buttholes", "Jebs", "Creepers", "Spiders",
+        "Skeletons", "Zombies"
     };
 
 
@@ -95,7 +103,8 @@ class NameGenerator
     {
         "Bobson", "Bob", "John", "Jack", "Rob", "Jerkface", "Bort",
         "Samantha", "Emily", "Sarah", "Johnny", "Kane", "Al",
-        "Linux", "Henry", "Hank", "Honk", "Junk", "Jeff", "Jorge"
+        "Linux", "Henry", "Hank", "Honk", "Junk", "Jeff", "Jorge",
+        "Kilroy", "Moon", "Homer"
     };
 
     public static readonly string[] robotLastNames =
@@ -104,7 +113,7 @@ class NameGenerator
         "Connor", "Five", "Sixty-Nine", "Borkenson", "Jerkenorf",
         "Borkensoft", "Platinum", "Aluminum", "Jones", "Jackson",
         "Junkenstein", "Bonzalez", "McBain", "Toyota", "Honda",
-        "Dinkleburg"
+        "Dinkleburg", "Barfenhargen", "Moon"
     };
 
     public static string GenerateCityName()

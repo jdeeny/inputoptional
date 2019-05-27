@@ -240,9 +240,6 @@ public class GameManager : MonoBehaviour
     public void Score(int team, string playerName) {
         teams[team-1].teamScore++; 
 
-        InterfaceHandler.instance.ShowGoalBanner(team, playerName, teams[team-1].teamScore);
-        InterfaceHandler.instance.UpdateTeamScores(); 
-
         if (teams[team-1].teamScore >= playToScore)
         {
             InterfaceHandler.instance.ShowEndScreen();
@@ -259,6 +256,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            InterfaceHandler.instance.ShowGoalBanner(team, playerName, teams[team - 1].teamScore);
+            InterfaceHandler.instance.UpdateTeamScores();
             ReadyKickoff();
         }
     }

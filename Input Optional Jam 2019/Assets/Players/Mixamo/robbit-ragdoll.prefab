@@ -1498,13 +1498,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed by
-    Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:RightFoot'\n\tTransform
-    'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:Spine1'\n\tTransform
-    'mixamorig:Spine2'\n\tTransform 'mixamorig:RightUpLeg'\n\tTransform 'mixamorig:RightForeArm'\n\tTransform
-    'mixamorig:LeftUpLeg'\n\tTransform 'mixamorig:Head'\n\tand more ...\n\tFrom animation
-    clip 'Throw'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -1528,6 +1522,13 @@ MonoBehaviour:
   hand: {fileID: 0}
   animationationGetUpFromBelly: GetUp.GetUpFromBelly
   animationationGetUpFromBack: GetUp.GetUpFromBack
+  headparts:
+  - {fileID: -927199367670048503, guid: 1416786e8333c1a789fcb63b47a8e81a, type: 3}
+  - {fileID: -927199367670048503, guid: d6a7edc7d3300c7e2930e3a0bc5f63fd, type: 3}
+  - {fileID: -927199367670048503, guid: 96b0962dfee8e433895c1bdf0add1bad, type: 3}
+  - {fileID: -927199367670048503, guid: 251f4b05299ca87b2ac605d4ee050a52, type: 3}
+  - {fileID: -927199367670048503, guid: 05b1a70a74b735d65b3da25e60b06116, type: 3}
+  - {fileID: -927199367670048503, guid: cd7b91046c0776707baeb847b1563802, type: 3}
 --- !u!54 &4904818702613367085
 Rigidbody:
   m_ObjectHideFlags: 0

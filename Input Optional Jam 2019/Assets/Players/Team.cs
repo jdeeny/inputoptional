@@ -56,7 +56,7 @@ public class Team : ScriptableObject
 
         var diff = (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1));
 
-        Debug.Log(diff);
+        //Debug.Log(diff);
         return diff;
     }
 
@@ -98,6 +98,7 @@ public class Team : ScriptableObject
 
     public void resetSelf(GameObject playerPrefab, int players)
     {
+        this.players.Clear();
         teamScore = 0;
         teamName = NameGenerator.GenerateCityName();
         teamColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
