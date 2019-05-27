@@ -295,7 +295,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4af2bef4e5e2f914c98eaca6393452be, type: 3}
   playerPrefab: {fileID: 7054895616259288993, guid: 6c260764a66a6c6dbb7c2511ad4df053,
     type: 3}
-  spotPrefab: {fileID: -927199367670048503, guid: e8c6e539c1f0efd459955da36bb52484,
+  spotPrefab: {fileID: 2331190329134112212, guid: e7a36b17e6cb10248b0997cc05def3bd,
     type: 3}
   ballPrefab: {fileID: 9093659497785907766, guid: bcf0ebccdde15b94ca1dcbbe31e4f202,
     type: 3}

@@ -512,7 +512,7 @@ public class PlayerAI : MonoBehaviour
     void RunToGoal()
     {
 
-        if(visionSets["vision"].Count > 2 && Random.Range(0, 25) < visionSets["vision"].Count)
+        if(visionSets["front"].Count > 2 && Random.Range(0, 50) < visionSets["front"].Count)
         {
             PassTo();
             return;

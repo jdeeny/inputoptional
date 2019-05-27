@@ -20,13 +20,16 @@ public class BallBehavior : MonoBehaviour
     }
 
     void Update() {
-        if(transform.parent != GameManager.Instance.gameObject.transform.parent && transform.position.y <= -1f) {
-            Debug.Log("Reset Ball Position " + transform.position);
-            var newPos = transform.position;
-            newPos.y = 0.5f;
-            transform.position = newPos;
+        if(transform.parent == null || transform.parent.gameObject.layer != 10) {
+            if(transform.position.y <= -1f) {
+                Debug.Log("Reset Ball Position " + transform.position);
+                var newPos = transform.position;
+                newPos.y = 0.5f;
+                transform.position = newPos;
+            }
+        } else {
+            transform.localPosition = new Vector3(.7f, 0f, .3f);
         }
-
         if (transform.position.y < -10f) Reset();
         throwDisableTimeout -= Time.deltaTime;
     }
@@ -71,7 +74,7 @@ public class BallBehavior : MonoBehaviour
         SetOwner(0, null);
         col.enabled = true;
         rb.isKinematic = false;
-        transform.parent = GameManager.Instance.gameObject.transform.parent;
+        transform.parent = null;
     }
 
     public void SetOwner(int team, GameObject player)
