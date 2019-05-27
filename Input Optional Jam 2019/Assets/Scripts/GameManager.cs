@@ -162,7 +162,6 @@ public class GameManager : MonoBehaviour
 
     public void DoKickoff()
     {
-        Camera.main.gameObject.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.FollowBall); 
         ball.GetComponent<BallBehavior>().SetOwner(0, null);
         PlayKickoffHorn();
         ball.GetComponent<BallBehavior>().DoKickoff();
@@ -248,7 +247,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void Score(int team, string playerName) {
-        teams[team-1].teamScore++; 
+        teams[team-1].teamScore++;
+        Camera.main.gameObject.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.FollowBall);
 
         if (teams[team-1].teamScore >= playToScore)
         {

@@ -847,6 +847,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 357056763097724172, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_padding
+      value: 8.307674
+      objectReference: {fileID: 0}
     - target: {fileID: 7394142422429566229, guid: 9980104cc2a7a1443aa3603177bd63a0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -881,6 +886,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448665015777711701, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_padding
+      value: 8.307674
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9980104cc2a7a1443aa3603177bd63a0, type: 3}
@@ -1207,7 +1217,7 @@ PrefabInstance:
     - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
         type: 3}
       propertyPath: modeSwitchLength
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d2af24f7f0163f45a27e102d8d5e03d, type: 3}
