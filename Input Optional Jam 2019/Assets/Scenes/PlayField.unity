@@ -687,6 +687,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 357056763097724172, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_padding
+      value: 4.0368004
+      objectReference: {fileID: 0}
     - target: {fileID: 6448665015777711701, guid: 9980104cc2a7a1443aa3603177bd63a0,
         type: 3}
       propertyPath: m_Material
@@ -697,6 +702,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6448665015777711701, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_padding
+      value: 4.0368004
+      objectReference: {fileID: 0}
     - target: {fileID: 2363894765493024928, guid: 9980104cc2a7a1443aa3603177bd63a0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -881,6 +891,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256854824508062, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256854824508062, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256854824508062, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9980104cc2a7a1443aa3603177bd63a0, type: 3}
