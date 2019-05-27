@@ -623,7 +623,7 @@ public class PlayerAI : MonoBehaviour
         foreach (var p in players)
         {
             var c = p.GetComponent<PlayerAI>().visionSets["vision"].Count;
-            Debug.Log("Pass option: " + p.name + c);
+            //Debug.Log("Pass option: " + p.name + c);
             if (c < nearbyMin && !p.GetComponent<PlayerAI>().IsRagdolled && p != this)
             {
                 nearbyMin = c;
@@ -1265,12 +1265,17 @@ public class PlayerAI : MonoBehaviour
         if(Random.Range(0f, 1f) < 0.3) return;
         var headbit = Instantiate(headparts[Random.Range(0, headparts.Length)], Vector3.zero, Quaternion.identity);
         foreach(var comp in gameObject.GetComponentsInChildren<Transform>()) {
-            Debug.Log(comp.gameObject.name);
+            //Debug.Log(comp.gameObject.name);
             if(comp.gameObject.name == "mixamorig:Head") {
-                Debug.Log(comp.gameObject.name);
+                //Debug.Log(comp.gameObject.name);
                 headbit.transform.parent = comp;
                 headbit.transform.localRotation = Quaternion.identity;
-                headbit.transform.localPosition = new Vector3(.05f, -3.35f, 0f);
+                headbit.transform.localPosition = new Vector3(.02f, -3.35f, 0f);
+                if (headbit.name  == "ClownHead(Clone)") {
+                    Debug.Log("Clown Head");
+                    headbit.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                    //headbit.transform.localPosition = new Vector3(.02f, 0f, 0f);
+                }
                 break;
             }
         }
