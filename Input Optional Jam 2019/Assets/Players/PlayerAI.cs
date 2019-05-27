@@ -419,7 +419,7 @@ public class PlayerAI : MonoBehaviour
 
                 }
                 GameManager.Instance.teams[team - 1].RemovePlayer(gameObject);
-                Destroy(gameObject,0.1f);
+                Explode(); 
             }
         }
     }
@@ -1248,6 +1248,7 @@ public class PlayerAI : MonoBehaviour
 
     public void Explode()
     {
+        Instantiate(GameManager.Instance.getRandomExplosion(), transform.position, transform.localRotation); 
         GameObject.Destroy(gameObject); 
     }
 

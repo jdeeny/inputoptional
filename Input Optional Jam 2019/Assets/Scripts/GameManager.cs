@@ -50,6 +50,16 @@ public class GameManager : MonoBehaviour
 
     public List<Vector3> ballPositions = new List<Vector3>();
 
+    public GameObject[] explosionPrefabs;
+
+    public GameObject getRandomExplosion()
+    {
+        if (explosionPrefabs.Length > 0)
+            return explosionPrefabs[Random.Range(0, explosionPrefabs.Length - 1)];
+        else
+            return null; 
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -111,6 +121,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void ResetGame() {
+        Camera.main.gameObject.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.FollowBall);
+
         state = GameState.Setup;
         if (spot == null) spot = Instantiate(spotPrefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity);
         if (ball == null) ball = Instantiate(ballPrefab, new Vector3(Random.Range(-10f, 10f), 5f, Random.Range(-10f, 10f)), Quaternion.identity);

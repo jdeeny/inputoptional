@@ -53,30 +53,6 @@ public class CameraTracker : MonoBehaviour
                     break;
                 }
         }
-
-        if (Input.anyKeyDown)
-        {
-            switch (mode)
-            {
-                case CameraMode.FollowBall:
-                    {
-                        mode = CameraMode.Pan;
-                        break; 
-                    }
-
-                case CameraMode.Pan:
-                    {
-                        mode = CameraMode.FollowBall;
-                        break; 
-                    }
-
-                default:
-                    {
-                        mode = CameraMode.FollowBall;
-                        break; 
-                    }
-            }
-        }
     }
 
     private void LookAtPoint(GameObject subject)
