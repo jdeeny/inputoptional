@@ -162,6 +162,7 @@ public class GameManager : MonoBehaviour
 
     public void DoKickoff()
     {
+        Camera.main.gameObject.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.FollowBall); 
         ball.GetComponent<BallBehavior>().SetOwner(0, null);
         PlayKickoffHorn();
         ball.GetComponent<BallBehavior>().DoKickoff();

@@ -60,6 +60,7 @@ public class BallBehavior : MonoBehaviour
 
         if (throwDisableTimeout <= 0f && Random.Range(0f, 1f) < chance)
         {
+            Camera.main.gameObject.GetComponent<CameraTracker>().SetMode(CameraTracker.CameraMode.CloseUp);
             SetOwner(player.GetComponent<PlayerAI>().GetTeam(), player);
             //Debug.Log("Picked up" + ownerTeam);
             AttachToPlayer(player);

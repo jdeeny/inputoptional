@@ -1189,5 +1189,25 @@ PrefabInstance:
       propertyPath: panPoint
       value: 
       objectReference: {fileID: 1797276005}
+    - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
+        type: 3}
+      propertyPath: closeRotation.w
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
+        type: 3}
+      propertyPath: closeOffset.z
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
+        type: 3}
+      propertyPath: maxHeight
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
+        type: 3}
+      propertyPath: modeSwitchLength
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d2af24f7f0163f45a27e102d8d5e03d, type: 3}
