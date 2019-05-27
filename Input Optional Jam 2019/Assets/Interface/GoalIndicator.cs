@@ -10,7 +10,9 @@ public class GoalIndicator : MonoBehaviour
     private float showTime;
     private bool active;
     private Image background;
-    private TextMeshProUGUI text; 
+    private TextMeshProUGUI text;
+    private TextMeshProUGUI playerName;
+    private TextMeshProUGUI teamName;
 
     private void Awake()
     {
@@ -18,13 +20,18 @@ public class GoalIndicator : MonoBehaviour
         active   = false;
 
         background = this.transform.Find("Background").GetComponent<Image>();
-        text = this.transform.Find("Text").GetComponent<TextMeshProUGUI>(); 
+        text = this.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        playerName = this.transform.Find("PlayerName").GetComponent<TextMeshProUGUI>();
+        teamName = this.transform.Find("TeamName").GetComponent<TextMeshProUGUI>(); 
     }
 
     public void ShowScore(string scoringPlayer, string scoringTeam, int score)
     {
         active   = true;
-        showTime = 0f; 
+        showTime = 0f;
+
+        playerName.text = scoringPlayer.ToUpper();
+        teamName.text = scoringTeam.ToUpper(); 
     }
 
     //Cheap way to track the timer
@@ -34,14 +41,27 @@ public class GoalIndicator : MonoBehaviour
         {
             text.gameObject.SetActive(showTime % 2 > 0.5f); 
             showTime += Time.deltaTime;
+
             background.color = new Color(background.color.r, 
                 background.color.g, 
                 background.color.b, 
                 showCurve.Evaluate(showTime/showLength));
+
             text.color = new Color(text.color.r,
                 text.color.g,
                 text.color.b,
                 showCurve.Evaluate(showTime/showLength));
+
+            playerName.color = new Color(playerName.color.r,
+                playerName.color.g,
+                playerName.color.b,
+                showCurve.Evaluate(showTime / showLength));
+
+            teamName.color = new Color(teamName.color.r,
+                teamName.color.g,
+                teamName.color.b,
+                showCurve.Evaluate(showTime / showLength));
+
             if (showTime > showLength) active = false; 
         }
     }
