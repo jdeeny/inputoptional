@@ -336,7 +336,7 @@ public class PlayerAI : MonoBehaviour
         }
 
         var loc = location;
-        if (visionSets["front"].Count > 1 && Random.Range(0f, 1f) < 0.1f)
+        if (GameManager.Instance.GetBallPlayer() == this && visionSets["front"].Count >= 1 && visionSets["front"].Count > visionSets["back"].Count && Random.Range(0f, 1f) < 0.1f)
         {
             var center = visionSets["frontCenter"].Count;
             var left = visionSets["frontLeft"].Count;// + visionSets["nearLeft"].Count;
@@ -347,7 +347,7 @@ public class PlayerAI : MonoBehaviour
             }
             else if (left < right)
             {
-                //Debug.Log("Juke Left");
+                Debug.Log("Juke Left");
                 loc = Quaternion.Euler(0, -90, 0) * loc;
                 _juke = true;
                 _jukeTime = 0.15f;
@@ -355,7 +355,7 @@ public class PlayerAI : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Juke Right");
+                Debug.Log("Juke Right");
                 loc = Quaternion.Euler(0, 90, 0) * loc;
                 _juke = true;
                 _jukeTime = 0.15f;
@@ -512,7 +512,7 @@ public class PlayerAI : MonoBehaviour
     void RunToGoal()
     {
 
-        if(visionSets["front"].Count > 2 && Random.Range(0, 50) < visionSets["front"].Count)
+        if(GameManager.Instance.GetBallPlayer() == this && visionSets["front"].Count >= 1  && Random.Range(0f, 1f) < 0.1 && Random.Range(0, 25) < visionSets["front"].Count)
         {
             PassTo();
             return;
