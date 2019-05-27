@@ -338,7 +338,7 @@ public class PlayerAI : MonoBehaviour
         }
 
         var loc = location;
-        if (GameManager.Instance.GetBallPlayer() == gameObject && visionSets["frontPass"].Count >= 1 && visionSets["backPass"].Count > visionSets["frontPass"].Count && Random.Range(0f, 1f) < 0.1f)
+        if (GameManager.Instance.GetBallPlayer() == gameObject && visionSets["frontPass"].Count >= 2 && visionSets["frontPass"].Count > visionSets["backPass"].Count && Random.Range(0f, 1f) < 0.1f)
         {
             var left = visionSets["leftPass"].Count;// + visionSets["nearLeft"].Count;
             var right = visionSets["rightPass"].Count;// + visionSets["nearRight"].Count;
@@ -346,7 +346,7 @@ public class PlayerAI : MonoBehaviour
             if (left < right)
             {
                 Debug.Log("Juke Left");
-                loc = Quaternion.Euler(0, -90, 0) * loc;
+                loc = Quaternion.Euler(0, -60, 0) * loc;
                 _juke = true;
                 _jukeTime = 0.15f;
                 _jukeLocation = loc;
@@ -354,7 +354,7 @@ public class PlayerAI : MonoBehaviour
             else
             {
                 Debug.Log("Juke Right");
-                loc = Quaternion.Euler(0, 90, 0) * loc;
+                loc = Quaternion.Euler(0, 60, 0) * loc;
                 _juke = true;
                 _jukeTime = 0.25f;
                 _jukeLocation = loc;
@@ -450,9 +450,9 @@ public class PlayerAI : MonoBehaviour
             //Debug.Log("velDiff: " + velDiff);
             if(Random.Range(-20f, 10f) > velDiff) {
                 roboSounds.PlayCrash();
-                if(theirVel.magnitude < 0.1)
+                if(theirVel.magnitude < 0.3)
                 {
-                    theirVel = new Vector3(Random.Range(2f, 10f), Random.Range(2f, 10f), Random.Range(2f, 10f));
+                    theirVel = new Vector3(Random.Range(-10f, 10f), Random.Range(2f, 10f), Random.Range(-10f, 10f));
                 }
                 rb.velocity = theirVel * Random.Range(2f, 10f);
                 RagdollIn();
@@ -1193,16 +1193,16 @@ public class PlayerAI : MonoBehaviour
 
         //sets["nearBall"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, nearRadius, layerMaskBall));
         sets["vision"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position, visionRadius, layerMaskPlayer));
-        sets["leftcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMaskPlayer));
-        sets["rightcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMaskPlayer));
-        sets["frontmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMaskPlayer));
-        sets["backmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMaskPlayer));
+//        sets["leftcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + leftOffset, halfExtents, orientation, layerMaskPlayer));
+        //sets["rightcenter"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - leftOffset, halfExtents, orientation, layerMaskPlayer));
+        //sets["frontmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position + frontOffset, halfExtents, orientation, layerMaskPlayer));
+        //sets["backmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMaskPlayer));
 
         sets["frontRagdoll"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskRagdoll));
-        sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskPlayer));
-        sets["backPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * -2f, visionRadius / 3f, layerMaskPlayer));
-        sets["leftPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * -2f, visionRadius / 3f, layerMaskPlayer));
-        sets["rightPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * 2f, visionRadius / 3f, layerMaskPlayer));
+        sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 3f, visionRadius / 4f, layerMaskPlayer));
+        sets["backPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * -3f, visionRadius / 4f, layerMaskPlayer));
+        sets["leftPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * -3f, visionRadius / 4f, layerMaskPlayer));
+        sets["rightPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * 3f, visionRadius / 4f, layerMaskPlayer));
 
 
         // Remove myself
@@ -1211,7 +1211,7 @@ public class PlayerAI : MonoBehaviour
             kvp.Value.Remove(col);
         }
 
-        sets["center"] =  new HashSet<Collider>(sets["leftcenter"]);
+  /*      sets["center"] =  new HashSet<Collider>(sets["leftcenter"]);
         sets["center"].IntersectWith(sets["rightcenter"]);
 
         sets["middle"] = new HashSet<Collider>(sets["frontmiddle"]);
@@ -1256,7 +1256,7 @@ public class PlayerAI : MonoBehaviour
         sets["backRight"] = new HashSet<Collider>(sets["back"]);
         sets["backRight"].IntersectWith(sets["right"]);
 
-
+*/
         /*if (Random.Range(0f, 1f) < (1f/1000f))
         {
             foreach (KeyValuePair<string, HashSet<Collider>> kvp in sets)
