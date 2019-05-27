@@ -46,8 +46,8 @@ public class PlayerAI : MonoBehaviour
     // constants:
     const float JumpPower = 8f;		// determines the jump force applied when jumping (and therefore the jump height)
     const float GroundSpeed = 12f;
-    const float AirSpeed = 1f;		// determines the max speed of the character while airborne
-    const float AirControl = 0.1f;	// determines the response speed of controlling the character while airborne
+    const float AirSpeed = 0.5f;		// determines the max speed of the character while airborne
+    const float AirControl = 0.2f;	// determines the response speed of controlling the character while airborne
     const float StationaryTurnSpeed = 180f;	// additional turn speed added when the player is stationary (added to animation root rotation)
     const float MovingTurnSpeed = 360f;		// additional turn speed added when the player is moving (added to animation root rotation)
     const float RunCycleLegOffset = 0.2f;	// animation cycle offset (0-1) used for determining correct leg to jump off
@@ -338,16 +338,12 @@ public class PlayerAI : MonoBehaviour
         }
 
         var loc = location;
-        if (GameManager.Instance.GetBallPlayer() == this && visionSets["front"].Count >= 1 && visionSets["front"].Count > visionSets["back"].Count && Random.Range(0f, 1f) < 0.1f)
+        if (GameManager.Instance.GetBallPlayer() == gameObject && visionSets["frontPass"].Count >= 1 && visionSets["backPass"].Count > visionSets["frontPass"].Count && Random.Range(0f, 1f) < 0.1f)
         {
-            var center = visionSets["frontCenter"].Count;
-            var left = visionSets["frontLeft"].Count;// + visionSets["nearLeft"].Count;
-            var right = visionSets["frontRight"].Count;// + visionSets["nearRight"].Count;
-            if (center < left && center < right)
-            {
-                //Debug.Log("Opponent in center but going forwards");
-            }
-            else if (left < right)
+            var left = visionSets["leftPass"].Count;// + visionSets["nearLeft"].Count;
+            var right = visionSets["rightPass"].Count;// + visionSets["nearRight"].Count;
+
+            if (left < right)
             {
                 Debug.Log("Juke Left");
                 loc = Quaternion.Euler(0, -90, 0) * loc;
@@ -516,7 +512,7 @@ public class PlayerAI : MonoBehaviour
         var diff = transform.position - intercept;
         diff.y = 0f;
 
-        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 8f && _jumpDisableTime <= 0f) {
+        if(intercept.y > col.height * .8 & diff.magnitude < intercept.y / 4f && _jumpDisableTime <= 0f) {
 
             _jump = true;
         }
@@ -530,7 +526,7 @@ public class PlayerAI : MonoBehaviour
         {
 //            Debug.Log("Have Ball=");
 
-            if (visionSets["vision"].Count >= 1  && Random.Range(0f, 1f) < 0.1 && Random.Range(0, 5) < visionSets["vision"].Count)
+            if (visionSets["vision"].Count >= 1  && Random.Range(0f, 1f) < 0.1 && Random.Range(0, 10) < visionSets["vision"].Count)
             {
                 Debug.Log("Do pass");
                 PassTo();
@@ -1204,6 +1200,9 @@ public class PlayerAI : MonoBehaviour
 
         sets["frontRagdoll"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskRagdoll));
         sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskPlayer));
+        sets["backPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * -2f, visionRadius / 3f, layerMaskPlayer));
+        sets["leftPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * -2f, visionRadius / 3f, layerMaskPlayer));
+        sets["rightPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * 2f, visionRadius / 3f, layerMaskPlayer));
 
 
         // Remove myself

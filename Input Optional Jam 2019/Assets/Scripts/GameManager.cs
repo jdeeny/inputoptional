@@ -210,8 +210,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 timeSinceLastHiddenSim += Time.fixedDeltaTime;
-                if (timeSinceLastHiddenSim > timeBetweenHiddenSim)
-                    SimulateHiddenScene();
 
                 ProcessTeamAI();
                 break;
@@ -221,6 +219,13 @@ public class GameManager : MonoBehaviour
         {
             SpawnItem();
         }*/
+    }
+
+    void Update()
+    {
+        if (timeSinceLastHiddenSim > timeBetweenHiddenSim)
+            SimulateHiddenScene();
+
     }
 
     void ProcessTeamAI() {

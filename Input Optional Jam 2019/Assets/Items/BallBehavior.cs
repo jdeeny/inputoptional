@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BallBehavior : MonoBehaviour
 {
-    public float pickupChance = 1f;
+    public float pickupChance = 2f;
     public int ownerTeam = 0;
     public GameObject ownerPlayer = null;
 
@@ -154,7 +154,7 @@ public class BallBehavior : MonoBehaviour
         //distx += airTime / 3f; //add a bit of lead
 
         float vx = distx / airTime;
-        float vy = airTime * 9.81f * 0.5f;
+        float vy = -2f / airTime + airTime * 9.81f * 0.5f;
 
         Vector3 result = dist.normalized * vx;
         result.y = vy;
