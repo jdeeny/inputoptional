@@ -32,6 +32,7 @@ public class GoalIndicator : MonoBehaviour
     {
         if (active)
         {
+            text.gameObject.SetActive(showTime % 2 > 0.5f); 
             showTime += Time.deltaTime;
             background.color = new Color(background.color.r, 
                 background.color.g, 
