@@ -122,6 +122,8 @@ public class PlayerAI : MonoBehaviour
         }
         gameObject.layer = LayerMask.NameToLayer("Player");
 
+        if(headparts.Length > 0)
+            ApplyHeadPiece();
 
 		Rigidbody[] rigidBodies = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rigid in rigidBodies)
@@ -1253,5 +1255,16 @@ public class PlayerAI : MonoBehaviour
         GameObject.Destroy(gameObject); 
     }
 
+    [SerializeField]
+    private GameObject[] headparts;
 
+    void ApplyHeadPiece() {
+        var headbit = Instantiate(headparts[Random.Range(0, headparts.Length)]);
+        foreach(var comp in gameObject.GetComponentsInChildren<GameObject>()) {
+            if(comp.name == "mixamorig:Head") {
+                headbit.transform.parent = comp.transform;
+                break;
+            }
+        }
+    }
 }
