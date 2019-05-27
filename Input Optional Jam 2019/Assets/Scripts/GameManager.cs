@@ -170,6 +170,7 @@ public class GameManager : MonoBehaviour
             case GameState.PreKickoff:
                 int ready = 0;
                 int remain = 0;
+                GameManager.Instance.ball.transform.position = new Vector3(0f, 5f, 0f);
                 foreach(var t in GameManager.Instance.teams)
                 {
                     foreach(var p in t.players)
