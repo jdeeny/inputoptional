@@ -1267,7 +1267,7 @@ public class PlayerAI : MonoBehaviour
                 Debug.Log(comp.gameObject.name);
                 headbit.transform.parent = comp;
                 headbit.transform.localRotation = Quaternion.identity;
-                headbit.transform.localPosition = new Vector3(.05f, -3.35f, 0f);
+                headbit.transform.localPosition = new Vector3(.02f, -3.35f, 0f);
                 break;
             }
         }
