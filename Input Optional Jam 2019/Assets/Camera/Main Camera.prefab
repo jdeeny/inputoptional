@@ -102,7 +102,7 @@ MonoBehaviour:
   maxZ: 48
   followDistance: 3.5
   followOffset: {x: 0, y: 30, z: 5}
-  cameraFollowSpeed: 1
+  cameraFollowSpeed: 0.3
   cameraLookSpeed: 3
   panPoint: {fileID: 0}
 --- !u!114 &1736674366
