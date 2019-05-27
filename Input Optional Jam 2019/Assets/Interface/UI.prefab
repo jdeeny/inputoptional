@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a75a79c8404b2946837d1cac8ccae67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endScreenLength: 63
+  endScreenLength: 60
   gameOverText: {fileID: 2363894765493024928}
   rebootText: {fileID: 8804028856379529332}
   winnerSection: {fileID: 5319751317180036618}
