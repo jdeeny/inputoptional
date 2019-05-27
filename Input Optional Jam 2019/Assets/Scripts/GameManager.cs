@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
     }
   
     public void PlayGoalSound() {
-        kickoffSource.PlayOneShot(goalClips[Random.Range(0, goalClips.Length)]);
+        kickoffSource.PlayOneShot(goalClips[Random.Range(0, goalClips.Length)], 0.2f);
     }
 
     private void PlayKickoffHorn()
