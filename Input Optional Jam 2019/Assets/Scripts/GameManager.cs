@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
         Destroy(hiddenBall.GetComponentInChildren<MeshRenderer>());
         Destroy(hiddenBall.GetComponentInChildren<Light>());
         Destroy(hiddenBall.GetComponentInChildren<BallBehavior>());
-        Destroy(hiddenBall.GetComponentInChildren<TrailRenderer>());
+        Destroy(hiddenBall.GetComponent<TrailRenderer>());
 
         SceneManager.SetActiveScene(mainScene);
     }

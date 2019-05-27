@@ -1167,8 +1167,8 @@ public class PlayerAI : MonoBehaviour
     Dictionary<string, HashSet<Collider>> UpdatePlayerVision()
     {
         Vector3 halfExtents = new Vector3(visionRadius, visionRadius, visionRadius);
-        Vector3 frontOffset = new Vector3(visionRadius / 2f, 0f, 0f);
-        Vector3 leftOffset = new Vector3(0f, 0f, visionRadius / 2f);
+        Vector3 leftOffset = new Vector3(visionRadius / 2f, 0f, 0f);
+        Vector3 frontOffset = new Vector3(0f, 0f, visionRadius / 2f);
         Quaternion orientation = Quaternion.LookRotation(transform.forward, transform.up);
 
         LayerMask layerMaskPlayer = LayerMask.GetMask("Player");
