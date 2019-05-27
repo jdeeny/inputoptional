@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outputCamera: {fileID: 681039494}
-  minimumResScale: 0.1
+  minimumResScale: 0.2
   lowFrameThreshold: 20
-  targetFramerate: 45
+  targetFramerate: 40
   framesToParse: 300
 --- !u!1 &591598092
 GameObject:
