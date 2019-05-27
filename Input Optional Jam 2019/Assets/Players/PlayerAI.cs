@@ -530,7 +530,7 @@ public class PlayerAI : MonoBehaviour
         {
 //            Debug.Log("Have Ball=");
 
-            if (visionSets["vision"].Count >= 1  && Random.Range(0f, 1f) < 0.2 && Random.Range(0, 5) < visionSets["vision"].Count)
+            if (visionSets["vision"].Count >= 1  && Random.Range(0f, 1f) < 0.1 && Random.Range(0, 5) < visionSets["vision"].Count)
             {
                 Debug.Log("Do pass");
                 PassTo();

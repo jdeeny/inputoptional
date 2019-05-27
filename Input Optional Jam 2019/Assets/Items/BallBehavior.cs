@@ -150,8 +150,8 @@ public class BallBehavior : MonoBehaviour
         dist.y = 0f;
         float distx = dist.magnitude;
 
-        float airTime = Random.Range(.3f, 2f);
-        distx += airTime / 3f; //add a bit of lead
+        float airTime = Random.Range(.5f, 2f);
+        //distx += airTime / 3f; //add a bit of lead
 
         float vx = distx / airTime;
         float vy = airTime * 9.81f * 0.5f;
@@ -163,7 +163,7 @@ public class BallBehavior : MonoBehaviour
 
         throwDisableTimeout = 0.1f;
         var p = transform.position;
-        p.y += 2.5f;
+        p.y += 2f;
         transform.position = p;
         Detach();
         rb.velocity = Vector3.zero;
