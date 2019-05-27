@@ -298,7 +298,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0d3aad40425ae9b45b1464d4479cb7d7, type: 3}
   - {fileID: 8300000, guid: 247c1e3a25af21a4896029ca6138f274, type: 3}
   explosionNoises:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 51bc0b30b8b18914f88deb4e4ce7af7b, type: 3}
   playerPrefab: {fileID: 7054895616259288993, guid: 6c260764a66a6c6dbb7c2511ad4df053,
     type: 3}
   spotPrefab: {fileID: 2331190329134112212, guid: e7a36b17e6cb10248b0997cc05def3bd,
