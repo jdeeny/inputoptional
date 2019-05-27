@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(hiddenScene);
 
         hiddenBounds = GameObject.Instantiate(boundsPrefab, Vector3.zero, Quaternion.identity);
+        hiddenBounds.transform.position = new Vector3(0f, 20f, 0f);
         hiddenBounds.name = "hiddenBounds";
         hiddenBall = GameObject.Instantiate(ballPrefab, Vector3.zero, Quaternion.identity);
         hiddenBall.name = "hiddenBall";
