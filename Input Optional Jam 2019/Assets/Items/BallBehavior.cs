@@ -27,6 +27,9 @@ public class BallBehavior : MonoBehaviour
                 newPos.y = 0.5f;
                 transform.position = newPos;
             }
+            if(transform.position.x < -50f || transform.position.x > 50f || transform.position.z < -50f || transform.position.z > 50f) {
+                Reset();
+            }
         } else {
             transform.localPosition = new Vector3(.7f, 0f, .3f);
         }
