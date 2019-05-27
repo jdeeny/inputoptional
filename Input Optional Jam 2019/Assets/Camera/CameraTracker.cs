@@ -31,7 +31,6 @@ public class CameraTracker : MonoBehaviour
 
     public void SetMode(CameraMode _mode)
     {
-        Debug.Log(_mode); 
         mode = _mode;
         timeSinceModeSwitch = 0f; 
     }
