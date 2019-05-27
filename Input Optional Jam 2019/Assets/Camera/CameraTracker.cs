@@ -67,7 +67,7 @@ public class CameraTracker : MonoBehaviour
 
         Vector3 targetPos  = subject.transform.position + followOffset;
         transform.position = Vector3.Lerp(transform.position, targetPos,
-            cameraFollowSpeed / Vector3.Distance(transform.position, targetPos));
+            cameraFollowSpeed);
 
         if (transform.localPosition.y > maxHeight) transform.localPosition = new Vector3(
             transform.localPosition.x, maxHeight, transform.localPosition.z

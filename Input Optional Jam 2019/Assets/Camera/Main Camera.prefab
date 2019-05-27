@@ -102,7 +102,7 @@ MonoBehaviour:
   maxZ: 48
   followDistance: 3.5
   followOffset: {x: 0, y: 30, z: 5}
-  cameraFollowSpeed: 1
+  cameraFollowSpeed: 0.3
   cameraLookSpeed: 3
   panPoint: {fileID: 0}
 --- !u!114 &1736674366
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_FarClipMax: 50
   m_GlobalDensityMult: 1
   m_ConstantFog: 1
-  m_HeightFogAmount: 3
+  m_HeightFogAmount: 1
   m_HeightFogExponent: 0.1
   m_HeightFogOffset: 5
   m_NoiseFogAmount: 0.537
