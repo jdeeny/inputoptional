@@ -56,7 +56,7 @@ public class Team : ScriptableObject
 
         var diff = (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1)) * (Mathf.Abs(v2 - v1));
 
-        Debug.Log(diff);
+        //Debug.Log(diff);
         return diff;
     }
 
