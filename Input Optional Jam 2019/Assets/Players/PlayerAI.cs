@@ -420,6 +420,7 @@ public class PlayerAI : MonoBehaviour
                 }
                 GameManager.Instance.teams[team - 1].RemovePlayer(gameObject);
                 Explode(); 
+                GameManager.Instance.PlayGoalSound();
             }
         }
     }
