@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private AudioClip[] kickoffClips;
     private AudioSource kickoffSource;
 
+    public AudioClip[] goalClips;
+  
     public static GameManager Instance { get; set; }
 
     public GameObject playerPrefab;
@@ -263,6 +265,10 @@ public class GameManager : MonoBehaviour
 
     public bool IsPreKickoff() {
         return state == GameState.PreKickoff;
+    }
+  
+    public void PlayGoalSound() {
+        kickoffSource.PlayOneShot(goalClips[Random.Range(0, goalClips.Length)]);
     }
 
     private void PlayKickoffHorn()
