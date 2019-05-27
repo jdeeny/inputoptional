@@ -225,7 +225,7 @@ public class PlayerAI : MonoBehaviour
                 break;
             case PlayerCommand.Pass:
                 //StopMoving();
-                PassTo();
+                //PassTo();
                 break;
         }
 
@@ -427,19 +427,11 @@ public class PlayerAI : MonoBehaviour
 
     void HandlePlayerCollision(Collision col)
     {
-        if (rb == null) return;
-        if (col.gameObject.tag == "Player")
+      if (rb == null || col.gameObject.GetComponent<Rigidbody>() == null) return;
+      if (col.gameObject.tag == "Player")
         {
-            var theirRb = col.gameObject.GetComponent<Rigidbody>();
-            Vector3 theirVel;
-            if (theirRb == null)
-            {
-                theirVel = Vector3.zero;
-            } else
-            {
-                theirVel = theirRb.velocity;
-            }
-
+            //Debug.Log("Collide: " + col.gameObject.name);
+            var theirVel = col.gameObject.GetComponent<Rigidbody>().velocity;
             var velDiff = (rb.velocity - theirVel).magnitude;
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
             //Debug.Log("velDiff: " + velDiff);
@@ -449,6 +441,7 @@ public class PlayerAI : MonoBehaviour
                 RagdollIn();
             }
         }
+
     }
 
     public void ExplodeOnGoal()
@@ -512,11 +505,11 @@ public class PlayerAI : MonoBehaviour
     void RunToGoal()
     {
 
-        if(visionSets["vision"].Count > 2 && Random.Range(0, 25) < visionSets["vision"].Count)
+        /*/if(visionSets["vision"].Count > 2 && Random.Range(0, 25) < visionSets["vision"].Count)
         {
             PassTo();
             return;
-        }
+        }*/
 
         var loc = GameManager.Instance.spot.transform.position;
         RunTo(loc);
