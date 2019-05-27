@@ -812,6 +812,26 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6591256852774498351, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256852774498351, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_fontSizeMin
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256852926443289, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_fontSizeMin
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591256854278930393, guid: 9980104cc2a7a1443aa3603177bd63a0,
+        type: 3}
+      propertyPath: m_fontSizeMin
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 783570873361679595, guid: 9980104cc2a7a1443aa3603177bd63a0,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1217,7 +1237,7 @@ PrefabInstance:
     - target: {fileID: 5851514915715675434, guid: 5d2af24f7f0163f45a27e102d8d5e03d,
         type: 3}
       propertyPath: modeSwitchLength
-      value: 5
+      value: 9.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d2af24f7f0163f45a27e102d8d5e03d, type: 3}
