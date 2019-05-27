@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outputCamera: {fileID: 681039494}
-  minimumResScale: 0.25
-  lowFrameThreshold: 30
+  minimumResScale: 0.1
+  lowFrameThreshold: 20
   targetFramerate: 45
   framesToParse: 300
 --- !u!1 &591598092

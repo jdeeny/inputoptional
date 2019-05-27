@@ -56,6 +56,10 @@ public class DynamicResolution : MonoBehaviour
         {
             SetResolution(1);
         }
+        else if (framerate < lowFrameThreshold) 
+        {
+            SetResolution(minimumResScale);
+        }
         else
         {
             SetResolution(framerate / targetFramerate); 
