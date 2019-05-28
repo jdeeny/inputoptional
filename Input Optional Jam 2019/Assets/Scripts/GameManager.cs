@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     public float newPlayerChance;
 
+    public AnnouncerVoice av;
+
     //public float ballTimeToGround = 0f;
     //public Vector3 ballLandingPosition = Vector3.zero;
 
@@ -85,6 +87,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        av = GetComponent<AnnouncerVoice>();
         ResetGame();
         CreateHiddenScene();
     }
@@ -137,14 +140,15 @@ public class GameManager : MonoBehaviour
 
         var elapsed = Time.realtimeSinceStartup - start;
 
-        if(elapsed > 0.09)
+        if(elapsed > 0.009)
         {
             timeToSim *= .9f;
             Debug.Log("Sim down: " + timeToSim + " " + elapsed);
         }
-        else if (elapsed < 0.08)
+        else if (elapsed < 0.008)
         {
             timeToSim *= 1.05f;
+            timeToSim = Mathf.Max(timeToSim, 5f);
             Debug.Log("Sim up: " + timeToSim + " " + elapsed);
         }
 
@@ -228,8 +232,19 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 timeSinceLastHiddenSim += Time.fixedDeltaTime;
-
                 ProcessTeamAI();
+                int tempScore = 0;
+                foreach(Team t in teams)
+                {
+                    tempScore += t.teamScore;
+                } 
+                if(tempScore == 0)
+                {
+                    GameManager.Instance.av.TryNoScoreVO();
+                }
+                GameManager.Instance.av.TryRandomVO();
+
+
                 break;
         }
 

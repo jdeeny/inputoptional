@@ -35,6 +35,11 @@ public class BallBehavior : MonoBehaviour
         }
         if (transform.position.y < -10f) Reset();
         throwDisableTimeout -= Time.deltaTime;
+
+        if(transform.position.y < 1f)
+        {
+            throw_team = 0;
+        }
     }
     void FixedUpdate() {
     }
@@ -64,6 +69,13 @@ public class BallBehavior : MonoBehaviour
             SetOwner(player.GetComponent<PlayerAI>().GetTeam(), player);
             //Debug.Log("Picked up" + ownerTeam);
             AttachToPlayer(player);
+            if(throw_team == GameManager.Instance.GetBallOwner())
+            {
+                GameManager.Instance.av.TryCatchVO();
+            } else if (throw_team != 0)
+            {
+                GameManager.Instance.av.TryInterceptionVO();
+            }
         }
     }
 
@@ -138,6 +150,8 @@ public class BallBehavior : MonoBehaviour
         rb.isKinematic = true;
     }
 
+    private int throw_team = 0;
+
     public void ThrowTo(Vector3 location)
     {
         if(throwDisableTimeout > 0f)
@@ -145,6 +159,8 @@ public class BallBehavior : MonoBehaviour
             return;
         }
         Debug.Log("Throwing Ball to: " + location);
+
+        throw_team = GameManager.Instance.GetBallOwner();
 
         Vector3 dist = location - transform.position;
         dist.y = 0f;

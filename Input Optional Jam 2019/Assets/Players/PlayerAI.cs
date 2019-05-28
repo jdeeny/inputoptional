@@ -449,6 +449,10 @@ public class PlayerAI : MonoBehaviour
             if(rb.velocity.magnitude < theirVel.magnitude) velDiff *= -1f;
             //Debug.Log("velDiff: " + velDiff);
             if(Random.Range(-20f, 10f) > velDiff) {
+                if(GameManager.Instance.GetBallPlayer() == gameObject)
+                {
+                    GameManager.Instance.av.TryFumbleVO();
+                }
                 roboSounds.PlayCrash();
                 if(theirVel.magnitude < 0.3)
                 {
@@ -456,6 +460,7 @@ public class PlayerAI : MonoBehaviour
                 }
                 rb.velocity = theirVel * Random.Range(2f, 10f);
                 RagdollIn();
+
             }
         }
     }
