@@ -26,7 +26,7 @@ public class AnnouncerVoice : MonoBehaviour
     private float holdoffBase = 8f;
     private float holdoffRandomness = 12f;
     private float normalChance = 0.2f;
-    private float randomChance = 0.003f;
+    private float randomChance = 0.005f;
     private float noScoreChance = 0.0005f;
 
     public void TryRandomVO()

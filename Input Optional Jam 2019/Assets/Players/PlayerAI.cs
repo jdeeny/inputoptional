@@ -338,7 +338,7 @@ public class PlayerAI : MonoBehaviour
         }
 
         var loc = location;
-        if (GameManager.Instance.GetBallPlayer() == gameObject && visionSets["frontPass"].Count >= 2 && visionSets["frontPass"].Count > visionSets["backPass"].Count && Random.Range(0f, 1f) < 0.1f)
+        if (GameManager.Instance.GetBallPlayer() == gameObject && visionSets["frontPass"].Count >= 2 && Random.Range(0f, 1f) < 0.1f)
         {
             var left = visionSets["leftPass"].Count;// + visionSets["nearLeft"].Count;
             var right = visionSets["rightPass"].Count;// + visionSets["nearRight"].Count;
@@ -1204,10 +1204,10 @@ public class PlayerAI : MonoBehaviour
         //sets["backmiddle"] = new HashSet<Collider>(Physics.OverlapBox(transform.position - frontOffset, halfExtents, orientation, layerMaskPlayer));
 
         sets["frontRagdoll"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 2f, visionRadius / 3f, layerMaskRagdoll));
-        sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 3f, visionRadius / 4f, layerMaskPlayer));
-        sets["backPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * -3f, visionRadius / 4f, layerMaskPlayer));
-        sets["leftPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * -3f, visionRadius / 4f, layerMaskPlayer));
-        sets["rightPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * 3f, visionRadius / 4f, layerMaskPlayer));
+        sets["frontPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * 5f, visionRadius / 4f, layerMaskPlayer));
+        sets["backPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.forward * -5f, visionRadius / 4f, layerMaskPlayer));
+        sets["leftPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * -5f, visionRadius / 4f, layerMaskPlayer));
+        sets["rightPass"] = new HashSet<Collider>(Physics.OverlapSphere(transform.position + transform.right * 5f, visionRadius / 4f, layerMaskPlayer));
 
 
         // Remove myself
