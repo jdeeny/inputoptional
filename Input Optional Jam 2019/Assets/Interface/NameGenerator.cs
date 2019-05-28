@@ -20,13 +20,13 @@ class NameGenerator
     {
         "Mega", "Giga", "Tera", "Neo", "Nova", "Robo", "Mars", "Moon", "Old", "New",
         "Space", "Los", "Las", "East", "West", "North", "South", "Not", "Mid", "Super",
-        "Ultra", "Mecha" 
+        "Ultra", "Mecha", "Hot"
     };
 
     //If a - is the first character append it without using spaces
     public static readonly string[] cityTypeAffixes =
     {
-        "City", "Dome", "Town", "-tropolis", "-opolis", "-otron", "-town", "-land"
+        "city", "dome", "town", "-tropolis", "-opolis", "-tron", "-town", "-land"
     };
 
     public static readonly city[] cityNames =
@@ -70,7 +70,22 @@ class NameGenerator
         new city("Dirt", true, false),
         new city("Crap", true, false),
         new city("Fart", true, false),
-        new city("Moon", true, true)
+        new city("Moon", true, true),
+        new city("Austin"),
+        new city("Paris"),
+        new city("Dubai"),
+        new city("Seoul"),
+        new city("Signapore"),
+        new city("Rome"),
+        new city("Jerusalem"),
+        new city("Bangkok"),
+        new city("Madrid"),
+        new city("Amsterdam"),
+        new city("Rio"),
+        new city("Dublin"),
+        new city("Toronto"),
+        new city("Havana"),
+        new city("Kyoto")
     };
 
     public static readonly string[] teamNames =
@@ -89,14 +104,19 @@ class NameGenerator
         "Baddies", "Not-Zees", "Clowns", "Morons",
         "Idiots", "Sexbots", "Dongs", "Dongles",
         "Buttholes", "Jebs", "Creepers", "Spiders",
-        "Skeletons", "Zombies"
+        "Skeletons", "Zombies", "Terminals", "Roaches",
+        "Ones", "Draculas", "Warez", "Waluigis",
+        "Furbys", "ROBS", "Battlebots", "Ruxpins",
+        "Terminators", "Drones", "Clanks", "Clunkers",
+        "Floats", "Arrays"
     };
 
 
     public static readonly string[] robotSuffixes =
     {
-        "Esquire", "III", "IV", "MXVII", "Jr.", "Sr.", "2.0", "2.1", "(Refurbished)",
-        "M.D."
+        "Esquire", "III", "IV", "MXVII", "Jr.", "Sr.", "2.0", "2.1", "The Refurbished",
+        "M.D.", "The Wretched", "The Great", "The Busted", "2500", "3500", "XL", "XXL",
+        "486", "386", "At Law", "Owes me 20 bucks"
     };
 
     public static readonly string[] robotFirstNames =
@@ -104,7 +124,13 @@ class NameGenerator
         "Bobson", "Bob", "John", "Jack", "Rob", "Jerkface", "Bort",
         "Samantha", "Emily", "Sarah", "Johnny", "Kane", "Al",
         "Linux", "Henry", "Hank", "Honk", "Junk", "Jeff", "Jorge",
-        "Kilroy", "Moon", "Homer"
+        "Kilroy", "Moon", "Homer", "00101101", "10011001", "0xFFAAFE",
+        "Weedlord", "Terminus", "Vlad", "Dunk", "Marvin", "Talos",
+        "Borg", "Carl", "Lisa", "Lenny", "Alita", "Alexander", "Tim",
+        "Jim", "PlayerName", "Guybot", "Girlbot", "Dudebot", "Seymour",
+        "Turd", "Trombone", "Fork", "Spoon", "Spork", "Jimmy", "Timmy",
+        "Bobby", "Jesus", "Mario", "Luigi", "Wario", "Dwight", "Dork",
+        "RNGeejus", "Mike", "Michael"
     };
 
     public static readonly string[] robotLastNames =
@@ -113,7 +139,19 @@ class NameGenerator
         "Connor", "Five", "Sixty-Nine", "Borkenson", "Jerkenorf",
         "Borkensoft", "Platinum", "Aluminum", "Jones", "Jackson",
         "Junkenstein", "Bonzalez", "McBain", "Toyota", "Honda",
-        "Dinkleburg", "Barfenhargen", "Moon"
+        "Dinkleburg", "Barfenhargen", "Moon", "Fartmaster", "Bonerhitler",
+        "Astro", "Dunkenstein", "Truck", "10011101", "10101010",
+        "Whatshisface", "PlayerName", "Wonka", "Willy", "Skinner",
+        "Chalmers", "0xFFAAFF", "0xFF0000", "Christ", "Satan", "Mario"
+    };
+
+    public static readonly string[] robotTitles =
+    {
+        "Dr", "Prime Minister", "Senator", "President", "Governor",
+        "Their holiness", "Prophet", "The honorable", "Bishop", "Pope",
+        "Mr", "Ms", "Mrs", "Space Sergeant", "Admiral", "Commander",
+        "Groundskeeper", "Warden", "Principal", "Superintendent",
+        "Our Lord and Savior"
     };
 
     public static string GenerateCityName()
@@ -139,8 +177,10 @@ class NameGenerator
     public static string GenerateRobotName()
     {
         bool useSuffix = Random.Range(0.0f, 1.0f) > 0.95f;
+        bool useTitle  = Random.Range(0.0f, 1.0f) > 0.9f;
 
-        return robotFirstNames[Random.Range(0, robotFirstNames.Length)] + " " +
+        return (useTitle ? robotTitles[Random.Range(0, robotTitles.Length)] + " " : "") +
+        robotFirstNames[Random.Range(0, robotFirstNames.Length)] + " " +
             robotLastNames[Random.Range(0, robotLastNames.Length)] + " " +
             (useSuffix ? robotSuffixes[Random.Range(0, robotSuffixes.Length)] : ""); 
     }
