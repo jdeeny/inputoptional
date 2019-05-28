@@ -68,7 +68,10 @@ public class DynamicResolution : MonoBehaviour
 
     private void SetResolution(float scale)
     {
-        Debug.Log("Resetting resolution to scale: " + scale); 
+        Debug.Log("Resetting resolution to scale: " + scale);
+
+        baseWidth  = Screen.width;
+        baseHeight = Screen.height; 
 
         if (scale < minimumResScale) scale = minimumResScale;
 
