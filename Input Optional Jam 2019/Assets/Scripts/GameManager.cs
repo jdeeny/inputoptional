@@ -186,6 +186,7 @@ public class GameManager : MonoBehaviour
         state = GameState.Playing;
     }
 
+    float kickoffElapsed = 0f;
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -197,6 +198,7 @@ public class GameManager : MonoBehaviour
             case GameState.Setup:
                 break;
             case GameState.PreKickoff:
+                kickoffElapsed += Time.fixedDeltaTime;
                 int ready = 0;
                 int remain = 0;
                 GameManager.Instance.ball.transform.position = new Vector3(0f, 5f, 0f);
@@ -211,7 +213,7 @@ public class GameManager : MonoBehaviour
                         }
                     }
                 }
-                if (Random.Range(0f, 1f) < (float) ready / (float) remain )
+                if (Random.Range(0f, 1f) < (float) ready / (float) remain || kickoffElapsed > 5f)
                 {
                     delay -= Time.fixedDeltaTime;
                 } else
@@ -266,6 +268,7 @@ public class GameManager : MonoBehaviour
         foreach(var t in teams)
             t.ReadyKickoff();
         delay = 3f;
+        kickoffElapsed = 0f;
         state = GameState.PreKickoff;
     }
 
