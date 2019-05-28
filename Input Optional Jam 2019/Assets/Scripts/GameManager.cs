@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(mainScene);
     }
 
-    float timeToSim = 5f;
+    float timeToSim = 0.5f;
     void SimulateHiddenScene()
     {
         var start = Time.realtimeSinceStartup;
@@ -137,12 +137,12 @@ public class GameManager : MonoBehaviour
 
         var elapsed = Time.realtimeSinceStartup - start;
 
-        if(elapsed > 0.01)
+        if(elapsed > 0.09)
         {
             timeToSim *= .9f;
             Debug.Log("Sim down: " + timeToSim + " " + elapsed);
         }
-        else if (elapsed < 0.07)
+        else if (elapsed < 0.08)
         {
             timeToSim *= 1.01f;
             Debug.Log("Sim up: " + timeToSim + " " + elapsed);
