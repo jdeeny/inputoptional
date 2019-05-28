@@ -1272,12 +1272,17 @@ public class PlayerAI : MonoBehaviour
         return sets;
     }
 
-    public void Explode()
+    public void Explode(bool noise = true)
     {
         Instantiate(GameManager.Instance.getRandomExplosion(), transform.position, transform.localRotation);
-        AudioClip clip = GameManager.Instance.getRandomExplosionNoise();
-        AudioSource src = Camera.main.gameObject.GetComponent<AudioSource>(); 
-        if (clip != null && src != null) src.PlayOneShot(clip); 
+
+        if (noise)
+        {
+            AudioClip clip = GameManager.Instance.getRandomExplosionNoise();
+            AudioSource src = Camera.main.gameObject.GetComponent<AudioSource>();
+            if (clip != null && src != null) src.PlayOneShot(clip);
+        }
+
         GameObject.Destroy(gameObject); 
     }
 

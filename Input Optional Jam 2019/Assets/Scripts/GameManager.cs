@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach (GameObject p in t.players)
                 {
-                    if (p.GetComponent<PlayerAI>()) p.GetComponent<PlayerAI>().Explode();
+                    if (p.GetComponent<PlayerAI>()) p.GetComponent<PlayerAI>().Explode(false);
                 }
             }
         }
