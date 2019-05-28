@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     GameObject hiddenBall;
 
     float timeSinceLastHiddenSim = 0f;
-    float timeBetweenHiddenSim = 0.1f;
+    float timeBetweenHiddenSim = 0.2f;
     GameState state;
 
     public float newPlayerChance;
@@ -111,8 +111,10 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(mainScene);
     }
 
+    float timeToSim = 0.5f;
     void SimulateHiddenScene()
     {
+        var start = Time.realtimeSinceStartup;
         timeSinceLastHiddenSim = 0f;
         hiddenBall.transform.position = ball.transform.position;
         hiddenBall.transform.rotation = ball.transform.rotation;
@@ -130,8 +132,22 @@ public class GameManager : MonoBehaviour
             hiddenScene.GetPhysicsScene().Simulate(Time.fixedDeltaTime * timeScale);
             timeToGround += Time.fixedDeltaTime * timeScale;
             posns.Add(hiddenBall.transform.position);
-        } while (timeToGround < 5f);
+        } while (timeToGround < timeToSim);
         ballPositions = posns;
+
+        var elapsed = Time.realtimeSinceStartup - start;
+
+        if(elapsed > 0.09)
+        {
+            timeToSim *= .9f;
+            Debug.Log("Sim down: " + timeToSim + " " + elapsed);
+        }
+        else if (elapsed < 0.08)
+        {
+            timeToSim *= 1.05f;
+            Debug.Log("Sim up: " + timeToSim + " " + elapsed);
+        }
+
     }
 
     public void ResetGame() {
