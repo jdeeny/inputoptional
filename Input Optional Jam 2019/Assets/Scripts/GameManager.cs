@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         }
         else if (elapsed < 0.08)
         {
-            timeToSim *= 1.01f;
+            timeToSim *= 1.05f;
             Debug.Log("Sim up: " + timeToSim + " " + elapsed);
         }
 
