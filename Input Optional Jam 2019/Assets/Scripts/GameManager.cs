@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     GameObject hiddenBall;
 
     float timeSinceLastHiddenSim = 0f;
-    float timeBetweenHiddenSim = 0.1f;
+    float timeBetweenHiddenSim = 0.2f;
     GameState state;
 
     public float newPlayerChance;
